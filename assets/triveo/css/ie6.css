@@ -1,0 +1,65 @@
+/*----------------------------------------------------
+           Triveo - CSS - Exclusively for IE6
+------------------------------------------------------*/
+
+
+/* Search styling */
+#search .go{	
+	margin:5px 0 0 -24px;
+}
+
+
+/*  Homepage Slider
+------------------------------------------------------*/
+.slide-icon{	
+	margin:5px 0px 0px 15px;
+}
+.desc h4, .desc-last h4{
+	margin-bottom:1px;
+}
+
+
+/* Header
+------------------------------------------------------*/
+/* Sitemap */
+#sitemap{	
+	margin-top:-3px;
+}
+
+
+/* Portfolio
+------------------------------------------------------*/
+#mainportfolio{
+	width:968px;
+	margin:0px 0px;
+}
+.pf-box{	
+	background-position:0px 183px;
+	margin:0px 20px 28px 20px; 
+}
+
+/* Contact
+------------------------------------------------------*/
+.input{	
+	width:252px;
+}
+.textarea{
+	height:132px;
+	width:252px; 
+}
+
+/* Contact-Form Box */
+.form-box-top{
+	background-position:bottom;
+}
+.form-box{
+	padding:15px 28px;
+}
+#form-left{
+	width:265px;
+	margin-right:15px;
+}
+#form-right{
+	width:265px;
+	float:left;
+}
