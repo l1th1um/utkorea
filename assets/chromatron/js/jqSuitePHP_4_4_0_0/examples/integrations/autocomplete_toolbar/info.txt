@@ -1,2 +1,0 @@
-This example is the same as prevous, but with serching on the toolbar.
-Try to write some letters on ShipName.

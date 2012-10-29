@@ -113,14 +113,14 @@ class sms extends CI_Controller {
 
 		$data->page = $page;
 		if($type=='student'){
-			$data->records = count ($this->person->get_list_mahasiswa_JQGRID($req_param,"all")->result_array());		
-			$records = $this->person->get_list_mahasiswa_JQGRID($req_param,"current")->result_array();
+			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
 		}elseif($type=='tutor'){
-			$data->records = count ($this->person->get_list_tutor_JQGRID($req_param,"all")->result_array());		
-			$records = $this->person->get_list_tutor_JQGRID($req_param,"current")->result_array();
+			$data->records = count ($this->person->get_list_JQGRID('tutor',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('tutor',$req_param,"current")->result_array();
 		}elseif($type=='staff'){
-			$data->records = count ($this->person->get_list_staff_JQGRID($req_param,"all")->result_array());		
-			$records = $this->person->get_list_staff_JQGRID($req_param,"current")->result_array();
+			$data->records = count ($this->person->get_list_JQGRID('staff',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('staff',$req_param,"current")->result_array();
 		}
 		
 		$data->total = ceil($data->records /$rows );

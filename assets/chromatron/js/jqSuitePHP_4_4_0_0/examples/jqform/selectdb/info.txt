@@ -1,1 +1,0 @@
-The select can be defined as SQL query.

@@ -1,13 +1,16 @@
-<script src="<?php echo admin_tpl_path()?>js/jquery.jqGrid-4.4.1/js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="<?php echo admin_tpl_path()?>js/jquery.jqGrid-4.4.1/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
   
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqueryui/css/blitzer/jquery-ui-1.8.23.custom.css" />	
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>css/add.css" />	
-<link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqSuitePHP_4_4_0_0/themes/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqgrid/css/ui.jqgrid.css" />	
+
   
   <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function(){	
+		
+		
 		$("input[name='radio']").click(function(){
 			$("#selectable").html('');
 			$('#grid_name').jqGrid('GridUnload');
@@ -31,12 +34,12 @@
 					mtype : "POST",				
 					sortname: 'name',
 					rownumbers: true,
-					pager: $('#pager2'),					
+					pager: $('#pager2'),
 					autowidth: true,
 					height: "100%",
 					viewrecords: true,					
 					sortorder: "ASC",					
-					jsonReader: { repeatitems : false, id: "0"}					
+					jsonReader: { repeatitems : false, id: "0"}
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
 				break;
@@ -64,7 +67,7 @@
 					height: "100%",
 					viewrecords: true,					
 					sortorder: "ASC",					
-					jsonReader: { repeatitems : false, id: "0"}					
+					jsonReader: { repeatitems : false, id: "0"}
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
 				break;
@@ -92,7 +95,7 @@
 					height: "100%",
 					viewrecords: true,					
 					sortorder: "ASC",					
-					jsonReader: { repeatitems : false, id: "0"}					
+					jsonReader: { repeatitems : false, id: "0"}
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
 				break;
@@ -162,7 +165,7 @@
                     <div id="listcontainer" style="display:none">
                 		<b style="font-weight:900">Double Click to Add</b> <hr />
                 		<table id="grid_name"></table>
-                		<div id="pager2"></div>                        
+                		<div id="pager2" ></div>                        
                 	</div>
                     <br />	                	
                 	<ol id="selectable">

@@ -1,3 +1,0 @@
-jqScheduler.
-
-You can run the the component just with three lines of code.

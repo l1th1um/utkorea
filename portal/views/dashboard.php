@@ -68,6 +68,12 @@
 						<li><a href="<?php echo base_url()?>sms/history" title="" class="pnc_link">History SMS</a></li>
                     </ul>
 				</li>
+				<li class="current">
+					<a href="#" title="" class="projects">Data Management</a></span>
+					<ul>
+						<li><a href="<?php echo base_url()?>mahasiswa" title="" class="pnc_link">Mahasiswa</a></li>						
+                    </ul>
+				</li>
 				<li><a href="#" title="" class="settings">Settings</a></li>
 			</ul>
 		</nav>

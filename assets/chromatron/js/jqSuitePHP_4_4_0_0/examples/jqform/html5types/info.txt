@@ -1,2 +1,0 @@
-HTML5 extends the input fields with 13 new types.
-Here we use some of them.

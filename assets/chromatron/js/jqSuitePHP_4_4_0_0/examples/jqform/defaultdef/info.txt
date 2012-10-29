@@ -1,3 +1,0 @@
-By default the Form is created with two column layout - one for
-the labels and the other for the input elements. 
-We can style these in a way that we want using the setTableStyles method

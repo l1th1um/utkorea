@@ -1,1 +1,0 @@
-We can configure to read the leaf nodes icon from the database. For this purpose we need to set the icon field in table configuration

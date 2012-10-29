@@ -5,3 +5,12 @@
 	cursor:pointer;
 	display:inline-block;
 }
+
+tr{
+	cursor:pointer;
+}
+
+#grid_name {
+	font-family:tahoma;
+	font-size:10pt;
+}

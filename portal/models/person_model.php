@@ -7,12 +7,35 @@ class person_model extends CI_Model {
         parent::__construct();
     }
 	
+	function delete_mahasiswa($id)
+	{
+		return $this->db->delete('mahasiswa',array('nim'=>$id));
+	}
+	
+	function update_mahasiswa($nim,$col)
+	{
+		$this->db->where('nim',$nim);
+		return $this->db->update('mahasiswa',$col);
+	}
+	
+	function add_mahasiswa($col)
+	{
+		return $this->db->insert('mahasiswa',$col);
+	}
+	
 	function get_list_mahasiswa()
 	{
 		$sql = 'SELECT * from mahasiswa order by name asc'; 
 		$res = $this->db->query($sql);
 		return $res;
 	}		
+	
+	function check_nim($nim)
+	{
+		$result = $this->db->query('SELECT 1 FROM mahasiswa WHERE nim = '.$nim);
+		if($result->num_rows())return true;
+		return false;
+	}
 	
 	function get_mahasiswa_sms($select='*', $where = NULL)
 	{
@@ -70,12 +93,21 @@ class person_model extends CI_Model {
 		}
 	}
 	
-	function get_list_staff_JQGRID($params = "" , $page = "all")
+	function get_list_JQGRID($type,$params = "" , $page = "all")
 	{	
-
-		$this->db->select("name,nip,phone");
-		$this->db->from("staff");
-        $this->db->where("group_id IS NOT ","NULL",false);
+		if($type=='staff'){
+			$this->db->select("name,nip,phone");
+			$this->db->from("staff");
+			$this->db->where("group_id IS NOT ","NULL",false);
+		}elseif($type=='tutor'){
+			$this->db->select("name,nip,phone");
+			$this->db->from("staff");
+			$this->db->where("major_id IS NOT ","NULL",false);
+		}else{
+			$this->db->select("name,nim,phone,major,region,status,sex,period,email,birth,address,religion,marital_status");
+			$this->db->from("mahasiswa");
+		}
+		
 		
 		if (!empty($params))		{			
 			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
@@ -121,119 +153,8 @@ class person_model extends CI_Model {
 				$query = $this->db->get();
 
 		}
-		return $query;
-	
+		return $query;	
 
-	}
-    
-    function get_list_tutor_JQGRID($params = "" , $page = "all")
-	{	
-
-		$this->db->select("name,nip,phone");
-		$this->db->from("staff");
-        $this->db->where("major_id IS NOT ","NULL",false);
-		
-		if (!empty($params))		{			
-			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
-			{
-				$ops = array (
-							"eq" => "=",
-							"ne" => "<>",
-							"lt" => "<",
-							"le" => "<=",
-							"gt" => ">",
-							"ge" => ">="
-				);										
-				
-				if(!empty($params['search_field'])){
-					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
-						if($params['search_operator']=='cn'){
-							$this->db->like($params['search_field'],$params['search_str']);
-						}else{
-							$this->db->not_like($params['search_field'],$params['search_str']);
-						}
-					}else{
-						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
-					}
-					
-				}
-				
-				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
-
-
-				if ($page != "all")
-				{
-					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
-				}
-
-				$query = $this->db->get();
-				
-
-			}
-		}
-		else
-		{			
-				$this->db->limit (5);
-				$query = $this->db->get();
-
-		}
-		return $query;
-	
-
-	}
-    
-	
-	function get_list_mahasiswa_JQGRID($params = "" , $page = "all")
-	{	
-
-		$this->db->select("name,nim,phone");
-		$this->db->from("mahasiswa");
-		
-		if (!empty($params))		{			
-			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
-			{
-				$ops = array (
-
-							"eq" => "=",
-							"ne" => "<>",
-							"lt" => "<",
-							"le" => "<=",
-							"gt" => ">",
-							"ge" => ">="
-				);										
-				
-				if(!empty($params['search_field'])){
-					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
-						if($params['search_operator']=='cn'){
-							$this->db->like($params['search_field'],$params['search_str']);
-						}else{
-							$this->db->not_like($params['search_field'],$params['search_str']);
-						}
-					}else{
-						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
-					}
-					
-				}
-				
-				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
-
-
-				if ($page != "all")
-				{
-					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
-				}
-
-				$query = $this->db->get();
-				
-
-			}
-		}
-		else
-		{			
-			$this->db->limit (5);
-			$query = $this->db->get();
-		}
-		return $query;
-	}
+	}	
 
 }

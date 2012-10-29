@@ -1,4 +1,0 @@
-This form is builded to have a header. We can set different icons into
-the header from the icon set of the jQuery UI Theme roller. 
-
-For this purpose we use the method setFormHeader.

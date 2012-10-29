@@ -1,2 +1,0 @@
-The Autocomplete of course can be used in edit and search dialogs on the same time.
-The autocomplete field is the ShipName.

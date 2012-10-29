@@ -1,1 +1,0 @@
-A custom JavScript code can be added with setJSCode method.

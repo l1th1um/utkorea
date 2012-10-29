@@ -1,2 +1,0 @@
-We can load all the nodes from the query at the client side, but expanded.
-Take care of expandAll property.
