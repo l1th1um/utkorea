@@ -7,6 +7,7 @@ class person_model extends CI_Model {
         parent::__construct();
     }
 	
+
 	function delete_mahasiswa($id)
 	{
 		return $this->db->delete('mahasiswa',array('nim'=>$id));
@@ -23,6 +24,7 @@ class person_model extends CI_Model {
 		return $this->db->insert('mahasiswa',$col);
 	}
 	
+
 	function get_list_mahasiswa()
 	{
 		$sql = 'SELECT * from mahasiswa order by name asc'; 
@@ -30,6 +32,7 @@ class person_model extends CI_Model {
 		return $res;
 	}		
 	
+
 	function check_nim($nim)
 	{
 		$result = $this->db->query('SELECT 1 FROM mahasiswa WHERE nim = '.$nim);
@@ -37,14 +40,17 @@ class person_model extends CI_Model {
 		return false;
 	}
 	
+
 	function get_mahasiswa_sms($select='*', $where = NULL)
 	{
 		$this->db->distinct();
 		$this->db->select($select);
 		if (!is_null($where)) {
-			$this->db->where_in('phone',$where);
+			$this->db->where_in('nim',$where);
 		}
 		$this->db->where("phone IS NOT ", "NULL",false); 
+		
+
 		$query = $this->db->get('mahasiswa');
 		
 		if($query->num_rows() > 0) {
@@ -57,7 +63,9 @@ class person_model extends CI_Model {
 		$this->db->distinct();
 		$this->db->select($select);
 		if (!is_null($where)) {
-			$this->db->where_in('phone',$where);
+
+			$this->db->where_in('staff_id',$where);
+
 		}
 		$this->db->where("phone IS NOT ", "NULL",false); 
 		$query = $this->db->get('staff');
@@ -93,6 +101,7 @@ class person_model extends CI_Model {
 		}
 	}
 	
+
 	function get_list_JQGRID($type,$params = "" , $page = "all")
 	{	
 		if($type=='staff'){
@@ -107,7 +116,6 @@ class person_model extends CI_Model {
 			$this->db->select("name,nim,phone,major,region,status,sex,period,email,birth,address,religion,marital_status");
 			$this->db->from("mahasiswa");
 		}
-		
 		
 		if (!empty($params))		{			
 			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
@@ -153,8 +161,9 @@ class person_model extends CI_Model {
 				$query = $this->db->get();
 
 		}
-		return $query;	
 
-	}	
+		return $query;
+	}
+	
 
 }

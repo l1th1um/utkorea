@@ -1,16 +1,17 @@
+
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+
 <script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
   
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqueryui/css/blitzer/jquery-ui-1.8.23.custom.css" />	
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>css/add.css" />	
+
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqgrid/css/ui.jqgrid.css" />	
 
   
   <script type="text/javascript">
 	$(document).ready(function(){	
-		
-		
 		$("input[name='radio']").click(function(){
 			$("#selectable").html('');
 			$('#grid_name').jqGrid('GridUnload');
@@ -24,12 +25,14 @@
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIP'],
 					ondblClickRow: function(rowid, iRow, iCol, e){
-						$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 2) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
+						$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 3) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
+
 					},												
 					colModel:[
 						{name:'name',index:'name',width:100},
 						{name:'phone',index:'phone',width:50,  align:"center", sortable: false},
-						{name:'nip',index:'nip', width:20, align:"center"},						
+						{name:'staff_id',index:'staff_id', width:20, align:"center"},					
+
 					],
 					mtype : "POST",				
 					sortname: 'name',
@@ -38,7 +41,7 @@
 					autowidth: true,
 					height: "100%",
 					viewrecords: true,					
-					sortorder: "ASC",					
+					sortorder: "ASC",	
 					jsonReader: { repeatitems : false, id: "0"}
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
@@ -52,12 +55,14 @@
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIP'],
 					ondblClickRow: function(rowid, iRow, iCol, e){
-						$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 2) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
+					$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 3) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
+
 					},												
 					colModel:[
 						{name:'name',index:'name',width:100},
 						{name:'phone',index:'phone',width:50,  align:"center", sortable: false},
-						{name:'nip',index:'nip', width:20, align:"center"},						
+						{name:'staff_id',index:'staff_id', width:20, align:"center"},					
+
 					],
 					mtype : "POST",				
 					sortname: 'name',
@@ -66,8 +71,9 @@
 					autowidth: true,
 					height: "100%",
 					viewrecords: true,					
-					sortorder: "ASC",					
-					jsonReader: { repeatitems : false, id: "0"}
+					sortorder: "ASC",	
+					jsonReader: { repeatitems : false, id: "0"}					
+
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
 				break;
@@ -94,7 +100,7 @@
 					autowidth: true,
 					height: "100%",
 					viewrecords: true,					
-					sortorder: "ASC",					
+					sortorder: "ASC",	
 					jsonReader: { repeatitems : false, id: "0"}
 					
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true});
@@ -166,6 +172,7 @@
                 		<b style="font-weight:900">Double Click to Add</b> <hr />
                 		<table id="grid_name"></table>
                 		<div id="pager2" ></div>                        
+
                 	</div>
                     <br />	                	
                 	<ol id="selectable">

@@ -54,7 +54,7 @@ class sms extends CI_Controller {
 		
 		$success = 0;
 		$failed = 0;
-		//var_dump($people);
+
 		foreach ($people as $row) {		
 			//Send Message and return the ID of message
 			$apimsgid = send_message($row->phone,$message);
@@ -113,6 +113,7 @@ class sms extends CI_Controller {
 
 		$data->page = $page;
 		if($type=='student'){
+
 			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
 			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
 		}elseif($type=='tutor'){

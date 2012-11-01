@@ -4,6 +4,7 @@
 	height:20px;
 	cursor:pointer;
 	display:inline-block;
+
 }
 
 tr{
@@ -13,4 +14,6 @@ tr{
 #grid_name {
 	font-family:tahoma;
 	font-size:10pt;
+
+
 }

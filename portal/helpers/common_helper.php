@@ -12,6 +12,13 @@ function admin_tpl_path() {
     return $CI->config->item('base_url')."assets/".$CI->config->item('admin_tpl')."/";
 }
 
+
+function template_path($name) {
+	$CI =& get_instance();
+	return $CI->config->item('base_url')."assets/".$name."/";
+}
+
+
 function assets_path() {
     $ci =& get_instance();
     return base_url()."assets/";
