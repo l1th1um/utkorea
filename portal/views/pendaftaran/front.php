@@ -14,6 +14,7 @@
 <!-- ////////////////////////////////// -->
 <link href="<?php echo template_path('triveo')?>css/style.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo template_path('triveo')?>css/superfish.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url()?>favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <!--[if IE 6]>    
 	<link href="<?php echo template_path('triveo')?>css/ie6.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<?php echo template_path('triveo')?>js/DD_belatedPNG.js"></script>
@@ -114,7 +115,7 @@ jQuery(function(){
                     	<div id="slideshow-inner">
                         	<ul id="slide-image-type2">
                                 <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide1.jpg" alt="" class="type1-slide" /></li>
-                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide2.jpg" alt="" class="type1-slide" /></li>
+                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/utkorea.png" alt="" class="type1-slide" /></li>
                                 <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide3.jpg" alt="" class="type1-slide" /></li>
                                 <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide4.jpg" alt="" class="type1-slide" /></li>
                             </ul>                            
@@ -130,9 +131,9 @@ jQuery(function(){
             <div id="content">
             	<div class="three-column">
                 	<div class="front-icon"><img src="<?php echo template_path('triveo')?>images/front-icon1.jpg" alt="" /></div>
-                    <h3>Increase Your market</h3>
-                    <p>We help you build better business</p>
-                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim idest labor um. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.</p>
+                    <h3>Bergabung Bersama Kami</h3>
+                    <p>Tambah Teman, Tambah Ilmu</p>
+                    <p>Nanti Diisi sesuatu di sini yah kakak-kakak.</p>
                     <a href="#"><img src="<?php echo template_path('triveo')?>images/read-more.jpg" alt="" /></a>
                 </div>
                 <div class="front-spacer">&nbsp;</div>
@@ -162,26 +163,27 @@ jQuery(function(){
                 
                 <!-- Begin of Newsflash -->
                 <div id="newsflash">
-                	<img src="images/news-icon.jpg" alt="" class="news-icon" />
+                	<img src="<?php echo template_path('triveo')?>images/news-icon.jpg" alt="" class="news-icon" />
                     <div class="newsflash-title"><h4>Newsflash</h4></div>
                     <div class="news-spacer">&nbsp;</div>
                     <div class="newsflash-text">
-                    	<div>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga harum quidem rerum facilis estetdita</div>
-                        <div>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat</div>
-                        <div>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione</div>
+                    	<div>Pendaftaran Mahasiswa Baru Dibuka Pada Tanggal xx Desember 2012. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
+                        <div>Pendaftaran Mahasiswa Baru Ditutup Pada Tanggal xx Januari 2013. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
+                        <div>Pengumuman Mahasiswa Baru Pada Tanggal xx Januari 2013. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
                     </div>                
                 </div>
                 <!-- End Newsflash -->
                 
                 <div class="maincontent">
-                <h3>We help businesses succeed online</h3>
-                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.</p>                
+                <h3>Butuh Bantuan ?</h3>
+                <p>Pertanyaan dapat dikirimkan ke humas@utkorea.org</p>                
                 </div>
+                <!-- 
                 <div id="sidebox">
                 	<div class="featured">
                     	<div><a href="#"><img src="<?php echo template_path('triveo')?>images/featured1.jpg" alt="" /></a></div>
                     </div>
-                </div>         
+                </div>-->         
             </div>
             <!-- END CONTENT --> 
                        

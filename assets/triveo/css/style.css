@@ -776,14 +776,14 @@ form{
 
 /* Contact-Form Box */
 .form-box-top{
-	width:95%px;
+	width:960px;
 	height:3px;
 	background-image:url(../images/form-box-top.gif);
 	background-repeat:no-repeat;
 	float:left;
 }
 .form-box{
-	width:95%px;
+	width:900px;
 	padding:15px 29px;
 	background-color:#bfc9cd;
 	border-right:1px solid #afb8bb;
@@ -791,7 +791,7 @@ form{
 	float:left;
 }
 .form-box-bottom{
-	width:95%px;
+	width:960px;
 	height:3px;
 	background-image:url(../images/form-box-bottom.gif);
 	background-repeat:no-repeat;
@@ -857,12 +857,8 @@ form{
 
 
 /* Fancy */
-.fancybox form.fancy {
-  background: #f0f3ec;
-  border: 2px solid #cccccc;
-  -moz-border-radius: 5px;
-  padding: 0 10px;
-  width : 95%
+form.fancy {
+  width : 800px
 }
 form.fancy fieldset {
   clear: both;
@@ -888,7 +884,7 @@ form.fancy ol li {
   width: 100%;
   list-style: none;
   margin: 0;
-  padding: .4em 0;
+  padding: 1.4em 0;
   border-bottom: 1px solid #DDEBEE;
   overflow: auto;
 }
@@ -897,13 +893,20 @@ form.fancy label {
   font-weight: bold;
   text-align: right;
   float: left;
-  width: 15em;
+  width: 20em;
 }
 form.fancy input,
 form.fancy select,
 form.fancy textarea {
   margin: 0;
   font-size: 1em;
+  height : 20px;
+  border: 2px solid #AFB8BB;
+  background-color: #D3DBDE;
+}
+
+form.fancy input[type=text] {
+	width:20em;
 }
 form.fancy div.element {
   margin-left: 16em;
@@ -928,15 +931,10 @@ form.fancy div.element ol li input,
 form.fancy div.element ol li label {
   vertical-align: middle;
 }
-form.fancy input.text,
-form.fancy select,
-form.fancy textarea {
-  border: 1px solid #cccccc;
-  background: #F5F5F5;
-}
-form.fancy input.text:focus,
+
+form.fancy input:focus,
 form.fancy textarea:focus,
-form.fancy input.text.focus,
+form.fancy input.focus,
 form.fancy textarea.focus {
   background: #ffffcc;
   border-color: #cccc00;
@@ -955,4 +953,21 @@ form.fancy .reqnote {
 }
 form.fancy .reqnote label {
   display: none;
+}
+
+.fancy_button {
+	background-color:#afb8bb;width: 93px;height: 30px;float:left;border:0;font-weight:bold;color:#6e7a7f;-moz-border-radius: 5px;	
+}
+/*
+form.fancy select {height:21px; width:auto; background:url(../images/select-right.png) no-repeat 100% 0; cursor:pointer; font:12px/21px Arial, Helvetica, sans-serif; color:#fff; padding-left:3px; margin-left:3px;}
+*/
+
+.image_container {padding-left: 59px;width:200px;padding-top:5px}
+.bar {
+    height: 18px;
+    background-image: url(../images/progressbar.gif);
+}
+
+.error {
+	color : red;font-weight:bold;padding-bottom:5px;
 }

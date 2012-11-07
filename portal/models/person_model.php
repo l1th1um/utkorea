@@ -50,7 +50,6 @@ class person_model extends CI_Model {
 		}
 		$this->db->where("phone IS NOT ", "NULL",false); 
 		
-
 		$query = $this->db->get('mahasiswa');
 		
 		if($query->num_rows() > 0) {
@@ -63,9 +62,7 @@ class person_model extends CI_Model {
 		$this->db->distinct();
 		$this->db->select($select);
 		if (!is_null($where)) {
-
 			$this->db->where_in('staff_id',$where);
-
 		}
 		$this->db->where("phone IS NOT ", "NULL",false); 
 		$query = $this->db->get('staff');
@@ -165,5 +162,20 @@ class person_model extends CI_Model {
 		return $query;
 	}
 	
+	function registration_process($data) {
+		$insert = populate_form($data, 'mahasiswa_baru');
+		
+		$insert['birth_date'] = $data['year_birth']."-".$data['month_birth']."-".$data['day_birth'];
+		$insert['phone'] = "82".$data['phone'];
+		//$insert['reg_code'] = "UTKOR".rand(11283,92341);
+		
+		$this->db->insert('mahasiswa_baru',$insert);
+		
+		if ($this->db->affected_rows() > 0) {
+			return $this->db->insert_id();
+		} else {
+			return FALSE;
+		}
+	}
 
 }

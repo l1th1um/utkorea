@@ -12,12 +12,10 @@ function admin_tpl_path() {
     return $CI->config->item('base_url')."assets/".$CI->config->item('admin_tpl')."/";
 }
 
-
 function template_path($name) {
 	$CI =& get_instance();
 	return $CI->config->item('base_url')."assets/".$name."/";
 }
-
 
 function assets_path() {
     $ci =& get_instance();
@@ -64,6 +62,19 @@ function monthArray() {
     }
     
     return $months;
+}
+
+function lang_list($list) {
+	$ci =& get_instance();
+	$list = $ci->lang->line($list);
+	
+	$lists = array();
+	
+	foreach ($list as $v => $k) {
+		$lists[$v] = $k;
+	}
+
+	return $lists;
 }
 
 function year_array() {
@@ -311,7 +322,7 @@ function user_details($id,$table='staff') {
     $query = $ci->db->get('staff');
     return $query->row_array();
 }
-    
+
 function formval($field=NULL,$dbval=NULL) {
     $ci =& get_instance();
     $uri = $ci->uri->segment(3);
@@ -494,4 +505,21 @@ function split_group_concat_date($str) {
     }
     
     return $split2;
+}
+
+function populate_form($data,$table_name) 
+{
+	$ci =& get_instance();
+	$field = $ci->db->list_fields($table_name);
+	
+	$serialize = array();
+	foreach ($data as $key => $value) 
+	{
+		if (in_array($key, $field)) 
+		{
+			$serialize[$key] = $value;	
+		}
+	}
+	
+	return $serialize;
 }

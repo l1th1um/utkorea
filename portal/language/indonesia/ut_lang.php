@@ -32,4 +32,10 @@ $lang['month_array']					    = array('Januari','Februari','Maret',
         										  'April','Mei','Juni','Juli',
         										  'Agustus','September','Oktober',
         										  'November','Desember');
+$lang['religion_list']					    = array(1=>'Islam','Protestan','Katolik','Hindu','Budha','Khonghucu');
+$lang['employment_list']					= array(1=>'TNI/ Polri','PNS','Swasta','Wiraswasta','Tidak Bekerja');
+$lang['marital_status_list']				= array('Tidak Menikah','Menikah');
+$lang['education_list']						= array(1=>'SLTA','D-I','D-II','D-III',',S1','S2','S3');
+$lang['yes_no_list']						= array(0=>'Tidak','Ya');
+
 ?>

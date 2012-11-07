@@ -55,7 +55,7 @@
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIP'],
 					ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 3) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
+						$("#selectable").append("<li><label>" + $(this).getCell(rowid,1) + " (" + $(this).getCell(rowid,2) + ") " + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $(this).getCell(rowid, 3) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");						
 
 					},												
 					colModel:[
