@@ -19,17 +19,17 @@
 					colModel:[
 						{name:'nim',width:250,index:'nim',editable:true,editrules:{required:true,number:true}},
 						{name:'name',width:600,index:'name',editable:true,editrules:{required:true}},
-						{name:'major',width:600,index:'major', editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}}},	
-						{name:'region',index:'region',editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($region_arr as $key=>$row){if(!$first){echo ',';}echo '"'.$key.'":"'.$row.'"';$first=false;} ?>}}},
-						{name:'phone',index:'phone',editable:true,editrules:{required:true,number:true}},
-						{name:'status',index:'status',editable:true,edittype:'select',editoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}}},
-						{name:'period',index:'period',editable:true,editrules:{required:true,number:true}},
-						{name:'email',width:700,index:'email',editable:true,editrules:{requried:true,email:true}},
-						{name:'birth',index:'birth',editable:true},
-						{name:'religion',index:'religion',editable:true},
-						{name:'sex',index:'sex',editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
-						{name:'marital_status',index:'marital_status',editable:true,edittype:'select',formatter:'select',editoptions:{value:{'Menikah':'Menikah','Belum Menikah':'Belum Menikah'}}},
-						{name:'address',index:'address',editable:true,edittype:'textarea',editrules:{required:true}},
+						{name:'major',width:600,index:'major', stype:'select',searchoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}},editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}}},	
+						{name:'region',index:'region',hidden:true,editable:true,editrules:{edithidden:true}, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($region_arr as $key=>$row){if(!$first){echo ',';}echo '"'.$key.'":"'.$row.'"';$first=false;} ?>}}},
+						{name:'phone',index:'phone',hidden:true,editable:true,editrules:{edithidden:true,required:true,number:true}},
+						{name:'status',index:'status',align:'center',editable:true,stype:'select',searchoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}},edittype:'select',editoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}}},
+						{name:'period',index:'period',align:'center',editable:true,editrules:{required:true,number:true}},
+						{name:'email',width:700,index:'email',hidden:true,editable:true,editrules:{edithidden:true,requried:true,email:true}},
+						{name:'birth',index:'birth',hidden:true,editable:true,editrules:{edithidden:true}},
+						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true},
+						{name:'sex',index:'sex',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
+						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'Menikah':'Menikah','Belum Menikah':'Belum Menikah'}}},
+						{name:'address',index:'address',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'nim',index:'nim_key',hidden:true}
 					],
 					mtype : "POST",		
@@ -43,21 +43,30 @@
 					sortorder: "ASC",					
 					jsonReader: { repeatitems : false, id: "0"}
 				}).navGrid('#pager2',{edit:true,add:true,del:true, search: true},{
+					resize:false,					
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}
 				},
-					{afterComplete: function(data){						
+					{resize:false,					
+					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}
 				},
-					{afterComplete: function(data){						
+					{resize:false,					
+					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}
-				});
+				});				
+								
 	});
   </script>
 </head>
+<style>
+	.ui-widget{
+		font-size:11pt;
+	}
+</style>
 <body>		
 	<?php if (isset($content)) echo "<h3>".$content."</h3>";  else $content= '';?>		
 	
