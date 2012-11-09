@@ -106,11 +106,11 @@ class pendaftaran extends CI_Controller {
 		}
 	}
 	
-	function registration_process($data) {
+	public function registration_process($data) {
 		return $this->person->registration_process($data);
 	}
 	
-	function _validate_registration()
+	public function _validate_registration()
 	{
 		$this->form_validation->set_rules('name','Nama','trim|required|min_length[4]');
 		$this->form_validation->set_rules('ktp','KTP','trim|required|min_length[10]');
@@ -128,6 +128,27 @@ class pendaftaran extends CI_Controller {
 		$delimiter_suffix = "</div>";
 	
 		$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
+	}
+	
+	public function edu_list($page = 1)
+	{
+		/*
+		$this->load->library('pagination');
+		$config['base_url'] = base_url().'pendaftaran/edu_list/';
+		$config['total_rows'] = $this->person->total_education_list();
+		$config['per_page'] = 30;
+		$config['anchor_class'] = ' class="pagination" ';		
+		$limit = $config['per_page'];
+		$offset = ( intval($page) - 1 ) *  $limit;
+		$this->pagination->initialize($config); 
+		$data['links'] = $this->pagination->create_links();
+		
+		$data['list'] = $this->person->education_list($limit,$offset);
+		*/
+		
+		$data['list'] = $this->person->education_list();
+						
+		$this->load->view('pendaftaran/edu_list',$data);
 	}
 	
 }

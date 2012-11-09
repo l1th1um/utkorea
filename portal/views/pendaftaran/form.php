@@ -1,3 +1,5 @@
+<link href="<?php echo template_path('core')?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
+
 <?php if (isset($message)) echo $message;  else $message= '';?>
 <h3>Pendaftaran Mahasiswa Baru Universitas Terbuka Korea 2013</h3>
                 <div class="form-box-top"></div>
@@ -160,7 +162,16 @@
 				Kode Jurusan
 			</label>
 			<div class="element">
-				<?php echo form_input('last_education_major',$this->input->post('last_education_major'))?>
+				<?php 
+				$data_edu = array('name' => 'last_education_major',
+								  'value' => $this->input->post('last_education_major'),
+								  'style' => 'width:3em',
+								  'maxlength' => '3',
+								  'readonly' => 'readonly');
+				echo form_input($data_edu)?> 
+				<a href='javascript://' class='contact'>
+					<img src='<?php echo template_path('core')?>images/search.png' alt='' />
+				</a>
 			</div>
 		</li>
 		<li>
@@ -298,63 +309,16 @@
                 </div>
                 <div class="form-box-bottom"></div>
 
+				
+<div id="edu_list-form"></div>
+<div style='display:none'>
+	<img src='<?php echo template_path('core')?>images/x.png' alt='' />
+</div>
+		
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.ui.widget.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.iframe-transport.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.validate.min.js"></script>
-
-<script type='text/javascript'>
-	$(document).ready(function(){
-		
-		$('.teach_opt').hide();
-
-		$(".fancy").validate({
-							  rules:{
-								  	  name : "required",
-								  	  ktp : "required",
-								  	  passport : "required",
-								  	  place_of_birth : "required",
-								  	  address_id : "required",
-								  	  address_kr : "required",
-								  	  phone : "required",
-								  	  email: {required: true,email: true},
-								  	  mother_name : "required",
-									}
-		});
-
-		
-		$('#teach').change(function(){
-			if ($(this).val() == '1') {
-				$('.teach_opt').show('slow');
-			} else {
-				$('.teach_opt').hide('fast');
-			}	
-		});	
-		
-		$('.fileupload').fileupload({
-				dataType: 'json',
-				maxFileSize: 10000,
-	            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-				progress: function () {
-					var loader = $(this).attr('name') +'_loader';
-					$(this).after("<img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' />");
-			    },
-				error: function (e, data) {
-					alert("Error");
-				},
-				done: function (e, data) {					
-					var cont = $(this).attr('name') +'_cnt';
-					var loader = $(this).attr('name') +'_loader';
-					var hidden_field = $(this).attr('name') +'_image';
-					$(this).after("<img src='<?php echo template_path('triveo')?>images/tick_small.png' />");
-					
-					$('.'+ loader).hide();
-					$.each(data.result, function (index, file) {
-						
-						$("<img src='"+ file.thumbnail_url +"'/>").appendTo('#' + cont);						
-						$("input[name=" + hidden_field + "]").val(file.name);
-					});
-				}
-			});				
-	});	
-</script>
+<script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
+<script type='text/javascript' src="<?php echo template_path('core')?>js/new_registration.js"></script>
+<script type='text/javascript' src="<?php echo template_path('core')?>js/check_edu.js"></script>

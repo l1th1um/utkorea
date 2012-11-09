@@ -971,3 +971,7 @@ form.fancy select {height:21px; width:auto; background:url(../images/select-righ
 .error {
 	color : red;font-weight:bold;padding-bottom:5px;
 }
+
+input.error {
+	border: 1px solid #ff0000 !important;
+}

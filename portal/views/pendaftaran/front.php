@@ -40,7 +40,7 @@
 <!-- ////////////////////////////////// -->
 <!-- //      Javascript Files        // -->
 <!-- ////////////////////////////////// -->
-<script type="text/javascript" src="<?php echo template_path('triveo')?>js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo template_path('core')?>js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="<?php echo template_path('triveo')?>js/superfish.js"></script>
 <script type="text/javascript">
 // initialise plugins

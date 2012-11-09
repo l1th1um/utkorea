@@ -47,7 +47,7 @@ input.text{ width:290px;font:12px/12px 'courier new',courier,monospace;color:#33
 <!-- ////////////////////////////////// -->
 <!-- //      Javascript Files        // -->
 <!-- ////////////////////////////////// -->
-<script type="text/javascript" src="<?php echo template_path('chromatron')?>js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<?php echo template_path('core')?>js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="<?php echo template_path('triveo')?>js/superfish.js"></script>
 <script type="text/javascript">
 // initialise plugins

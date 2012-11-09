@@ -178,4 +178,22 @@ class person_model extends CI_Model {
 		}
 	}
 
+	function education_list($limit=NULL,$offset=NULL) 
+	{
+		//$this->db->limit($limit,$offset);
+		$query = $this->db->get('education_list');
+		
+		if($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
+	
+	function total_education_list() 
+	{
+		$query = $this->db->get('education_list');
+		
+		return $query->num_rows();
+	}
 }
