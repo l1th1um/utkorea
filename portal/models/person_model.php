@@ -110,7 +110,7 @@ class person_model extends CI_Model {
 			$this->db->from("staff");
 			$this->db->where("major_id IS NOT ","NULL",false);
 		}else{
-			$this->db->select("name,nim,phone,major,region,status,sex,period,email,birth,address,religion,marital_status");
+			$this->db->select("name,nim,phone,major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
 			$this->db->from("mahasiswa");
 		}
 		
@@ -172,7 +172,8 @@ class person_model extends CI_Model {
 		$this->db->insert('mahasiswa_baru',$insert);
 		
 		if ($this->db->affected_rows() > 0) {
-			return $this->db->insert_id();
+			$row = array('id'=>$this->db->insert_id(), 'name'=>$data['name'], 'email'=>$data['email']);
+			return $row;
 		} else {
 			return FALSE;
 		}
@@ -195,5 +196,36 @@ class person_model extends CI_Model {
 		$query = $this->db->get('education_list');
 		
 		return $query->num_rows();
+	}
+	
+	function password_check($table,$password,$username='')
+	{
+		if (empty($username)) {
+			$username = $this->session->userdata('username');
+		}
+	
+		$where = array ('password'=>hashPassword($password),'username'=>$username);
+		$query = $this->db->get_where($table,$where);
+	
+		if ($query->num_rows() > 0)
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	function change_password($table,$password,$username='') {
+		if (empty($username)) {
+			$username = $this->session->userdata('username');
+		}
+		
+		$set = array ('password'=>hashPassword($password));
+		$where = array ('username'=>$username);
+	
+		$query = $this->db->update($table,$set,$where);
+	
+		if ($this->db->affected_rows() > 0)
+			return TRUE;
+		else
+			return FALSE;
 	}
 }

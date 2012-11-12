@@ -1,18 +1,17 @@
 <?php
 
-$lang['ftp_no_connection']			= "Unable to locate a valid connection ID. Please make sure you are connected before peforming any file routines.";
-$lang['ftp_unable_to_connect']		= "Unable to connect to your FTP server using the supplied hostname.";
-$lang['ftp_unable_to_login']		= "Unable to login to your FTP server. Please check your username and password.";
-$lang['ftp_unable_to_makdir']		= "Unable to create the directory you have specified.";
-$lang['ftp_unable_to_changedir']	= "Unable to change directories.";
-$lang['ftp_unable_to_chmod']		= "Unable to set file permissions. Please check your path. Note: This feature is only available in PHP 5 or higher.";
-$lang['ftp_unable_to_upload']		= "Unable to upload the specified file. Please check your path.";
-$lang['ftp_unable_to_download']		= "Unable to download the specified file. Please check your path.";
-$lang['ftp_no_source_file']			= "Unable to locate the source file. Please check your path.";
-$lang['ftp_unable_to_rename']		= "Unable to rename the file.";
-$lang['ftp_unable_to_delete']		= "Unable to delete the file.";
-$lang['ftp_unable_to_move']			= "Unable to move the file. Please make sure the destination directory exists.";
+$lang['ftp_no_connection']			= "Tidak dapat menemukan koneksi ID yang valid. Tolong pastikan apakah anda terkoneksi sebelum melakukan sesuatu dengan file.";
+$lang['ftp_unable_to_connect']		= "Tidak dapat terhubung dengan server FTP dengan hostname yang di sediakan.";
+$lang['ftp_unable_to_login']		= "Tidak dapat login ke server FTP anda. Tolong cek username dan password.";
+$lang['ftp_unable_to_makdir']		= "Tidak dapat membuat direktori yang anda spesifikasikan.";
+$lang['ftp_unable_to_changedir']	= "Tidak dapat pindah ke direktori.";
+$lang['ftp_unable_to_chmod']		= "Tidak dapat mengubah ijin file. Tolong cek path anda. Catatan: Fitur ini hanya tersedia di PHP 5 keatas.";
+$lang['ftp_unable_to_upload']		= "Tidak dapat mengupload file yang di spesifikasi. Tolong cek path anda.";
+$lang['ftp_no_source_file']			= "Tidak dapat menemukan sumber file. Tolong cek path anda.";
+$lang['ftp_unable_to_rename']		= "Tidak dapat mengganti nama file.";
+$lang['ftp_unable_to_delete']		= "Tidak dapat menghapus file.";
+$lang['ftp_unable_to_move']			= "Tidak dapat memindahkan file.  Tolong pastikan direktori tujuan ada.";
 
 
 /* End of file ftp_lang.php */
-/* Location: ./system/language/english/ftp_lang.php */
+/* Location: ./system/language/indonesian/ftp_lang.php */

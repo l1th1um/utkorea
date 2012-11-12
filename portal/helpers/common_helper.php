@@ -22,16 +22,65 @@ function assets_path() {
     return base_url()."assets/";
 }
 
-function menu() {
-	$ci =& get_instance();	
-	if (!empty($_SESSION['id'])) {
-			if ($_SESSION['type'] == '1') {
-				$ci->load->view('user/menu');
-			} else if ($_SESSION['type'] == '2') {
-				$ci->load->view('company/menu');
-			}		
+function menu($role) {
+	$ci =& get_instance();
+	$ci->db->like('permission',$role);
+	$ci->db->WHERE('parent','0');
+	$query = $ci->db->get('permissions');
+	
+	if ($query->num_rows() > 0) {
+		$menu = array();
+		$i = 0;
+		foreach ($query->result() as $row) {
+			$menu[$i]['page'] = $row->page;
+			
+			$ci->db->like('permission',$role);
+			$ci->db->WHERE('parent',$row->id);
+			$query2 = $ci->db->get('permissions');
+			
+			if ($query2->num_rows() > 0) {
+				$j = 0;
+				
+				foreach ($query2->result() as $row2) {
+					$child = array('page'=>$row2->page,'url'=>$row2->url);
+					$menu[$i]['child'][$j] = $child; 
+					$j++;
+				}
+				
+				 
+			}
+			$i++;
+		}
+		
+		return $menu;
+	} else {
+		return FALSE;
 	}
 }
+
+
+function generate_menu($role) {
+	$menu = menu($role);
+	
+	if ($menu != FALSE) {
+		$list = "<nav id='main-nav'> \n <ul> \n";
+		foreach ($menu as $key => $val) {
+			$list .=  "<li><a href='#' title='' class='projects'>".$val['page']."</a> \n <ul>";
+			
+			if (isset($val['child'])) {
+				foreach ($val['child'] as $key2 => $val2) {
+					$list .= "<li><a href='".base_url().$val2['url']."' title='' class='pnc_link'>".$val2['page']."</a></li>";
+				}	
+			}			
+			
+			$list .= "</ul> \n </li>";
+		}
+		$list .= "</ul>\n </nav>";
+		
+		return $list;
+	}
+	
+} 
 
 function get_active_menu($url) {
 	$ci =& get_instance();
@@ -104,16 +153,36 @@ function getCountry() {
 	return $countryarr;
 }
 
-function getCategory() {
+function get_role($role) {
 	$ci =& get_instance();
-    $query = $ci->db->get('category');    
+	$ci->db->select('group');
+	$ci->db->where('staffgroup_id',$role);
+    $query = $ci->db->get('staff_group');    
         
-    foreach ($query->result() as $row)
-	{
-	    $data[$row->cid] = $row->title;
-	} 
-    
-    return $data;
+    if ($query->num_rows() > 0) {
+    	$row = $query->row(); 
+    	return $row->group;	
+    } 
+}
+
+function get_page_title() {
+	$ci =& get_instance();
+	
+	$url = $ci->uri->segment(1);
+	$func = $ci->uri->segment(2);
+	
+	if (! empty($func)) {
+		$url .= "/".$ci->uri->segment(2);
+	}
+	
+	$where = array("url" => $url);
+	$ci->db->select('page');
+	$query = $ci->db->get_where('permissions',$where);
+	
+	if ($query->num_rows() > 0 ) {
+		$row = $query->row(); 
+    	return $row->page; 
+	}
 }
 
 function getStates($all=FALSE) {
@@ -372,19 +441,6 @@ function user_array() {
 	return $userarr;
 }
 
-function instructor_array() {
-	$ci =& get_instance();    
-	$query = $ci->db->get('instructor');
-	
-	$userarr = array();
-	foreach ($query->result() as $row)
-	{
-	    $userarr[$row->instructorid] = $row->name;
-	}
-	
-	return $userarr;
-}
-
 
 function datepicker_to_mysql($date) {
     $date = explode('/',$date);
@@ -434,45 +490,46 @@ function remove_extension($filename) {
 } 
 
 function error_form($message) {
-    return "<ul class='message error no-margin'><li>".$message."</li></ul>";
+	return '<div class="notification error">
+			<a href="#" class="close-notification" title="Hide Notification" rel="tooltip">x</a>
+			<p><strong>'.$message.'</strong></p></div>';
+    
 }
 
 function success_form($message) {
-    return "<ul class='message success no-margin'><li>".$message."</li></ul>";
-}
-
-function error_full_width($message) {
-    return "<ul class='message error grid_12'><li>".$message."</li><li class='close-bt'></li></ul>";
-}
-
-function success_full_width($message) {
-    return "<ul class='message success grid_12'><li>".$message."</li>
-    <li class='close-bt'></li></ul>";
+    return '<div class="notification success">
+				<a href="#" class="close-notification" title="Hide Notification" rel="tooltip">x</a>
+				<p><strong>'.$message.'</strong></p></div>';
 }
 
 function create_breadcrumb(){
-  $ci =& get_instance();
-  $i=1;
-  $uri = $ci->uri->segment($i);
-  $link = "<ul id='breadcrumb'><li><a href='".base_url()."' title='Home'>Home</a></li>";
- 
-  while(($uri != "") && ($ci->uri->segment($i) != "main")){
-    $prep_link = "";
-  for($j=1; $j<=$i;$j++){
-    $prep_link .= $ci->uri->segment($j)."/";
-  }
- 
-  if ($ci->uri->segment($i+1) == "") {
-    $link.="<li><a href='".site_url($prep_link)."'><b>".ucwords(str_ireplace("_"," ",$ci->uri->segment($i)))."</b></a></li>";
-  }else{
-    $link.="<li><a href='".site_url($prep_link)."'>".ucwords(str_ireplace("_"," ",$ci->uri->segment($i)))."</a></li>";
-  }
- 
-  $i++;
-  $uri = $ci->uri->segment($i);
-  }
-    $link .= "</ul>";
-    return $link;
+	$ci =& get_instance();
+	
+	$url = $ci->uri->segment(1);
+	$func = $ci->uri->segment(2);
+	
+	if (! empty($func)) {
+		$url .= "/".$ci->uri->segment(2);
+	}
+	
+	$where = array("url" => $url);
+	$query = $ci->db->get_where('permissions',$where);
+	
+	if ($query->num_rows() > 0 ) {
+		$row = $query->row();
+		$current = $row->page; 
+		$query2 = $ci->db->get_where('permissions',array('id'=>$row->parent));
+		
+		$row2 = $query2->row();
+		//$current = $row->page;
+		
+		$link = "<ul id='breadcrumbs'> \n
+				 <li><a href='".base_url()."' title='Back to Homepage'>Back to Home</a></li> \n
+            	 <li><a href='#'>".$row2->page."</a></li> \n		
+				<li>".$row->page."</li> \n
+				</ul>";
+		return $link;
+	}
 }
 
 function remove_zero($val) {

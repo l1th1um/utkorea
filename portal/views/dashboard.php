@@ -38,8 +38,10 @@
 		<section id="user-info">
 			<img src="<?php echo admin_tpl_path()?>img/sample_user.png" alt="Sample User Avatar">
 			<div>
-				<a href="#" title="Account Settings and Profile Page"><?php echo user_detail('name',$this->session->userdata('username'))?></a>
-				<em>Humas</em>
+				<a href="#" title="Account Settings and Profile Page">
+					<?php echo user_detail('name',$this->session->userdata('username'))?>
+				</a>
+				<p><em><?php echo get_role($this->session->userdata('role'));?></em></p>
 				<ul>					
 					<li><a class="button-link" href="<?php echo base_url()."logout" ?>" title="And this is Sparta!" rel="tooltip">logout</a></li>
 				</ul>
@@ -48,44 +50,16 @@
 		<!-- /User Info -->
 		
 		<!-- Main Navigation -->
-		<nav id="main-nav">
-			<ul>
-				<li><a href="index.html" title="" class="dashboard no-submenu">Dashboard</a></li> <!-- Use class .no-submenu to open link instead of a sub menu-->
-				<!-- Use class .current to open submenu on page load -->
-				<!--
-				<li class="current">
-					<a href="#" title="" class="projects">Berita</a><span title="You have 3 new tasks">3</span>
-					<ul>
-						<li><a href="<?php echo base_url()?>" title="" class="pnc_link">Intake Form</a></li>
-                        <li><a href="<?php echo base_url()?>lists" title="" class="pnc_link">Patient List</a></li>					
-					</ul>
-				</li>			
-				-->
-                <li class="current">
-					<a href="#" title="" class="projects">Communication</a><span title="You have 3 new tasks">3</span>
-					<ul>
-						<li><a href="<?php echo base_url()?>sms" title="" class="pnc_link">SMS</a></li>
-						<li><a href="<?php echo base_url()?>sms/history" title="" class="pnc_link">History SMS</a></li>
-                    </ul>
-				</li>
-
-				<li class="current">
-					<a href="#" title="" class="projects">Data Management</a></span>
-					<ul>
-						<li><a href="<?php echo base_url()?>mahasiswa" title="" class="pnc_link">Mahasiswa</a></li>						
-                    </ul>
-				</li>
-
-				<li><a href="#" title="" class="settings">Settings</a></li>
-			</ul>
-		</nav>
+		<?php echo generate_menu($this->session->userdata('role'));?>
 		<!-- /Main Navigation -->
 		
 		<!-- Sidebar -->
+		  
 		<section class="sidebar nested"> <!-- Use class .nested for diferent style -->
-			<h2>Announcement</h2>
-			<p>Annoucement Will Be Here.</p>			
+			<h2>Pengumuman</h2>
+			<p>Tidak Ada Pengumuman.</p>			
 		</section>
+		
 		<!-- /Sidebar -->
 		
 	
@@ -98,13 +72,7 @@
 		
 		
 		<!-- Breadcumbs -->
-        
-		<ul id="breadcrumbs">
-			<li><a href="<?php echo base_url()?>" title="Back to Homepage">Back to Home</a></li>
-            <li><a href="#">Communication</a></li>			
-			<li>Current Page</li>
-		</ul>
-        
+        <?php echo create_breadcrumb(); ?>		
 		<!-- /Breadcumbs -->
 		
 		<!-- Full Content Block -->
@@ -112,7 +80,7 @@
 		<article class="full-block clearfix">
             <!-- Article Header -->
 			<header>
-				<h2>Send SMS</h2>
+				<h2><?php echo get_page_title(); ?></h2>
 				
 			</header>
 			<!-- /Article Header -->
@@ -122,6 +90,7 @@
 			<footer style="text-align: center;">
 				<p>Copyright &copy; 2012 Universitas Terbuka Korea Selatan. All Rights Reserved</p>
 			</footer>
+			
 			<!-- /Article Footer -->
 			
 		</article>

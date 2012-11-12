@@ -23,13 +23,18 @@ class pendaftaran extends CI_Controller {
 				$data['message'] = validation_errors();
 				$content['page'] = $this->load->view('pendaftaran/form',$data,TRUE);
 			} else {
+				
 				if ( ($reg_code = $this->registration_process($_POST)) == FALSE) {
-					$data['message'] = $message;
+					$data['message'] = $this->lang->line('db_error');
 					$content['page'] = $this->load->view('pendaftaran/form',$data,TRUE);
 				} else {
-					$data['message'] = $message;
+					$pdf_file = "/home/idfreela/public_html/core/pdf/form_registrasi.pdf";
+					$this->mail_new_registrant($reg_code['name'], $reg_code['name'], $pdf_file);
+					$data['message'] = $reg_code;
 					$content['page'] = $this->load->view('pendaftaran/success',$data,TRUE);
-				}	
+				}
+
+				
 			}
 			
 		} else {
@@ -149,6 +154,22 @@ class pendaftaran extends CI_Controller {
 		$data['list'] = $this->person->education_list();
 						
 		$this->load->view('pendaftaran/edu_list',$data);
+	}
+	
+	public function mail_new_registrant($name,$email,$filename) {
+		$this->load->library('email');
+				
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		$this->email->to($email);
+	
+		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
+		$message = $this->lang->line('new_student_email_content');
+		$message = sprintf($message,$name);
+		$this->email->message($message);
+		$this->email->attach($filename);
+		$this->email->send();
+		echo $this->email->print_debugger();
+		
 	}
 	
 }

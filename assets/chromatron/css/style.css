@@ -173,9 +173,10 @@ section[role=navigation] header h1 {
 	background-color:#fff;
 	border:1px solid #b3b3b3;
 	float:left;
+	margin-right: 5px;
 }
 #user-info div {
-	float:left;
+	/*float:left;*/
 	margin:3px 0 0 15px;
 }
 #user-info div > a {
@@ -1068,3 +1069,22 @@ table.intake_table th,table.intake_table td{
 .list_link {text-decoration: none;}
 
 span.counter {font-size: 20px;font-weight: bold;color: #CCC;}
+
+.error {
+	color : red;font-weight:bold;padding-bottom:5px;
+}
+
+input.error {
+	border: 1px solid #ff0000 !important;
+}
+
+img.avatar {
+	width:48px;
+	height:48px;
+	padding:3px;
+	background-color:#fff;
+	border:1px solid #b3b3b3;
+	float:left;
+	margin-right: 5px;
+	cursor : pointer;
+}

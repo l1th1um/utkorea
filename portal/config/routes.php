@@ -42,6 +42,7 @@ $route['default_controller'] = "main";
 $route['404_override'] = '';
 $route['login'] = "main/login";
 $route['logout'] = "main/logout";
+$route['permission_error'] = "main/permission_error";
 
 
 /* End of file routes.php */

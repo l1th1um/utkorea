@@ -16,20 +16,6 @@
       }
 	  
       /*
-        Role 1 => Super Administrator
-        Role 2 => IT Support
-        Role 3 => Registered User
-      */ 
-      function role() {
-        if ($this->CI->session->userdata('nip') == 1) {
-            return "1";
-        } else if ($this->CI->session->userdata('division') == 1) {
-            return "2";
-        }  else {
-            return "3";
-        }
-      }
-      	 
       function check_auth($role) {        
         if(!$this->CI->session->userdata('logged_in')) {
             $this->logout();
@@ -39,6 +25,37 @@
                 show_404();                        
             }
         }    
+      }*/
+      
+      
+      function check_auth() {
+      	if($this->CI->session->userdata('logged_in') != 1) {
+      		$this->logout();      		
+      	} else {
+      		$url = $this->CI->uri->segment(1);
+      		$func = $this->CI->uri->segment(2);
+      
+      		if (! empty($func)) {
+      			$url .= "/".$this->CI->uri->segment(2);
+      		}
+      
+      		$where = array("url" => $url);
+      
+      		$query = $this->CI->db->get_where('permissions',$where);
+      
+      		if ($query->num_rows() > 0) {
+      			$row = $query->row_array();
+      			
+      			$permission = json_decode($row['permission']);
+      			
+	      		if (!in_array($this->CI->session->userdata('role'),$permission)) {
+      				redirect('permission_error');
+      			} else {
+      				return TRUE;
+      			}
+      		}
+      
+      	}
       }
       
       function login_process($login = NULL) {
@@ -55,7 +72,7 @@
 	      if ($query->num_rows() >= 1) {
                 $newdata = array(
                    'username'  => $login['username'],
-                   /*'role'  => $row['division'],*/
+                   'role'  => $row['group_id'],
                    'logged_in' => TRUE
                );              
                

@@ -5,21 +5,14 @@ class sms extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();								
-    	//$this->output->enable_profiler(TRUE);
-        $this->load->model('person_model','person');
+    	$this->output->enable_profiler(TRUE);
+        $this->load->model('person_model','person');        
     }	
 	
 	public function index()
 	{	
-		/*
-        $message = array();
-		if (isset($_POST['message'])) {
-			$message['content'] = $this->send_sms($this->input->post(NULL,true));
-		}
-		
-        $content['page'] = $this->load->view('humas/sms',$message,TRUE);
-        */
-        $content['page'] = $this->load->view('humas/sms','',TRUE);
+		$this->auth->check_auth();
+		$content['page'] = $this->load->view('humas/sms','',TRUE);
         $this->load->view('dashboard',$content);        
 	}	
 	
@@ -75,6 +68,8 @@ class sms extends CI_Controller {
 	}
 	
 	public function history() {
+		$this->auth->check_auth();
+		
 		$message['data'] = $this->person->get_sms_history();
 		$content['page'] = $this->load->view('humas/history_sms',$message,TRUE);
         $this->load->view('dashboard',$content);        
