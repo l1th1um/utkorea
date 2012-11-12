@@ -106,7 +106,7 @@ class person_model extends CI_Model {
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);
 		}elseif($type=='tutor'){
-			$this->db->select("name,nip,phone");
+			$this->db->select("name,phone,email,affiliation,region,major_id,birth,staff_id");
 			$this->db->from("staff");
 			$this->db->where("major_id IS NOT ","NULL",false);
 		}else{
@@ -228,4 +228,21 @@ class person_model extends CI_Model {
 		else
 			return FALSE;
 	}
+	
+	function delete_tutor($id)
+	{
+		return $this->db->delete('staff',array('staff_id'=>$id));
+	}
+	
+	function update_tutor($nim,$col)
+	{
+		$this->db->where('staff_id',$nim);
+		return $this->db->update('staff',$col);
+	}
+	
+	function add_tutor($col)
+	{
+		return $this->db->insert('staff',$col);
+	}
+	
 }

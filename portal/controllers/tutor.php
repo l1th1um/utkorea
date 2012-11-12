@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class mahasiswa extends CI_Controller {
+class tutor extends CI_Controller {
 
 	public function __construct()
     {
@@ -21,17 +21,10 @@ class mahasiswa extends CI_Controller {
 			$major_arr[] = $row;
 		 }
 		 $region_arr = array();
-		 $region_arr['KBRI Seoul'] = 'KBRI Seoul';
-		 $region_arr['Ansan'] = 'Ansan';
-		 $region_arr['Guro'] = 'Guro';
-		 $region_arr['Ujiongbu'] = 'Ujiongbu';
-		 $region_arr['Daegu'] = 'Daegu';
-		 $region_arr['Cheonan'] = 'Cheonan';
-		 $region_arr['Gwangju'] = 'Gwangju';
-		 $region_arr['Busan'] = 'Busan';		 
-		 
+		 $region_arr['Utara'] = 'Utara';
+		 $region_arr['Selatan'] = 'Selatan';
 		
-		 $content['page'] = $this->load->view('kemahasiswaan/mahasiswa',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
+		 $content['page'] = $this->load->view('tutor/tutor',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
          $this->load->view('dashboard',$content);       
 	}
 	
@@ -59,7 +52,7 @@ class mahasiswa extends CI_Controller {
 			"search_str" => $this->input->get( "searchString", TRUE )
 		);
 		
-		$this->jqgrid_export->exportCurrent('mahasiswa',$req_param);
+		$this->jqgrid_export->exportCurrent('tutor',$req_param);
 	}
 	
 	public function CRUD(){
@@ -67,41 +60,31 @@ class mahasiswa extends CI_Controller {
 		if(isset($_POST['oper'])){
 			$col = array();
 			$this->load->library('form_validation');
-			switch($_POST['oper']){
+			
+			switch($_POST['oper']){				
 				case 'edit':
-					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');
+					$this->form_validation->set_rules('id', 'Staff ID', 'required|numeric');
 					$this->form_validation->set_rules('name', 'Name', 'required');
-					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
+					$this->form_validation->set_rules('major_id', 'Major', 'required|numeric');
 					$this->form_validation->set_rules('region', 'Region', 'required');
-					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
-					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
+					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric|trim|xss_clean');					
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 					$this->form_validation->set_rules('birth', 'Birth', 'xss_clean');
-					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('sex', 'Sex', 'required');
-					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');	
+					$this->form_validation->set_rules('affiliation', 'affiliation', 'xss_clean');					
 					$col = $this->input->post();
 					break;
 				case 'add':
-					$this->form_validation->set_rules('nim', 'NIM', 'required|numeric|callback__check_nim');
 					$this->form_validation->set_rules('name', 'Name', 'required');
-					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
+					$this->form_validation->set_rules('major_id', 'Major', 'required|numeric');
 					$this->form_validation->set_rules('region', 'Region', 'required');
-					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
-					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
+					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric|trim|xss_clean');					
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 					$this->form_validation->set_rules('birth', 'Birth', 'xss_clean');
-					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('sex', 'Sex', 'required');
-					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');					
+					$this->form_validation->set_rules('affiliation', 'affiliation', 'xss_clean');		
 					$col = $this->input->post();
 					break;
 				case 'del':
-					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');	
+					$this->form_validation->set_rules('id', 'Staff ID', 'required|numeric');	
 					$col = $this->input->post();
 					break;
 				default:
@@ -114,15 +97,15 @@ class mahasiswa extends CI_Controller {
 							unset($col['oper']);
 							$id = $col['id'];
 							unset($col['id']);
-							$this->person->update_mahasiswa($id,$col);
+							$this->person->update_tutor($id,$col);
 							break;
 						case 'add':
 							unset($col['oper']);
 							unset($col['id']);							
-							$this->person->add_mahasiswa($col);
+							$this->person->add_tutor($col);
 							break;
 						case 'del':
-							$this->person->delete_mahasiswa($col['id']);
+							$this->person->delete_tutor($col['id']);
 							break;
 						default:
 							exit;
@@ -134,16 +117,6 @@ class mahasiswa extends CI_Controller {
 		
 		echo $response;
 		
-	}
-	
-	function _check_nim($nim)
-	{
-		if($this->person->check_nim($nim)){
-			$this->form_validation->set_message('_check_nim', 'Nomor NIM sudah digunakan');
-			return false;
-		}else{
-			return true;
-		}
-	}
+	}	
 
 }
