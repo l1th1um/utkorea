@@ -1,6 +1,7 @@
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
+
   
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqueryui/css/blitzer/jquery-ui-1.8.23.custom.css" />	
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>css/add.css" />	
@@ -8,8 +9,7 @@
 
   
   <script type="text/javascript">
-	$(document).ready(function(){	
-		
+	$(document).ready(function(){			
 		$("#grid_name").jqGrid({
 					url:'<?php
 						  echo site_url( "sms/getlistJQGRID/student" );
@@ -36,7 +36,7 @@
 					editurl: "<?php echo site_url( "mahasiswa/CRUD" ); ?>",
 					sortname: 'name',
 					rownumbers: true,
-					pager: $('#pager2'),
+					pager: "#pager2",
 					autowidth: true,
 					height: "100%",
 					viewrecords: true,					
@@ -57,7 +57,14 @@
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}
-				});				
+				},{					
+					sopt:['cn']
+				}).navButtonAdd("#pager2",{caption:"Export Current Table",buttonicon:"ui-icon-bookmark",
+					onClickButton:function(){
+						$("#grid_name").jqGrid('excelExport',{url:"<?php
+						  echo site_url( "mahasiswa/exportCurrentCRUD" );
+						  ?>"});
+				}, position: "last", title:"Export Current Table",cursor: "pointer"});				
 								
 	});
   </script>
@@ -68,7 +75,6 @@
 	}
 </style>
 <body>		
-	<?php if (isset($content)) echo "<h3>".$content."</h3>";  else $content= '';?>		
-	
+	<?php if (isset($content)) echo "<h3>".$content."</h3>";  else $content= '';?>			
     <table id="grid_name"></table>
     <div id="pager2" ></div>         

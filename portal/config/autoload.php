@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session','auth','image_lib','form_validation');
+$autoload['libraries'] = array('database', 'session','auth','image_lib','form_validation','jqgrid_export');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database', 'session','auth','image_lib','form_va
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','common','clickatell','form','file');
+$autoload['helper'] = array('url','common','clickatell','form','file','csv');
 
 
 /*

@@ -15,7 +15,9 @@ class Main extends CI_Controller {
             	redirect('sms');
             } else if ($this->session->userdata('role') == 6) {
             	redirect('mahasiswa');
-            }
+            } else if ($this->session->userdata('role') == 5){
+				redirect('tutor');
+			}
 			
 		} else {
 		    redirect('login');  
