@@ -1,7 +1,7 @@
 <?php if (isset($message)) echo $message;  else $message= '';?>
-<form method="post" action="<?php echo current_url();?>" id="frmPersonal">
+<?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
 	<img src="http://localhost/utkorea/assets/chromatron/img/sample_user.png" alt="User Avatar" class='avatar'>
-
+	
 <fieldset>
 	<table>
 		<tr>
@@ -29,7 +29,11 @@
 			<?php echo $this->lang->line('send_to');?>
 			</button></td>
 		</tr>
-	</table>	
+	</table>
+	
+	<div>
+	<input type='file' name='avatar_img' id='avatar_img'  class="fileupload" data-url="<?php echo base_url()?>pendaftaran/do_upload/ktp" />
+	</div>	
 </fieldset>	
 
 </form>
@@ -40,30 +44,13 @@
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.ocupload-1.1.2.js"></script>
 <script type='text/javascript'>
 $(document).ready(function(){
-	$('.avatar').fileupload({
-			dataType: 'json',
-			maxFileSize: 10000,
-			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-			progress: function () {
-				var loader = $(this).attr('name') +'_loader';
-				$(this).after("<img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' />");
-			},
-			error: function (e, data) {
-				alert("Error");
-			},
-			done: function (e, data) {					
-				var cont = $(this).attr('name') +'_cnt';
-				var loader = $(this).attr('name') +'_loader';
-				var hidden_field = $(this).attr('name') +'_image';
-				$(this).after("<img src='<?php echo template_path('triveo')?>images/tick_small.png' />");
+	$('#avatar_img').fileupload();
+	
+	$('.avatar').click(function(){
+		$('#avatar_img').trigger('click');		
+	});
+
 				
-				$('.'+ loader).hide();
-				$.each(data.result, function (index, file) {
-					
-					$("<img src='"+ file.thumbnail_url +"'/>").appendTo('#' + cont);						
-					$("input[name=" + hidden_field + "]").val(file.name);
-				});
-			}
-		});				
+  		
 });	
 </script>
