@@ -15,7 +15,7 @@
 						  echo site_url( "sms/getlistJQGRID/student" );
 						  ?>',
 					datatype: "json",
-					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Period','Email','Birth','Religion','Sex','Marital Status','Address','Key'],	
+					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Semester','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Key'],	
 					colModel:[
 						{name:'nim',width:250,index:'nim',editable:true,editrules:{required:true,number:true}},
 						{name:'name',width:600,index:'name',editable:true,editrules:{required:true}},
@@ -25,11 +25,11 @@
 						{name:'status',index:'status',align:'center',editable:true,stype:'select',searchoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}},edittype:'select',editoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}}},
 						{name:'period',index:'period',align:'center',editable:true,editrules:{required:true,number:true}},
 						{name:'email',width:700,index:'email',hidden:true,editable:true,editrules:{edithidden:true,requried:true,email:true}},
-						{name:'birth',index:'birth',hidden:true,editable:true,editrules:{edithidden:true}},
+						{name:'birth_date',index:'birth_date',hidden:true,editable:true,editrules:{edithidden:true}},
 						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true},
-						{name:'sex',index:'sex',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
-						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'Menikah':'Menikah','Belum Menikah':'Belum Menikah'}}},
-						{name:'address',index:'address',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
+						{name:'gender',index:'gender',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
+						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'M':'Menikah','B':'Belum Menikah'}}},
+						{name:'address_id',index:'address_id',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'nim',index:'nim_key',hidden:true}
 					],
 					mtype : "POST",		
@@ -43,7 +43,7 @@
 					sortorder: "ASC",					
 					jsonReader: { repeatitems : false, id: "0"}
 				}).navGrid('#pager2',{edit:true,add:true,del:true, search: true},{
-					resize:false,					
+					resize:false,
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}

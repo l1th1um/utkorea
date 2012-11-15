@@ -21,14 +21,14 @@ class mahasiswa extends CI_Controller {
 			$major_arr[] = $row;
 		 }
 		 $region_arr = array();
-		 $region_arr['KBRI Seoul'] = 'KBRI Seoul';
-		 $region_arr['Ansan'] = 'Ansan';
-		 $region_arr['Guro'] = 'Guro';
-		 $region_arr['Ujiongbu'] = 'Ujiongbu';
-		 $region_arr['Daegu'] = 'Daegu';
-		 $region_arr['Cheonan'] = 'Cheonan';
-		 $region_arr['Gwangju'] = 'Gwangju';
-		 $region_arr['Busan'] = 'Busan';		 
+		 $region_arr['K'] = 'KBRI Seoul';
+		 $region_arr['A'] = 'Ansan';
+		 $region_arr['G'] = 'Guro';
+		 $region_arr['U'] = 'Ujiongbu';
+		 $region_arr['D'] = 'Daegu';
+		 $region_arr['C'] = 'Cheonan';
+		 $region_arr['J'] = 'Gwangju';
+		 $region_arr['B'] = 'Busan';		 
 		 
 		
 		 $content['page'] = $this->load->view('kemahasiswaan/mahasiswa',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
@@ -77,10 +77,10 @@ class mahasiswa extends CI_Controller {
 					$this->form_validation->set_rules('status', 'Status', 'required');
 					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-					$this->form_validation->set_rules('birth', 'Birth', 'xss_clean');
+					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
 					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('sex', 'Sex', 'required');
+					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('gender', 'gender', 'required');
 					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');	
 					$col = $this->input->post();
 					break;
@@ -93,10 +93,10 @@ class mahasiswa extends CI_Controller {
 					$this->form_validation->set_rules('status', 'Status', 'required');
 					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-					$this->form_validation->set_rules('birth', 'Birth', 'xss_clean');
+					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
 					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('sex', 'Sex', 'required');
+					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('gender', 'gender', 'required');
 					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');					
 					$col = $this->input->post();
 					break;
