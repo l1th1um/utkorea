@@ -50,10 +50,10 @@
 						$gender2 = TRUE;
 					}
 				?>
-				<?php echo form_radio('gender','Pria',$gender1);?>
-				<label>Pria</label>&nbsp;&nbsp;
-				<?php echo form_radio('gender','Wanita',$gender2);?>
-				<label>Wanita</label>
+				<?php echo form_radio('gender','L',$gender1);?>
+				<label>Laki-Laki</label>&nbsp;&nbsp;
+				<?php echo form_radio('gender','P',$gender2);?>
+				<label>Perempuan</label>
 			</div>
 		</li>
 		<li>
