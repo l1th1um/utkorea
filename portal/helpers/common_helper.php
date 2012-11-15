@@ -156,8 +156,8 @@ function getCountry() {
 function get_role($role) {
 	$ci =& get_instance();
 	$ci->db->select('group');
-	$ci->db->where('staffgroup_id',$role);
-    $query = $ci->db->get('staff_group');    
+	$ci->db->where('usergroup_id',$role);
+    $query = $ci->db->get('usergroups');    
         
     if ($query->num_rows() > 0) {
     	$row = $query->row(); 
@@ -171,18 +171,23 @@ function get_page_title() {
 	$url = $ci->uri->segment(1);
 	$func = $ci->uri->segment(2);
 	
-	if (! empty($func)) {
-		$url .= "/".$ci->uri->segment(2);
+	if (! empty($url)) {
+		if (! empty($func)) {
+			$url .= "/".$ci->uri->segment(2);
+		}
+		
+		$where = array("url" => $url);
+		$ci->db->select('page');
+		$query = $ci->db->get_where('permissions',$where);
+		
+		if ($query->num_rows() > 0 ) {
+			$row = $query->row(); 
+	    	return $row->page; 
+		}	
+	} else {
+		return "Selamat Datang . . . ";
 	}
 	
-	$where = array("url" => $url);
-	$ci->db->select('page');
-	$query = $ci->db->get_where('permissions',$where);
-	
-	if ($query->num_rows() > 0 ) {
-		$row = $query->row(); 
-    	return $row->page; 
-	}
 }
 
 function getStates($all=FALSE) {
@@ -508,28 +513,35 @@ function create_breadcrumb(){
 	$url = $ci->uri->segment(1);
 	$func = $ci->uri->segment(2);
 	
-	if (! empty($func)) {
-		$url .= "/".$ci->uri->segment(2);
-	}
-	
-	$where = array("url" => $url);
-	$query = $ci->db->get_where('permissions',$where);
-	
-	if ($query->num_rows() > 0 ) {
-		$row = $query->row();
-		$current = $row->page; 
-		$query2 = $ci->db->get_where('permissions',array('id'=>$row->parent));
+	$link = "<ul id='breadcrumbs'> \n
+				 <li><a href='".base_url()."' title='Back to Homepage'>Back to Home</a></li> \n";
+				 
+	if (!empty($url)) {
+		if (! empty($func)) {
+			$url .= "/".$func;
+		}
 		
-		$row2 = $query2->row();
-		//$current = $row->page;
+		$where = array("url" => $url);
+		$query = $ci->db->get_where('permissions',$where);
 		
-		$link = "<ul id='breadcrumbs'> \n
-				 <li><a href='".base_url()."' title='Back to Homepage'>Back to Home</a></li> \n
-            	 <li><a href='#'>".$row2->page."</a></li> \n		
-				<li>".$row->page."</li> \n
-				</ul>";
-		return $link;
-	}
+		if ($query->num_rows() > 0 ) {
+			$row = $query->row();
+			$current = $row->page; 
+			$query2 = $ci->db->get_where('permissions',array('id'=>$row->parent));
+			
+			$row2 = $query2->row();
+			//$current = $row->page;
+			
+			$link .= "<li><a href='#'>".$row2->page."</a></li> \n		
+					<li>".$row->page."</li> \n";
+		
+		}
+			
+	} 
+	
+	$link .= "</ul>";
+	
+	return $link;
 }
 
 function remove_zero($val) {
