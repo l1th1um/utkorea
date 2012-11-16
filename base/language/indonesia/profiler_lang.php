@@ -14,6 +14,11 @@ $lang['profiler_no_post']		= 'Tidak ada POST data';
 $lang['profiler_no_get']		= 'Tidak ada GET data';
 $lang['profiler_no_uri']		= 'Tidak ada URI data';
 $lang['profiler_no_memory']		= 'Penggunaan memori tidak tersedia';
-
+$lang['profiler_config']		= 'CONFIG VARIABLES';
+$lang['profiler_session_data']	= 'SESSION DATA';
+$lang['profiler_headers']		= 'HTTP HEADERS';
+$lang['profiler_no_profiles']	= 'No Profile data - all Profiler sections have been disabled.';
+$lang['profiler_section_hide']	= 'Hide';
+$lang['profiler_section_show']	= 'Show';
 /* End of file profiler_lang.php */
 /* Location: ./system/language/indonesian/profiler_lang.php */

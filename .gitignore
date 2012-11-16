@@ -3,7 +3,7 @@
 #################
 
 *.pydevproject
-.project
+*.project
 .metadata
 bin/
 tmp/
@@ -161,3 +161,5 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+portal/logs*/

@@ -273,13 +273,10 @@ function convertHumanDate($date) {
     		$date = explode("-",$date);	
     	}
     	
-    	/*
-    	$date_arr = $ci->lang->line('month_arr');
-    	$month = intval($date[1]);
-        
-        return $date[2]." ".$date_arr[$month]." ".$date[0]." ".$time;
-    	*/
-        return date("F dS, Y", mktime(0, 0, 0, $date[1], $date[2], $date[0]));    	   
+		$month = $ci->lang->line('month_array');
+		$month_idx = $date[1];
+		return $date[2]." ".$month[$month_idx]." ".$date[0];
+    	//return date("F dS, Y", mktime(0, 0, 0, $date[1], $date[2], $date[0]));    	   
 	}    
 }
 
@@ -380,20 +377,32 @@ function create_unique_slug($string, $table)
     return $slug;
 }
 
-function user_detail($field,$id,$table='staff') {
+function user_detail($field,$id) {
     $ci =& get_instance();
 	$ci->db->select($field);
-    $ci->db->where('username',$id);
-    $query = $ci->db->get('staff');
+	if ($ci->session->userdata('role') == 9) {
+		$ci->db->where('nim',$id);	
+    	$query = $ci->db->get('mahasiswa');
+	} else {
+		$ci->db->where('username',$id);
+    	$query = $ci->db->get('staff');	
+	}
+	    
     $row = $query->row();	
 	
 	return $row->$field;
 }
 
-function user_details($id,$table='staff') {
+function user_details($id) {
     $ci =& get_instance();
-    $ci->db->where('username',$id);
-    $query = $ci->db->get('staff');
+	if ($ci->session->userdata('role') == 9) {
+		$ci->db->where('nim',$id);	
+    	$query = $ci->db->get('mahasiswa');
+	} else {
+		$ci->db->where('username',$id);	
+    	$query = $ci->db->get('staff');	
+	}
+    
     return $query->row_array();
 }
 
@@ -591,4 +600,71 @@ function populate_form($data,$table_name)
 	}
 	
 	return $serialize;
+}
+
+function get_major($major_id) {
+	$ci =& get_instance();
+	
+	$ci->db->select('major');
+	$ci->db->where('major_id',$major_id);
+	$query = $ci->db->get('major');
+		
+	if ($query->num_rows() > 0) {
+		$row = $query->row(); 
+	    return $row->major;	
+    }
+}
+
+function major_list() {
+	$ci =& get_instance();
+	
+	$query = $ci->db->get('major');
+	
+	if ($query->num_rows() > 0) {
+	
+		$major = array();
+		foreach ($query->result() as $row) {
+			$key = $row->major_id;
+			$major[$key] = $row->major; 
+		}
+		
+		return $major;
+	}
+}
+
+function get_region($id) {
+	$ci =& get_instance();
+	$ci->db->select('region');
+	$ci->db->where('region_id',$id);
+    $query = $ci->db->get('region');    
+        
+    if ($query->num_rows() > 0) {
+    	$row = $query->row(); 
+    	return $row->region;	
+    } 
+}
+
+function uuid_to_id($uuid,$id_field,$table='mahasiswa_baru') {
+	$ci =& get_instance();
+	$ci->db->select($id_field);
+	$ci->db->where('uid',$uuid);
+    $query = $ci->db->get($table);    
+        
+    if ($query->num_rows() > 0) {
+    	$row = $query->row(); 
+    	return $row->$id_field;	
+    }
+}
+
+
+function id_to_uuid($id,$id_field='reg_code',$uuid_field='uid',$table='mahasiswa_baru') {
+	$ci =& get_instance();
+	$ci->db->select($uuid_field);
+	$ci->db->where($id_field,$id);
+    $query = $ci->db->get($table);    
+        
+    if ($query->num_rows() > 0) {
+    	$row = $query->row(); 
+    	return $row->$uuid_field;	
+    }
 }

@@ -28,9 +28,12 @@ class pendaftaran extends CI_Controller {
 					$data['message'] = $this->lang->line('db_error');
 					$content['page'] = $this->load->view('pendaftaran/form',$data,TRUE);
 				} else {
-					$pdf_file = "/home/idfreela/public_html/core/pdf/form_registrasi.pdf";
-					$this->mail_new_registrant($reg_code['name'], $reg_code['name'], $pdf_file);
+					$this->generate_registration_pdf($reg_code['id']);
+					
+					$this->mail_new_registrant($reg_code['name'], $reg_code['email'],$reg_code['id']);					
+					
 					$data['message'] = $reg_code;
+					
 					$content['page'] = $this->load->view('pendaftaran/success',$data,TRUE);
 				}
 
@@ -57,8 +60,6 @@ class pendaftaran extends CI_Controller {
 
 		if ( ! $this->upload->do_upload($field_name))
 		{
-			//$error = array('error' => $this->upload->display_errors());
-			//print_r($error);
 			echo $this->upload->display_errors();
 		}
 		else
@@ -118,9 +119,7 @@ class pendaftaran extends CI_Controller {
 	public function _validate_registration()
 	{
 		$this->form_validation->set_rules('name','Nama','trim|required|min_length[4]');
-		$this->form_validation->set_rules('ktp','KTP','trim|required|min_length[10]');
 		$this->form_validation->set_rules('passport','Passport','trim|required|min_length[5]');
-		$this->form_validation->set_rules('ktp','KTP','trim|required|min_length[10]');
 		$this->form_validation->set_rules('place_of_birth','Tempat Lahir','trim|required|min_length[3]');
 		$this->form_validation->set_rules('address_id','Alamat di Indonesia','trim|required|min_length[10]');
 		$this->form_validation->set_rules('address_kr','Alamat di Korea','trim|required|min_length[10]');
@@ -128,6 +127,9 @@ class pendaftaran extends CI_Controller {
 		$this->form_validation->set_rules('email','Email','trim|required|valid_email');
 		$this->form_validation->set_rules('last_education_major','Kode Jurusan','trim|required');
 		$this->form_validation->set_rules('mother_name','Kode Jurusan','trim|required');
+		$this->form_validation->set_rules('ijasah_image','Scan Ijasah','trim|required');
+		$this->form_validation->set_rules('passport_image','Scan Passport','trim|required');
+		$this->form_validation->set_rules('photo_image','Foto','trim|required');
 	
 		$delimiter_prefix = "<div class='error'>";
 		$delimiter_suffix = "</div>";
@@ -137,39 +139,63 @@ class pendaftaran extends CI_Controller {
 	
 	public function edu_list($page = 1)
 	{
-		/*
-		$this->load->library('pagination');
-		$config['base_url'] = base_url().'pendaftaran/edu_list/';
-		$config['total_rows'] = $this->person->total_education_list();
-		$config['per_page'] = 30;
-		$config['anchor_class'] = ' class="pagination" ';		
-		$limit = $config['per_page'];
-		$offset = ( intval($page) - 1 ) *  $limit;
-		$this->pagination->initialize($config); 
-		$data['links'] = $this->pagination->create_links();
-		
-		$data['list'] = $this->person->education_list($limit,$offset);
-		*/
-		
 		$data['list'] = $this->person->education_list();
 						
 		$this->load->view('pendaftaran/edu_list',$data);
 	}
 	
-	public function mail_new_registrant($name,$email,$filename) {
+	public function mail_new_registrant($name,$email,$reg_id) {
 		$this->load->library('email');
 				
 		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
 		$this->email->to($email);
-	
+		
 		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
 		$message = $this->lang->line('new_student_email_content');
 		$message = sprintf($message,$name);
 		$this->email->message($message);
+		$filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
 		$this->email->attach($filename);
 		$this->email->send();
-		echo $this->email->print_debugger();
+		//echo $this->email->print_debugger();		
+	}
+/*
+	public function test_email() {
+		$this->mail_new_registrant("Andri", "4r53n1c@gmail.com",'3261');
+	}
+	*/
+	function show_pdf($uuid) {
 		
+		$id = uuid_to_id($uuid, 'reg_code');		
+		$file = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$id.".pdf";
+		$filename = 'form_registrasi.pdf';
+		
+		header('Content-type: application/pdf');
+		header('Content-Disposition: inline; filename="' . $filename . '"');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: ' . filesize($file));
+		header('Accept-Ranges: bytes');
+		
+		@readfile($file);
 	}
 	
+	function generate_registration_pdf($id) 	{
+	    $this->load->helper(array('dompdf', 'file'));
+		
+		//$id = uuid_to_id($uuid, 'reg_code');
+		
+		$path = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$id;
+		$data = array();
+		$data['id'] = $id;
+		$data['row'] = $this->person->get_new_student_details($id);
+	     
+		if ($data['row'] != FALSE) {
+			$html = $this->load->view('pendaftaran/form_pdf', $data, true);
+			
+			$data = pdf_create($html, $path.".pdf", false);			
+			write_file($path.".pdf", $data);			
+		 //	pdf_create($html, $path);
+		}
+     
+	}
 }

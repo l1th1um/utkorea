@@ -13,23 +13,15 @@
     <ol>
 		<li>
 			<label class="element">
-				Nama
+				<?php echo $this->lang->line('name')?>
 			</label>
 			<div class="element">
 				<?php echo form_input('name',$this->input->post('name'))?>				
 			</div>
-		</li>		
+		</li>	
 		<li>
 			<label class="element">
-				No KTP
-			</label>
-			<div class="element">
-				<?php echo form_input('ktp',$this->input->post('ktp'))?>				
-			</div>
-		</li>		
-		<li>
-			<label class="element">
-				No Passport
+				<?php echo $this->lang->line('no_passport')?>
 			</label>
 			<div class="element">
 				<?php echo form_input('passport',$this->input->post('passport'))?>				
@@ -37,7 +29,7 @@
 		</li>		
 		<li>
 			<label class="element">
-				Jenis kelamin
+				<?php echo $this->lang->line('gender')?>
 			</label>
 			<div class="element">
 				<?php
@@ -58,7 +50,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Tempat Tanggal lahir
+				<?php echo $this->lang->line('place_time_birth')?>
 			</label>
 			<div class="element">
 				<?php echo form_input('place_of_birth',$this->input->post('place_of_birth'),"style='width:10em'")?>
@@ -95,7 +87,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Alamat di Indonesia
+				<?php echo $this->lang->line('address_id')?>
 			</label>
 			<div class="element">
 				<?php echo form_textarea('address_id',$this->input->post('address_id'),"style='width:30em;height:4em'")?>				
@@ -103,7 +95,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Alamat di Korea
+				<?php echo $this->lang->line('address_kr')?>
 			</label>
 			<div class="element">
 				<?php echo form_textarea('address_kr',$this->input->post('address_kr'),"style='width:30em;height:4em'")?>
@@ -111,15 +103,16 @@
 		</li>
 		<li>
 			<label class="element">
-				No Telepon
+				<?php echo $this->lang->line('phone')?>
 			</label>
 			<div class="element">
-				+82 <?php echo form_input('phone',$this->input->post('phone'),"maxlength='10' size='10'")?>				
+				+82 <?php echo form_input('phone',$this->input->post('phone'),"maxlength='10' size='10'")?>
+				Tanpa diawali 0, misal 1012345678				
 			</div>
 		</li>
 		<li>
 			<label class="element">
-				Email
+				<?php echo $this->lang->line('email')?>
 			</label>
 			<div class="element">
 				<?php echo form_input('email',$this->input->post('email'))?>
@@ -127,7 +120,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Agama
+				<?php echo $this->lang->line('religion')?>
 			</label>
 			<div class="element">
 				<?php echo form_dropdown('religion',lang_list('religion_list'),$this->input->post('religion'));?>
@@ -135,7 +128,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Status Pekerjaan
+				<?php echo $this->lang->line('employment_status')?>
 			</label>
 			<div class="element">
 				<?php echo form_dropdown('employment',lang_list('employment_list'),$this->input->post('employment'));?>
@@ -143,7 +136,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Status Perkawinan
+				<?php echo $this->lang->line('marital_status')?>
 			</label>
 			<div class="element">
 				<?php echo form_dropdown('marital_status',lang_list('marital_status_list'),$this->input->post('marital_status'));?>				
@@ -151,7 +144,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Pendidikan Terakhir
+				<?php echo $this->lang->line('last_education')?>
 			</label>
 			<div class="element">
 				<?php echo form_dropdown('last_education',lang_list('education_list'),$this->input->post('last_education'));?>				
@@ -159,7 +152,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Kode Jurusan
+				<?php echo $this->lang->line('major_code')?>
 			</label>
 			<div class="element">
 				<?php 
@@ -176,7 +169,7 @@
 		</li>
 		<li>
 			<label class="element">
-				Tahun Ijazah
+				<?php echo $this->lang->line('year_graduate')?>
 			</label>
 			<div class="element">
 				<?php echo form_dropdown('year_graduate',$year_graduate,$this->input->post('year_gaduate'));?>
@@ -215,7 +208,7 @@
 		</li>		
 		<li>
 			<label class="element">
-				Nama Ibu Kandung
+				<?php echo $this->lang->line('mother_name')?>
 			</label>
 			<div class="element">
 				<?php echo form_input('mother_name',$this->input->post('mother_name'))?>
@@ -231,18 +224,7 @@
 				Ukuran Maks. 10MB (gif, png, jpg, jpeg)
 				<div id='ijasah_cnt' class="image_container"></div>
 			</div>
-		</li>
-		<li>
-			<label class="element">
-				KTP
-			</label>
-			<div class="element">
-				<input name="ktp" class="fileupload" type="file" data-url="<?php echo base_url()?>pendaftaran/do_upload/ktp">
-				<input type="hidden" name="ktp_image" /> 
-				Ukuran Maks. 10MB (gif, png, jpg, jpeg)
-				<div id='ktp_cnt' class="image_container"></div>
-			</div>
-		</li>
+		</li>		
 		<li>
 			<label class="element">
 				Passport
@@ -275,11 +257,7 @@
 				Jurusan
 			</label>
 			<div class="element">
-				<select name='major' />
-					<option value='1'>Manajemen</option>
-					<option value='2'>Ilmu Komunikasi</option>
-					<option value='3'>Bahasa Inggris</option>
-				</select>
+				<?php echo form_dropdown('major',major_list())?>				
 			</div>
 		</li>
 		<li>
@@ -322,3 +300,33 @@
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/new_registration.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/check_edu.js"></script>
+<script type="text/javascript" ">
+	$(document).ready(function(){
+		$('.fileupload').fileupload({
+			dataType: 'json',
+			maxFileSize: 10000,
+			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+			progress: function () {
+				var loader = $(this).attr('name') +'_loader';
+				$(this).after("<img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' />");
+			},
+			error: function (e, data) {
+				alert("Error");
+			},
+			done: function (e, data) {					
+				var cont = $(this).attr('name') +'_cnt';
+				var loader = $(this).attr('name') +'_loader';
+				var hidden_field = $(this).attr('name') +'_image';
+				$(this).after("<img src='<?php echo template_path('triveo')?>images/tick_small.png' />");
+				
+				$('.'+ loader).hide();
+				$.each(data.result, function (index, file) {
+					
+					$("<img src='"+ file.thumbnail_url +"'/>").appendTo('#' + cont);						
+					$("input[name=" + hidden_field + "]").val(file.name);
+				});
+			}
+		});	
+	})
+</script>
+

@@ -61,20 +61,37 @@
       function login_process($login = NULL) {
 	      $password = $login['password'];
           $password = hashPassword($password);  
-
-	      $this->CI->db->where('username', $login['username']); 
-		  	
-	      $this->CI->db->where('password',$password);
-	
-	      $query = $this->CI->db->get('staff');
-	      $row = $query->row_array();
+		  
+		  		  	
+		  $this->CI->db->where('password',$password);
+			  
+	      if (is_numeric($login['username'])) {
+	      	  $this->CI->db->where('nim', $login['username']);
+	      	  $query = $this->CI->db->get('mahasiswa');
+	      } else {
+	      	  $this->CI->db->where('username', $login['username']);	
+		      $query = $this->CI->db->get('staff');		      
+	      }
+	      
 	
 	      if ($query->num_rows() >= 1) {
-                $newdata = array(
-                   'username'  => $login['username'],
-                   'role'  => $row['group_id'],
-                   'logged_in' => TRUE
-               );              
+	      		$row = $query->row_array();
+			  
+			  if (is_numeric($login['username'])) {
+	                $newdata = array(
+	                   'username'  => $login['username'],
+	                   'role'  => 9,
+	                   'major'  => $row['major'],
+	                   'logged_in' => TRUE
+	               );              
+			  } else {
+			  		$newdata = array(
+	                   'username'  => $login['username'],
+	                   'role'  => $row['group_id'],
+	                   'major'  => $row['major_id'],
+	                   'logged_in' => TRUE
+	               );
+			  }	
                
                 
                $this->CI->session->set_userdata($newdata);

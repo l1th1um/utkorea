@@ -181,12 +181,14 @@ class person_model extends CI_Model {
 		
 		$insert['birth_date'] = $data['year_birth']."-".$data['month_birth']."-".$data['day_birth'];
 		$insert['phone'] = "82".$data['phone'];
-		//$insert['reg_code'] = "UTKOR".rand(11283,92341);
-		
+		$this->db->set('reg_time', 'now()', FALSE);
+		$this->db->set('uid', 'uuid()', FALSE);
+						
 		$this->db->insert('mahasiswa_baru',$insert);
 		
 		if ($this->db->affected_rows() > 0) {
-			$row = array('id'=>$this->db->insert_id(), 'name'=>$data['name'], 'email'=>$data['email']);
+			$uuid = id_to_uuid($this->db->insert_id());
+			$row = array('id'=>$this->db->insert_id(), 'uuid'=>$uuid,'name'=>$data['name'], 'email'=>$data['email']);
 			return $row;
 		} else {
 			return FALSE;
@@ -258,7 +260,7 @@ class person_model extends CI_Model {
 	{
 		return $this->db->insert('staff',$col);
 	}
-
+	
 	function check_null_field($id,$table = 'mahasiswa') {
 		$this->db->where('nim',$id);
 		$query = $this->db->get($table);
@@ -288,5 +290,5 @@ class person_model extends CI_Model {
 		} else {
 			return false;
 		}	
-	}		
+	}	
 }

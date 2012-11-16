@@ -41,9 +41,14 @@
 				<a href="#" title="Account Settings and Profile Page">
 					<?php echo user_detail('name',$this->session->userdata('username'))?>
 				</a>
-				<p><em><?php echo get_role($this->session->userdata('role'));?></em></p>
+				<p>
+					<em>
+						<?php echo get_role($this->session->userdata('role'));?>
+						<?php if ( ($ci->session->userdata('role') == 8) || ($ci->session->userdata('role') == 9) ) echo get_major($this->session->userdata('major')); ?>
+					</em>
+				</p>
 				<ul>					
-					<li><a class="button-link" href="<?php echo base_url()."logout" ?>" title="And this is Sparta!" rel="tooltip">logout</a></li>
+					<li><a class="button-link" href="<?php echo base_url()."logout" ?>" title="Logout!" rel="tooltip">logout</a></li>
 				</ul>
 			</div>
 		</section>

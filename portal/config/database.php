@@ -81,5 +81,21 @@ $db['server']['dbcollat'] = 'utf8_general_ci';
 $db['server']['swap_pre'] = '';
 $db['server']['autoinit'] = TRUE;
 $db['server']['stricton'] = FALSE;
+
+$db['server2']['hostname'] = 'nld03.uhost.co.kr';
+$db['server2']['username'] = 'utk0r12';
+$db['server2']['password'] = 'f8uHe5Pw';
+$db['server2']['database'] = 'utk0r12';
+$db['server2']['dbdriver'] = 'mysql';
+$db['server2']['dbprefix'] = '';
+$db['server2']['pconnect'] = TRUE;
+$db['server2']['db_debug'] = TRUE;
+$db['server2']['cache_on'] = FALSE;
+$db['server2']['cachedir'] = '';
+$db['server2']['char_set'] = 'utf8';
+$db['server2']['dbcollat'] = 'utf8_general_ci';
+$db['server2']['swap_pre'] = '';
+$db['server2']['autoinit'] = TRUE;
+$db['server2']['stricton'] = FALSE;
 /* End of file database.php */
 /* Location: ./application/config/database.php */
