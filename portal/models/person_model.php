@@ -99,19 +99,33 @@ class person_model extends CI_Model {
 	}
 	
 
-	function get_list_JQGRID($type,$params = "" , $page = "all")
+	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false)
 	{	
 		if($type=='staff'){
 			$this->db->select("name,nip,phone");
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);
 		}elseif($type=='tutor'){
-			$this->db->select("name,phone,email,affiliation,region,major_id,birth,staff_id");
-			$this->db->from("staff");
-			$this->db->where("major_id IS NOT ","NULL",false);
+			if($is_export){
+				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");
+				$this->db->from("staff");
+				$this->db->join('major','staff.major_id = major.major_id');
+				$this->db->where("staff.major_id IS NOT ","NULL",false);
+			}else{
+				$this->db->select("name,phone,email,affiliation,region,major_id,birth,staff_id");
+				$this->db->from("staff");
+				$this->db->where("major_id IS NOT ","NULL",false);
+			}
+			
 		}else{
-			$this->db->select("name,nim,phone,major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
-			$this->db->from("mahasiswa");
+			if($is_export){
+				$this->db->select("name,nim,phone,major.major as major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
+				$this->db->from("mahasiswa");
+				$this->db->join('major','mahasiswa.major = major.major_id');
+			}else{
+				$this->db->select("name,nim,phone,major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
+				$this->db->from("mahasiswa");			
+			}
 		}
 		
 		if (!empty($params))		{			
