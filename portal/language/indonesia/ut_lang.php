@@ -54,6 +54,11 @@ $lang['from']                				= 'Dari';
 $lang['send']                				= 'Kepada';
 $lang['send_to']                			= 'Kirim';
 $lang['reply']                				= 'Balas';
+$lang['payment_date']                		= 'Tanggal Pembayaran';
+$lang['bank_name']                			= 'Nama Bank';
+$lang['account_no']                			= 'No Account';
+$lang['sender_name']                		= 'Nama Pengirim';
+$lang['submit']                				= 'Submit';
 $lang['month_array']					    = array(1=>'Januari','Februari','Maret',
         										  'April','Mei','Juni','Juli',
         										  'Agustus','September','Oktober',

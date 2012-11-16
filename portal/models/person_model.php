@@ -290,5 +290,16 @@ class person_model extends CI_Model {
 		} else {
 			return false;
 		}	
+	}
+	
+	function new_student_list($filter='') {
+		$this->db->select('reg_code,uid,name,email,verified,verified_by,verified_time,reg_time');
+		$query = $this->db->get('mahasiswa_baru');
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
 	}	
 }

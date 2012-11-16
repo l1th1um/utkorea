@@ -62,8 +62,11 @@ function menu($role) {
 function generate_menu($role) {
 	$menu = menu($role);
 	
+	$list = "<nav id='main-nav'> \n <ul> \n";
+	$list .= "<li><a href='".base_url()."' title='' class='dashboard no-submenu'>Home</a></li>";
+		
 	if ($menu != FALSE) {
-		$list = "<nav id='main-nav'> \n <ul> \n";
+		
 		foreach ($menu as $key => $val) {
 			$list .=  "<li><a href='#' title='' class='projects'>".$val['page']."</a> \n <ul>";
 			
@@ -75,10 +78,10 @@ function generate_menu($role) {
 			
 			$list .= "</ul> \n </li>";
 		}
-		$list .= "</ul>\n </nav>";
-		
-		return $list;
-	}
+	} 
+	
+	$list .= "</ul>\n </nav>";
+	return $list;
 	
 } 
 
@@ -275,8 +278,13 @@ function convertHumanDate($date) {
     	
 		$month = $ci->lang->line('month_array');
 		$month_idx = $date[1];
-		return $date[2]." ".$month[$month_idx]." ".$date[0];
-    	//return date("F dS, Y", mktime(0, 0, 0, $date[1], $date[2], $date[0]));    	   
+		$show_date = $date[2]." ".$month[$month_idx]." ".$date[0];  
+		
+		if (count($check) == '2') {
+			return $show_date. "  ".$check[1]; 
+		} else {
+			return $show_date;
+		}
 	}    
 }
 

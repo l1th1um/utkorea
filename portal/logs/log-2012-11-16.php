@@ -67,3 +67,55 @@ ERROR - 2012-11-16 11:01:33 --> Severity: Warning  --> Cannot modify header info
 ERROR - 2012-11-16 11:12:53 --> Severity: Warning  --> mail() [<a href='function.mail'>function.mail</a>]: SMTP server response: 550 relaying denied E:\utkorea\base\libraries\Email.php 1553
 ERROR - 2012-11-16 11:15:05 --> Severity: Warning  --> mail() [<a href='function.mail'>function.mail</a>]: SMTP server response: 550 relaying denied E:\utkorea\base\libraries\Email.php 1553
 ERROR - 2012-11-16 11:26:47 --> Severity: Warning  --> mail() [<a href='function.mail'>function.mail</a>]: SMTP server response: 550 relaying denied E:\utkorea\base\libraries\Email.php 1553
+ERROR - 2012-11-16 15:21:18 --> Severity: Notice  --> Undefined variable: ci E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:21:18 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:23 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:23 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:23 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:23 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:55 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:55 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:55 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:22:55 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:33 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:33 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:33 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:33 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:59 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:59 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:59 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:23:59 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:15 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:15 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:15 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:15 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:18 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:18 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:18 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:18 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:30 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:30 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:30 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:30 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:43 --> Severity: 4096  --> Object of class CI_Loader could not be converted to string E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:43 --> Severity: Notice  --> Object of class CI_Loader to string conversion E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:43 --> Severity: Notice  --> Undefined variable: Object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:24:43 --> Severity: Notice  --> Trying to get property of non-object E:\utkorea\portal\views\dashboard.php 47
+ERROR - 2012-11-16 15:25:53 --> 404 Page Not Found --> daftar_ulang
+ERROR - 2012-11-16 15:35:24 --> Could not find the language line "payment_date"
+ERROR - 2012-11-16 15:35:24 --> Could not find the language line "bank_name"
+ERROR - 2012-11-16 15:35:24 --> Could not find the language line "account_no"
+ERROR - 2012-11-16 16:15:35 --> 404 Page Not Found --> kemahasiswaan/mahasiswa_baru
+ERROR - 2012-11-16 16:15:56 --> Severity: Notice  --> Undefined variable: data E:\utkorea\portal\controllers\kemahasiswaan.php 153
+ERROR - 2012-11-16 16:41:20 --> Severity: Notice  --> Undefined property: stdClass::$name E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 24
+ERROR - 2012-11-16 16:41:20 --> Severity: Notice  --> Undefined property: stdClass::$email E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 25
+ERROR - 2012-11-16 16:41:20 --> Severity: Notice  --> Undefined property: stdClass::$reg_time E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 26
+ERROR - 2012-11-16 16:41:38 --> Severity: Notice  --> Undefined property: stdClass::$name E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 24
+ERROR - 2012-11-16 16:41:38 --> Severity: Notice  --> Undefined property: stdClass::$email E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 25
+ERROR - 2012-11-16 16:41:38 --> Severity: Notice  --> Undefined property: stdClass::$reg_time E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 26
+ERROR - 2012-11-16 16:42:25 --> Severity: Notice  --> Undefined property: stdClass::$name E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 24
+ERROR - 2012-11-16 16:42:25 --> Severity: Notice  --> Undefined property: stdClass::$email E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 25
+ERROR - 2012-11-16 16:42:25 --> Severity: Notice  --> Undefined property: stdClass::$reg_time E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 26
+ERROR - 2012-11-16 16:43:20 --> Query error: Unknown column ''reg_code'' in 'field list'
+ERROR - 2012-11-16 16:54:06 --> Severity: Notice  --> Undefined variable: status E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 32
+ERROR - 2012-11-16 17:11:58 --> 404 Page Not Found --> bendahara

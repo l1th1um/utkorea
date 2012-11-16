@@ -44,7 +44,7 @@
 				<p>
 					<em>
 						<?php echo get_role($this->session->userdata('role'));?>
-						<?php if ( ($ci->session->userdata('role') == 8) || ($ci->session->userdata('role') == 9) ) echo get_major($this->session->userdata('major')); ?>
+						<?php if ( ($this->session->userdata('role') == 8) || ($this->session->userdata('role') == 9) ) echo get_major($this->session->userdata('major')); ?>
 					</em>
 				</p>
 				<ul>					
