@@ -258,5 +258,35 @@ class person_model extends CI_Model {
 	{
 		return $this->db->insert('staff',$col);
 	}
+
+	function check_null_field($id,$table = 'mahasiswa') {
+		$this->db->where('nim',$id);
+		$query = $this->db->get($table);
+		
+		$ignore_list = array('teach','teach_at','teach_major','verified','verified_by','verified_time');
+		
+		$empty_val = array();
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				foreach ($row as $key => $value ) {
+					if (empty($value)) {
+						if(! in_array($key,$ignore_list)) $empty_val[] = $key;
+					}
+				}
+			}
+		}
+		
+		return $empty_val;
+	}
 	
+	function get_new_student_details($id) {
+		$this->db->where('reg_code',$id);
+		$query = $this->db->get('mahasiswa_baru');
+		
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		} else {
+			return false;
+		}	
+	}		
 }
