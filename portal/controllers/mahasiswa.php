@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class mahasiswa extends CI_Controller {
+class mahasiswa extends CI_Controller {	
 
 	public function __construct()
     {
@@ -11,147 +11,85 @@ class mahasiswa extends CI_Controller {
 	
 	public function index()
 	{
-		$this->auth->check_auth();
-		
-		
-		$bucket = $this->utility_model->get_Table('major');
-		 
-		 $major_arr = array();
-		 foreach($bucket->result_array() as $row){
-			$major_arr[] = $row;
-		 }
-		 $region_arr = array();
-		 $region_arr['K'] = 'KBRI Seoul';
-		 $region_arr['A'] = 'Ansan';
-		 $region_arr['G'] = 'Guro';
-		 $region_arr['U'] = 'Ujiongbu';
-		 $region_arr['D'] = 'Daegu';
-		 $region_arr['C'] = 'Cheonan';
-		 $region_arr['J'] = 'Gwangju';
-		 $region_arr['B'] = 'Busan';		 
-		 
-		
-		 $content['page'] = $this->load->view('kemahasiswaan/mahasiswa',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
-         $this->load->view('dashboard',$content);       
-	}
+		$this->auth->check_auth();	
+		   
+	}	
 	
-	public function exportCurrentCRUD(){
-		$page = $this->input->get("page", TRUE );
-		if(!$page)$page=1;
-		
-		$rows = $this->input->get("rows", TRUE );
-		if(!$rows)$rows=10;
-		
-		$sort_by = $this->input->get( "sidx", TRUE );
-		if(!$sort_by)$sort_by='name';
-		
-		$sort_direction = $this->input->get( "sord", TRUE );
-		if(!$sort_direction)$sort_direction='ASC';
-		
-		$req_param = array (
-            "sort_by" => $sort_by,
-			"sort_direction" => $sort_direction,
-			"page" => $page,
-			"rows" => $rows,
-			"search" => $this->input->get( "_search", TRUE ),
-			"search_field" => $this->input->get( "searchField", TRUE ),
-			"search_operator" => $this->input->get( "searchOper", TRUE ),
-			"search_str" => $this->input->get( "searchString", TRUE )
-		);
-		
-		$this->jqgrid_export->exportCurrent('mahasiswa',$req_param);
-	}
-	
-	public function CRUD(){
-		$response = "";
-		if(isset($_POST['oper'])){
-			$col = array();
-			$this->load->library('form_validation');
-			switch($_POST['oper']){
-				case 'edit':
-					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');
-					$this->form_validation->set_rules('name', 'Name', 'required');
-					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
-					$this->form_validation->set_rules('region', 'Region', 'required');
-					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
-					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
-					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
-					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('gender', 'gender', 'required');
-					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');	
-					$col = $this->input->post();
-					break;
-				case 'add':
-					$this->form_validation->set_rules('nim', 'NIM', 'required|numeric|callback__check_nim');
-					$this->form_validation->set_rules('name', 'Name', 'required');
-					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
-					$this->form_validation->set_rules('region', 'Region', 'required');
-					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
-					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
-					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
-					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
-					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
-					$this->form_validation->set_rules('gender', 'gender', 'required');
-					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');					
-					$col = $this->input->post();
-					break;
-				case 'del':
-					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');	
-					$col = $this->input->post();
-					break;
-				default:
-					exit;
-			}
-			if ($this->form_validation->run())
-			{
-					switch($col['oper']){
-						case 'edit':
-							unset($col['oper']);
-							$id = $col['id'];
-							unset($col['id']);
-							$this->person->update_mahasiswa($id,$col);
-							break;
-						case 'add':
-							unset($col['oper']);
-							unset($col['id']);							
-							$this->person->add_mahasiswa($col);
-							break;
-						case 'del':
-							$this->person->delete_mahasiswa($col['id']);
-							break;
-						default:
-							exit;
-					}
-			}else{
-					$response = validation_errors();
-			}
-		}				
-		
-		echo $response;
-		
-	}
-	
-	function _check_nim($nim)
-	{
-		if($this->person->check_nim($nim)){
-			$this->form_validation->set_message('_check_nim', 'Nomor NIM sudah digunakan');
-			return false;
-		}else{
-			return true;
-		}
-	}
 	
 	
 	function daftar_ulang() {
-		$this->auth->check_auth();
+		$this->auth->check_auth();		
 		$data = array();
 		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));	
+		
+		if(!$this->input->post('formhdn')){
+			$val_rule = array(
+				'passport'=>'trim|required|min_length[5]',
+				'place_of_birth'=>'trim|required|min_length[3]',
+				'address_id'=>'trim|required|min_length[10]',
+				'address_kr'=>'trim|required|min_length[10]',			
+				'mother_name'=>'trim|required',
+				'ijasah_image'=>'trim|required',
+				'passport_image'=>'trim|required',
+				'photo_image'=>'trim|required',
+				'last_education_major'=>'trim|required',
+				'marital_status'=>'trim|required',
+				'employment'=>'trim|required',
+				'last_education'=>'trim|required',
+				'year_graduate'=>'trim|required',
+				'birth_date'=>'trim|required',
+				'religion'=>'trim|required'				
+			);
+			
+			foreach($data['empty_val'] as $row) {
+				$this->form_validation->set_rules($row,$this->lang->line($row),$val_rule[$row]);
+			}
+			
+			$delimiter_prefix = "<div class='error'>";
+			$delimiter_suffix = "</div>";
+			$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
+		}else{
+			$this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'),'trim|required');
+			$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
+			$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
+			$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+		}
+		
+		if ($this->form_validation->run()){
+			if(!$this->input->post('formhdn')){
+				$col = array();
+				foreach($data['empty_val'] as $row) {
+					$col[$row] = $this->input->post($row);
+				}					
+				
+				$this->person->update_mahasiswa($this->session->userdata('username'),$col);
+				$data['empty_val'] = '';
+			}else{
+				$this->load->model('finance_model','finance');
+				$datapembayaran = $this->input->post();
+				$datapembayaran['nim'] = $this->session->userdata('username');
+				unset($datapembayaran['formhdn']);
+				
+				$conf_number = $this->finance->insert_konfirmasi_pembayaran($datapembayaran);
+				
+				$msg = 'Konfirmasi pembayaran telah disimpan disistem. Nomor konfirmasi pembayaran anda adalah : <strong>'.$conf_number.'</strong><br />Untuk pertanyaan silahkan kirimkan email melalui <i>humas@utkorea.org</i>';
+				
+				$this->message->post_to_member($this->session->userdata('username'),'system',$msg);
+				redirect('main');
+			}
+		}else{
+			//validation false
+		}
+		
 		$content['page'] = $this->load->view('mahasiswa/daftar_ulang',$data,TRUE);
         $this->load->view('dashboard',$content);		
+	}	
+	
+	function edu_list()
+	{
+		$this->load->helper('data_helper');
+		$data['list'] = edu_list();
+		$this->load->view('pendaftaran/edu_list',$data);
 	}
+	
 }

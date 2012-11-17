@@ -5,7 +5,7 @@ class Main extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        //$this->output->enable_profiler(TRUE);
+        $this->output->enable_profiler(TRUE);
     }
     
     public function index()
@@ -15,10 +15,11 @@ class Main extends CI_Controller {
 			
 			$data = array();
 			
+			$data['message'] = $this->message->get_unread_message($this->session->userdata('username'));
 			if ($this->announcement->get_recent_news() == false) {
 				$data['news'] = false;	
 			} else {
-				$data['news'] = $this->announcement->get_recent_news();
+				$data['news'] = $this->announcement->get_recent_news();				
 			}
 			
 			$content['page'] = $this->load->view('welcome',$data,TRUE);

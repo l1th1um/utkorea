@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session','auth','image_lib','form_validation','jqgrid_export');
+$autoload['libraries'] = array('database', 'session','auth','image_lib','form_validation','jqgrid_export','message');
 
 
 /*
@@ -110,7 +110,7 @@ $autoload['language'] = array('ut');
 */
 
 
-$autoload['model'] = array('utility_model');
+$autoload['model'] = array('utility_model','message_model');
 
 
 

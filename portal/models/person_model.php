@@ -302,4 +302,17 @@ class person_model extends CI_Model {
 			return false;
 		}
 	}	
+	
+	function get_field_value_by_id($id,$fieldname)
+	{
+		$this->db->select($fieldname);
+		$this->db->where('nim',$id);
+		$result = $this->db->get('mahasiswa');
+		if($result->num_rows()>0)
+		{
+			return $result->row();
+		}else{
+			return false;
+		}
+	}
 }

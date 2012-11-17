@@ -80,4 +80,5 @@ yang diperlukan ke Sekretariat UT Korea.\n\n
 Salam,\n
 Tim Penerimaan Mahasiswa Baru Korea Selatan\n
 ";
+$lang['period'] = 'Semester';
 ?>

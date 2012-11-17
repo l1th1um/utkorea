@@ -15,7 +15,13 @@ time, mark, audio, video {
 	font-size:100%;
 	font:inherit;
 	vertical-align:baseline;
+	
 }
+
+html,body{
+	height:100%;
+}
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display:block; }
 blockquote, q { quotes: none; }
 blockquote:before, blockquote:after,
@@ -104,9 +110,10 @@ body section[role=navigation] {
 }
 body section[role=main] {
 	background-color:#fff;
-	height:100%;
+	min-height:100%;
+	height:auto;
 	margin-left:271px;
-	padding:25px;
+	
 }
 select, input, textarea, button { font:99% sans-serif; }
 strong, th {
@@ -1088,3 +1095,5 @@ img.avatar {
 	margin-right: 5px;
 	cursor : pointer;
 }
+
+.image_container {padding-left: 59px;width:200px;padding-top:5px}

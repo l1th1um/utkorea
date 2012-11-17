@@ -12,7 +12,8 @@
 	<meta name="author" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery-1.8.0.min.js"></script>
+	<script src="<?php echo admin_tpl_path()?>js/jquery-1.8.2.min.js"></script>
+	<script src="<?php echo admin_tpl_path()?>js/jqueryui/js/jquery-ui-1.9.1.custom.min.js"></script>
     <script src="<?php echo admin_tpl_path()?>js/jquery/jquery.datatables.js"></script>
 	<!-- CSS Styles -->
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/style.css" />
@@ -72,17 +73,16 @@
 	<!-- /Aside Block -->
 	
 	<!-- Main Content -->
-	<section role="main">
-	
-		
+	<section role="main" >		
 		
 		<!-- Breadcumbs -->
-        <?php echo create_breadcrumb(); ?>		
+        	<div style="padding:25px 25px 0 25px"><?php echo create_breadcrumb(); ?>	</div>
 		<!-- /Breadcumbs -->
 		
 		<!-- Full Content Block -->
 		<!-- Note that only 1st article need clearfix class for clearing -->
-		<article class="full-block clearfix">
+		<article class="full-block clearfix" style="margin:25px" >
+			
             <!-- Article Header -->
 			<header>
 				<h2><?php echo get_page_title(); ?></h2>
@@ -92,7 +92,7 @@
             
 		    <?php if (isset($page)) echo $page;  else $page= '';?>
 			<!-- Article Footer -->
-			<footer style="text-align: center;">
+			<footer style="text-align:center;position:fixed;bottom:0;left:47%;">
 				<p>Copyright &copy; 2012 Universitas Terbuka Korea Selatan. All Rights Reserved</p>
 			</footer>
 			
@@ -115,9 +115,8 @@
 	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.facebox.js"></script>
 	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.tipsy.js"></script>
 	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.wysiwyg.js"></script>	
-    <script src="<?php echo admin_tpl_path()?>js/jquery/jquery.ui.core.min.js"></script>
-	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.ui.widget.min.js"></script>
-	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.ui.datepicker.min.js"></script>
+    
+	
     <script src="<?php echo admin_tpl_path()?>js/jquery/jquery.validate.min.js"></script>	
 	<script src="<?php echo admin_tpl_path()?>js/jquery/ui.spinner.min.js"></script>
 	<script src="<?php echo admin_tpl_path()?>js/script.js"></script>
