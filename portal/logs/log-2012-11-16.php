@@ -119,3 +119,4 @@ ERROR - 2012-11-16 16:42:25 --> Severity: Notice  --> Undefined property: stdCla
 ERROR - 2012-11-16 16:43:20 --> Query error: Unknown column ''reg_code'' in 'field list'
 ERROR - 2012-11-16 16:54:06 --> Severity: Notice  --> Undefined variable: status E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 32
 ERROR - 2012-11-16 17:11:58 --> 404 Page Not Found --> bendahara
+ERROR - 2012-11-16 22:46:26 --> 404 Page Not Found --> daftar

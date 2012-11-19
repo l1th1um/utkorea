@@ -7,7 +7,8 @@
 <table width="100%">
 	<thead>
 		<th width='30px'>No</th>
-		<th>Nama</th>
+		<th>NIM</th>
+		<th>Nama</th>	
 		<th width='120px'>Bank</th>		
 		<th width='180px'>No Account</th>
 		<th width='200px'>Nama Pengirim</th>
@@ -15,28 +16,17 @@
 		<th width='100px'>Status</th>
 	</thead>
 	<tbody>
-		<?php
-			$i = 1;
-			foreach ($list as $row) {
-				if ($row->verified == 1) {
-					$status = "<button class='blue small'>Verified</button>";
-				} else {
-					$status = "<button>Unverified</button>";
-				}
-		?>
-			<tr>
-				<td><?php echo $i;?></td>	
-				<td>UTKOR<?php echo $row->reg_code;?></td>
-				<td><?php echo $row->name;?></td>
-				<td><?php echo $row->email;?></td>
-				<td><?php echo convertHumanDate($row->reg_time);?></td>
-				<td><?php echo $status;?></td>
-				<td><?php echo $status;?></td
-			</tr>
-		<?php
-				$i++;
-			} 
-		?>
+		<tr>
+			<td>1</td>
+			<td>13205962</td>
+			<td>Deni Sugandi</td>
+			<td>Hana Bank</td>
+			<td>100 123 1231</td>
+			<td>Deni Sugandi</td>
+			<td>14 Desember 2012</td>
+			<td><button>Unverified</button></td>
+		</tr>
+
 	</tbody>
 </table>
 <?php 

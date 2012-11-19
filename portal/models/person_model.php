@@ -301,5 +301,30 @@ class person_model extends CI_Model {
 		} else {
 			return false;
 		}
+	}
+	
+	function check_registration_status($reg_code) 
+	{
+		$this->db->select('name,status');
+		$query = $this->db->get_where('mahasiswa_baru',array('reg_code' => $reg_code));
+		
+		if ( $query->num_rows() > 0 ) 
+		{
+			$row = $query->row();
+			$data = "Nama    : ".$row->name."<br />";
+			$data .= "Status    : ";
+			if (empty($row->status)) {				
+				$data .= "Dokumen Belum Diterima/ Menunggu Verifikasi Dokumen";
+			} else if ($row->status == 1) {
+				$data .= "Dokumen Sudah di Verifikasi";
+			} else if ($row->status == 1) {
+				$data .= "Selamat Anda Sudah Diterima menjadi Calon Mahasiswa Universitas Terbuka Korea Selatan";
+			}
+		} else {
+			$data = "Maaf, No Pendaftaran Tidak Ditemukan";
+		} 
+		
+		return $data;
+			
 	}	
 }

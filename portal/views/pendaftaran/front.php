@@ -49,8 +49,79 @@ jQuery(function(){
 });
 </script>
 <script src="<?php echo template_path('triveo')?>js/jquery.cycle.all.js" type="text/javascript"></script>
+<script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
+<link href="<?php echo template_path('core')?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
 <script type="text/javascript">
-  $(function() {    
+  $(function() {
+  	$('#checkReg').submit(function(event){
+  		event.preventDefault();
+  		var no_reg = $('#noReg').val();
+  		 
+		if (no_reg.length == 0) {
+			alert('Masukkan No Pendaftaran Anda')
+		} else if ( (no_reg.length != 9) || (no_reg.substr(0,5) != "UTKOR") || ( isNaN( no_reg.substr(5,4) ) ) ) {
+			alert('No Pendaftaran Anda Salah');
+		} else {
+			$.post("<?php echo base_url()?>pendaftaran/check_registration_status", { reg_code: no_reg},function(data) {
+			   $('#status_content').html(data);
+			   var OSX = {
+						container: null,
+						init: function () {
+								$("#osx-modal-content").modal({
+									overlayId: 'osx-overlay',
+									containerId: 'osx-container',
+									closeHTML: null,
+									minHeight: 80,
+									opacity: 65, 
+									position: ['0',],
+									overlayClose: true,
+									onOpen: OSX.open,
+									onClose: OSX.close
+								});							
+						},
+						open: function (d) {
+							var self = this;
+							self.container = d.container[0];
+							d.overlay.fadeIn('slow', function () {
+								$("#osx-modal-content", self.container).show();
+								var title = $("#osx-modal-title", self.container);
+								title.show();
+								d.container.slideDown('slow', function () {
+									setTimeout(function () {
+										var h = $("#osx-modal-data", self.container).height()
+											+ title.height()
+											+ 20; // padding
+										d.container.animate(
+											{height: h}, 
+											200,
+											function () {
+												$("div.close", self.container).show();
+												$("#osx-modal-data", self.container).show();
+											}
+										);
+									}, 300);
+								});
+							})
+						},
+						close: function (d) {
+							var self = this; // this = SimpleModal object
+							d.container.animate(
+								{top:"-" + (d.container.height() + 20)},
+								500,
+								function () {
+									self.close(); // or $.modal.close();
+								}
+							);
+						}
+					};
+				
+					OSX.init();
+			});
+			
+		}
+		//$('#basic-modal-content').modal();
+  	});
+  	
 	$('.newsflash-text').cycle({
             timeout: 5000,  // milliseconds between slide transitions (0 to disable auto advance)
             fx:      'fade', // choose your transition type, ex: fade, scrollUp, shuffle, etc...                        
@@ -143,9 +214,9 @@ jQuery(function(){
                     <p> &nbsp; </p>
                     <p>Masukkan No Pendaftaran Anda</p>
                     <p>
-                    	<form method="POST" name="checkReg" action="" />
-                    		<input type='text' name='noReg' />
-                    		<input class="input-submit" type="submit" name="sendContactEmail" >
+                    	<form method="POST" name="checkReg" id="checkReg" action="" />
+                    		<input type='text' name='noReg' id='noReg' style='border: 2px solid #A4ADB0;width:14em;height:2em;background-color: #AFB8BB;color:#5A6669;font-size: 12px;' />
+                    		<input class="input-submit" type="submit" name="sendContactEmail" value="">
                     	</form>
                     </p>
                     
@@ -185,7 +256,16 @@ jQuery(function(){
                     </div>
                 </div>-->         
             </div>
-            <!-- END CONTENT --> 
+            <!-- END CONTENT -->
+            
+	<div id="osx-modal-content">
+		<div id="osx-modal-title">Status Pendaftaran</div>
+		<div class="close"><a href="#" class="simplemodal-close">x</a></div>
+		<div id="osx-modal-data">
+			<p id='status_content'></p>
+			<p><button class="simplemodal-close">Close</button> <span>( Atau Tekan Enter)</span></p>
+		</div>
+	</div>
                        
         </div>
         <!-- BEGIN OF FOOTER -->
@@ -200,7 +280,7 @@ jQuery(function(){
                             <div class="follow"><a href="http://www.facebook.com/groups/utkorea/"><strong>Become a fan</strong></a> on Facebook</div>
                         </div>
                         <div class="copyright">
-                        Copyright © 2012 Universitas Terbuka Korea. All rights reserved
+                        Copyright ï¿½ 2012 Universitas Terbuka Korea. All rights reserved
                         </div>
                     </div>
                 </div>

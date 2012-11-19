@@ -198,4 +198,9 @@ class pendaftaran extends CI_Controller {
 		}
      
 	}
+	
+	function check_registration_status() {
+		$reg_code = substr($this->input->post('reg_code'),5,4);
+		echo  $this->person->check_registration_status($reg_code);
+	}
 }
