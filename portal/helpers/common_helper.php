@@ -676,3 +676,8 @@ function id_to_uuid($id,$id_field='reg_code',$uuid_field='uid',$table='mahasiswa
     	return $row->$uuid_field;	
     }
 }
+
+function highlight_notif($message) {
+    return '<div class="ui-state-highlight">				
+				<p>'.$message.'</p></div>';
+}

@@ -291,7 +291,7 @@
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/new_registration.js"></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/check_edu.js"></script>
-<script type="text/javascript" ">
+<script type="text/javascript" >
 	$(document).ready(function(){
 		$('.fileupload').fileupload({
 			dataType: 'json',

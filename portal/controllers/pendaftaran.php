@@ -139,8 +139,8 @@ class pendaftaran extends CI_Controller {
 	
 	public function edu_list($page = 1)
 	{
-		$data['list'] = $this->person->education_list();
-						
+		$this->load->helper('data_helper');
+		$data['list'] = edu_list();
 		$this->load->view('pendaftaran/edu_list',$data);
 	}
 	
