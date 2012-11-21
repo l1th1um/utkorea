@@ -119,7 +119,7 @@ ERROR - 2012-11-16 16:42:25 --> Severity: Notice  --> Undefined property: stdCla
 ERROR - 2012-11-16 16:43:20 --> Query error: Unknown column ''reg_code'' in 'field list'
 ERROR - 2012-11-16 16:54:06 --> Severity: Notice  --> Undefined variable: status E:\utkorea\portal\views\kemahasiswaan\mahasiswa_baru.php 32
 ERROR - 2012-11-16 17:11:58 --> 404 Page Not Found --> bendahara
-ERROR - 2012-11-16 23:15:08 --> Severity: Notice  --> Use of undefined constant name - assumed 'name' C:\xampp\htdocs\utkorea\portal\views\mahasiswa\daftar_ulang.php 14
+ERROR - 2012-11-16 22:46:26 --> 404 Page Not Found --> daftar
 ERROR - 2012-11-16 23:15:08 --> Severity: Notice  --> Use of undefined constant name - assumed 'name' C:\xampp\htdocs\utkorea\portal\views\mahasiswa\daftar_ulang.php 14
 ERROR - 2012-11-16 23:49:46 --> Severity: Notice  --> Undefined index: birth_date C:\xampp\htdocs\utkorea\portal\controllers\mahasiswa.php 40
 ERROR - 2012-11-16 23:49:46 --> Severity: Notice  --> Undefined index: religion C:\xampp\htdocs\utkorea\portal\controllers\mahasiswa.php 40

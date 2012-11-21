@@ -16,7 +16,8 @@
 				<?php echo $this->lang->line('name')?>
 			</label>
 			<div class="element">
-				<?php echo form_input('name',$this->input->post('name'))?>				
+				<?php echo form_input('name',$this->input->post('name'))?>
+				<span class='hint'>Nama Sesuai Ijasah Terakhir</span>				
 			</div>
 		</li>	
 		<li>
@@ -83,6 +84,7 @@
 					echo form_dropdown('month_birth',$month_birth,$this->input->post('month_birth'));
 					echo form_dropdown('year_birth',$year_birth,$this->input->post('year_birth'));
 				?>
+				<span class='hint'>Tempat Tanggal Lahir Sesuai Ijasah Terakhir</span>
 			</div>
 		</li>
 		<li>
@@ -224,17 +226,6 @@
 				Ukuran Maks. 10MB (gif, png, jpg, jpeg)
 				<div id='ijasah_cnt' class="image_container"></div>
 			</div>
-		</li>		
-		<li>
-			<label class="element">
-				Passport
-			</label>
-			<div class="element">
-				<input name="passport" class="fileupload" type="file" data-url="<?php echo base_url()?>pendaftaran/do_upload/passport">
-				<input type="hidden" name="passport_image" /> 
-				Ukuran Maks. 10MB (gif, png, jpg, jpeg) 
-				<div id='passport_cnt' class="image_container"></div>
-			</div>
 		</li>
 		<li>
 			<label class="element">
@@ -308,7 +299,7 @@
 			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 			progress: function () {
 				var loader = $(this).attr('name') +'_loader';
-				$(this).after("<img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' />");
+				$(this).after(" <img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' /> ");
 			},
 			error: function (e, data) {
 				alert("Error");
@@ -329,4 +320,3 @@
 		});	
 	})
 </script>
-
