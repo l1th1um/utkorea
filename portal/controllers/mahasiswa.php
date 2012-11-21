@@ -92,4 +92,19 @@ class mahasiswa extends CI_Controller {
 		$this->load->view('pendaftaran/edu_list',$data);
 	}
 	
+	function get_mahasiswa_by_nim($nim,$output="json"){
+		$res = $this->person->get_mahasiswa_by_id($nim);
+		if($res){
+			switch ($output){
+				case "json":
+						echo json_encode($res);
+						break;
+				case "html":
+						$this->load->view('mahasiswa/person_table_view',array('data'=>$res));
+						break;
+			}
+			
+		}
+	}
+	
 }

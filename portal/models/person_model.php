@@ -315,4 +315,16 @@ class person_model extends CI_Model {
 			return false;
 		}
 	}
+	
+	function get_mahasiswa_by_id($id)
+	{
+		$this->db->where('nim',$id);
+		$result = $this->db->get('mahasiswa');
+		if($result->num_rows()>0)
+		{
+			return $result->row_array();
+		}else{
+			return false;
+		}
+	}
 }

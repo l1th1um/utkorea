@@ -13,6 +13,7 @@ class message_model extends CI_Model {
 	function get_user_unread_message($username)
 	{
 		$this->db->where('is_read',0);
+		$this->db->where('to',$username);
 		$result = $this->db->get('message');
 		if($result->num_rows()>0)
 		{
