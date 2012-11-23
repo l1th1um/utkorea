@@ -162,4 +162,6 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
-portal/logs*/
+portal/logs*/*
+portal/config/database.php
+*.sql
