@@ -81,4 +81,7 @@ Salam,\n
 Tim Penerimaan Mahasiswa Baru Korea Selatan\n
 ";
 $lang['period'] = 'Semester';
+$lang['nim']= 'NIM';
+$lang['region'] = 'Daerah';
+$lang['major'] = 'Jurusan';
 ?>

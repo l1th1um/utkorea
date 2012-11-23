@@ -74,8 +74,9 @@ class profiles extends CI_Controller {
 		{
 			$this->form_validation->set_message("password_check", $this->lang->line('old_password')." Salah");
 			return FALSE;
-		}
-	
+		}	
 	}
+	
+	
 
 }

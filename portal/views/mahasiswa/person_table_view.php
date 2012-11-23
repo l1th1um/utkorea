@@ -1,0 +1,1 @@
+<table>	<tr>		<td rowspan="<?php echo count($data)-2; ?>"></td>		<td><?php echo $this->lang->line('name') ?></td><td><?php echo $data['name']; ?></td>	</tr>		<?php foreach($data as $key=>$value){ if(!in_array($key,array('name','password','photo_image'))){?>		<tr>		<td><?php echo $this->lang->line($key); ?></td><td><?php echo $value; ?></td>	</tr>	<?php }} ?></table>
