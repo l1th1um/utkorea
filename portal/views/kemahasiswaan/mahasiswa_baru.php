@@ -1,42 +1,117 @@
-<?php
-	if ($list == FALSE) {
-		echo "<h1 align='center'>Tidak Ada Mahasiswa Baru</h1>";
-	} else {
 
-?>
-<table width="100%">
-	<thead>
-		<th width='30px'>No</th>
-		<th width='120px'>Kode Pendaftaran</th>
-		<th>Nama</th>
-		<th width='180px'>Email</th>
-		<th width='200px'>Waktu Pendaftaran</th>
-		<th width='100px'>Status</th>
-	</thead>
-	<tbody>
-		<?php
-			$i = 1;
-			foreach ($list as $row) {
-				if ($row->verified == 1) {
-					$status = "<button class='blue small'>Verified</button>";
-				} else {
-					$status = "<button>Unverified</button>";
-				}
-		?>
-			<tr>
-				<td><?php echo $i;?></td>	
-				<td>UTKOR<?php echo $row->reg_code;?></td>
-				<td><?php echo $row->name;?></td>
-				<td><?php echo $row->email;?></td>
-				<td><?php echo convertHumanDate($row->reg_time);?></td>
-				<td><?php echo $status;?></td
-			</tr>
-		<?php
-				$i++;
-			} 
-		?>
-	</tbody>
-</table>
-<?php 
-	}
-?>
+<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-ina.js" type="text/javascript"></script>
+<script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.src.js" type="text/javascript"></script>
+<script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
+
+  
+<link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqueryui/css/blitzer/jquery-ui-1.8.23.custom.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqgrid/css/ui.jqgrid.css" />	
+
+<script type="text/javascript">
+	$(document).ready(function(){			
+		$("#grid_name").jqGrid({
+					url:'<?php
+						  echo site_url( "mahasiswa/getlistJQGRID/baru" );
+						  ?>',
+					datatype: "json",
+					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status'],	
+					colModel:[
+						{name:'reg_code',index:'reg_code',width:70,align:'center'},
+						{name:'name',align:'center',index:'name',formatter:add_view_link},
+						{name:'email',align:'center',index:'email'},
+						{name:'reg_time',align:'center',index:'reg_time',width:90},						
+						{name:'verified',index:'verified',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},						
+					],
+					mtype : "POST",							
+					sortname: 'name',
+					rownumbers: true,
+					pager: "#pager2",
+					autowidth: true,
+					height: "100%",
+					viewrecords: true,					
+					sortorder: "ASC",					
+					jsonReader: { repeatitems : false, id: "0"}
+				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true},{},{},{},{					
+					sopt:['cn']
+		});
+
+		function check_verified(cellValue, options, rowObject){
+			if(cellValue==1){
+				return '<button class="blue small" style="width:140px">Verified</button>';
+			}else{
+				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.reg_code  + '" /></button>';
+			}
+		}	
+		
+		function add_view_link(cellValue, options, rowObject){
+			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" value="' + rowObject.reg_code  + '" /></a>';
+		}
+		
+		$(".viewStudent").live('click',function(){
+			$("#dialogcontainer").attr("title","Data Mahasiswa");
+			var data = $(this).children("input:hidden").val();
+			$.ajax({
+					  type: "POST",
+					  url: "<?php echo site_url("mahasiswa/get_mahasiswa_baru_by_reg_code"); ?>/" + data + "/html",
+					  dataType: "html",					  
+					  beforeSend: function(){
+						$("#dialogcontainer").html("<div class=\"ajax_loader\"></div>");
+						$("#dialogcontainer").dialog({
+							modal: true,
+							position: {my: "top", at: "top", of: window},
+							width: 700,
+							height: 500,
+							close: function(event,ui){
+								$(this).dialog("destroy");
+							}
+						});
+					  },
+					  success: function(data){
+							$("#dialogcontainer").html(data);
+					  }
+			});			
+		});
+		
+		$(".unverified").live('click',function(){			
+			var data = $(this).children("input:hidden").val();			
+			$("#dialogcontainer").html("Konfirmasi pendaftaran mahasiswa ini?<span style='font-size:9px'><br /><i>(status tidak bisa dikembalikan)</i></span>");
+			$("#dialogcontainer").attr("title","Konfirmasi Pendaftaran");
+			$("#dialogcontainer").dialog({
+				modal: true,
+				buttons: {
+                "Yes": function() {
+                    $.ajax({
+					  type: "POST",
+					  url: "<?php echo site_url("mahasiswa/verify_mahasiswa_baru"); ?>",
+					  dataType: "html",
+					  data: {reg_code:data},
+					  success: function(data){
+						if(data!=""){
+							alert(data);							
+						}
+						$("#grid_name").trigger("reloadGrid");							
+					  }
+					});
+					$(this).dialog("close");
+                },
+                Cancel: function() {
+                    $( this ).dialog("close");
+                }
+				},
+				close: function(event,ui){
+					$(this).dialog("destroy");
+				},
+				resizable: false
+			});
+			
+		});			
+								
+	});
+  </script>
+ </head>
+ <body>			
+ <span style="font-size:8pt;"><i>Klik pada Nama untuk melihat data mahasiswa</i></span>
+ <table id="grid_name" style="font-size:10pt"></table>
+ <div id="pager2" ></div> 
+ <div id="dialogcontainer" style="display:none;"></div> 
+ 

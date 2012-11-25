@@ -12,8 +12,63 @@ class profiles extends CI_Controller {
 	public function index()
 	{
 		$this->auth->check_auth();
-		$data = array();
-		$content['page'] = $this->load->view('profiles/personal',$data,TRUE);
+		
+		$this->form_validation->set_rules('address',$this->lang->line('address'),'trim|required|min_length[10]');
+		$this->form_validation->set_rules('name',$this->lang->line('name'),'trim|required');
+		$this->form_validation->set_rules('phone',$this->lang->line('phone'),'required|numeric');
+		$this->form_validation->set_rules('email',$this->lang->line('email'),'trim|required|valid_email');		
+		
+		$delimiter_prefix = "<div class='error'>";
+		$delimiter_suffix = "</div>";
+		$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
+		$success = false;
+		
+		if($this->form_validation->run())
+		{
+			if(!is_numeric($this->session->userdata('username'))){
+					$col = array(
+						'name' => $this->input->post('name'),
+						'address' => $this->input->post('address'),
+						'phone' => $this->input->post('phone'),
+						'email' => $this->input->post('email'),
+						'photo' => $this->input->post('photo')						
+					);
+					$this->person->update_tutor($this->session->userdata('username'),$col);
+					
+			}else{
+					$col = array(
+						'name' => $this->input->post('name'),
+						'address_kr' => $this->input->post('address'),
+						'phone' => $this->input->post('phone'),
+						'email' => $this->input->post('email'),
+						'photo_image' => $this->input->post('photo')
+					);
+					$this->person->update_mahasiswa($this->session->userdata('username'),$col);
+			}		
+			$success = true;
+		}
+		
+		if(!is_numeric($this->session->userdata('username'))){
+			$data = $this->person->get_staff_by_username($this->session->userdata('username'));
+			$col = array(
+				'photo'=>$data['photo'],
+				'name'=>$data['name'],
+				'email'=>$data['email'],
+				'address'=>$data['address'],
+				'phone'=>$data['phone']
+			);
+		}else{
+			$data = $this->person->get_mahasiswa_by_id($this->session->userdata('username'));
+			$col = array(
+				'photo'=>$data['photo_image'],
+				'name'=>$data['name'],
+				'email'=>$data['email'],
+				'address'=>$data['address_kr'],
+				'phone'=>$data['phone']
+			);
+		}	
+		
+		$content['page'] = $this->load->view('profiles/personal',array('data'=>$col,'success'=>$success),TRUE);
         $this->load->view('dashboard',$content);       
 	}
 	

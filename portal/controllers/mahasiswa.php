@@ -100,10 +100,100 @@ class mahasiswa extends CI_Controller {
 						echo json_encode($res);
 						break;
 				case "html":
-						$this->load->view('mahasiswa/person_table_view',array('data'=>$res));
+						$region_arr = array();
+						$region_arr['K'] = 'KBRI Seoul';
+						$region_arr['A'] = 'Ansan';
+						$region_arr['G'] = 'Guro';
+						$region_arr['U'] = 'Ujiongbu';
+						$region_arr['D'] = 'Daegu';
+						$region_arr['C'] = 'Cheonan';
+						$region_arr['J'] = 'Gwangju';
+						$region_arr['B'] = 'Busan';
+						
+						$this->load->view('mahasiswa/person_table_view',array('data'=>$res,'region_arr'=>$region_arr));
 						break;
 			}
 			
+		}
+	}
+	
+	function get_mahasiswa_baru_by_reg_code($reg_code,$output="json"){
+		$res = $this->person->get_mahasiswa_baru_by_reg_code($reg_code);
+		if($res){
+			switch ($output){
+				case "json":
+						echo json_encode($res);
+						break;
+				case "html":
+						$region_arr = array();
+						$region_arr['K'] = 'KBRI Seoul';
+						$region_arr['A'] = 'Ansan';
+						$region_arr['G'] = 'Guro';
+						$region_arr['U'] = 'Ujiongbu';
+						$region_arr['D'] = 'Daegu';
+						$region_arr['C'] = 'Cheonan';
+						$region_arr['J'] = 'Gwangju';
+						$region_arr['B'] = 'Busan';
+						
+						$this->load->view('mahasiswa/person_table_view',array('data'=>$res,'region_arr'=>$region_arr));
+						break;
+			}
+			
+		}
+	}
+	
+	function getlistJQGRID($type='lama')
+	{
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=20;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='name';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='DESC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		if($type=='lama'){
+			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
+		}else{
+			$data->records = count ($this->person->get_list_JQGRID('baru',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('baru',$req_param,"current")->result_array();
+		}
+		
+		
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+	}
+	
+	function verify_mahasiswa_baru()
+	{
+		$this->form_validation->set_rules('reg_code','reg_code','trim|required');
+		if($this->form_validation->run())
+		{
+			// update tabel reregistration
+			$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array('verified'=>1,'verified_by'=>$this->session->userdata('username'),'verified_time'=>date("Y-m-d H:i:s")));
+			echo "";
+		}else{
+			echo validation_errors();
 		}
 	}
 	

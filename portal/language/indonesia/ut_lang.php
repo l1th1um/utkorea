@@ -84,4 +84,8 @@ $lang['period'] = 'Semester';
 $lang['nim']= 'NIM';
 $lang['region'] = 'Daerah';
 $lang['major'] = 'Jurusan';
+$lang['verified_time'] = 'Waktu Verifikasi';
+$lang['verified_by']= 'Diverifikasi oleh';
+$lang['verified'] = 'Status Verifikasi';
+$lang['reg_time'] = 'Waktu Registrasi';
 ?>
