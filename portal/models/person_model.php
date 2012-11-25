@@ -105,6 +105,8 @@ class person_model extends CI_Model {
 			$this->db->select("name,nip,phone");
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);
+		}elseif($type=='baru'){			
+			$this->db->from("mahasiswa_baru");	
 		}elseif($type=='tutor'){
 			if($is_export){
 				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");
@@ -252,7 +254,11 @@ class person_model extends CI_Model {
 	
 	function update_tutor($nim,$col)
 	{
-		$this->db->where('staff_id',$nim);
+		if(is_numeric($nim)){
+			$this->db->where('staff_id',$nim);
+		}else{
+			$this->db->where('username',$nim);
+		}
 		return $this->db->update('staff',$col);
 	}
 	
@@ -345,6 +351,36 @@ class person_model extends CI_Model {
 	{
 		$this->db->where('nim',$id);
 		$result = $this->db->get('mahasiswa');
+		if($result->num_rows()>0)
+		{
+			return $result->row_array();
+		}else{
+			return false;
+		}
+	}
+	
+	function get_mahasiswa_baru_by_reg_code($reg_code)
+	{
+		$this->db->where('reg_code',$reg_code);
+		$result = $this->db->get('mahasiswa_baru');
+		if($result->num_rows()>0)
+		{
+			return $result->row_array();
+		}else{
+			return false;
+		}
+	}
+	
+	function edit_mahasiswa_baru($reg_code,$val)
+	{
+		$this->db->where('reg_code',$reg_code);
+		return $this->db->update('mahasiswa_baru',$val);
+	}
+	
+	function get_staff_by_username($username)
+	{
+		$this->db->where('username',$username);
+		$result = $this->db->get('staff');
 		if($result->num_rows()>0)
 		{
 			return $result->row_array();

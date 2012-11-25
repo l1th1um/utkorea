@@ -54,19 +54,22 @@
 			var data = $(this).html();
 			$.ajax({
 					  type: "POST",
-					  url: "<?php echo site_url("mahasiswa/get_mahasiswa_by_nim"); ?>/" + data,
-					  dataType: "json",					  
+					  url: "<?php echo site_url("mahasiswa/get_mahasiswa_by_nim"); ?>/" + data + "/html",
+					  dataType: "html",					  
 					  beforeSend: function(){
 						$("#dialogcontainer").html("<div class=\"ajax_loader\"></div>");
 						$("#dialogcontainer").dialog({
 							modal: true,
+							position: {my: "top", at: "top", of: window},
+							width: 700,
+							height: 500,
 							close: function(event,ui){
 								$(this).dialog("destroy");
 							}
 						});
 					  },
 					  success: function(data){
-							
+							$("#dialogcontainer").html(data);
 					  }
 			});			
 		});
