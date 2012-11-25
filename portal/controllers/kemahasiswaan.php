@@ -158,4 +158,169 @@ class kemahasiswaan extends CI_Controller {
 	function data_mhs_baru($id) {
 		$this->auth->check_auth();
 	}
+		
+	public function export_data() {
+		$this->auth->check_auth();
+		
+		$data = array();
+		
+		if (isset($_POST['major'])) {
+			$export_data = $this->person->export_data();
+			$column = count($_POST['row']);
+			$this->export_to_excel($export_data,$column);
+			$data['message'] =  $export_data;
+		}
+		
+		
+		$major = array("Semua");
+		
+		$distinct_semester = $this->person->distinct_semester();
+		
+		$period =  array("Semua");
+		$data['period'] = $period + $distinct_semester;
+				
+		$data['major'] = $major + major_list();
+		$data['status'] = array('Semua','Aktif','Cuti');
+		$data['field'] = $this->person->field_export_data();
+							
+		$content['page'] = $this->load->view('kemahasiswaan/export_data',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
+	public function export_to_excel($data,$column) 
+	{
+		
+		$this->load->library('excel');
+		$this->excel->setActiveSheetIndex(0);
+		
+		$current_period = get_settings('time_period');
+		$current_period_year = substr($current_period,0,4);
+		$current_period_semester = substr($current_period, 4,1);
+		
+		
+		$style_table_header = array(
+					'font' => array(
+						'bold' => true,
+					),
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+					),
+					'borders' => array(
+						'allborders' => array(
+							'style' => PHPExcel_Style_Border::BORDER_THIN,
+						),
+					),					
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+							'argb' => 'CCCCCCCC',
+						)
+					)
+				);
+				
+		$style_table = array(
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+					),
+					'borders' => array(
+						'allborders' => array(
+							'style' => PHPExcel_Style_Border::BORDER_THIN,
+						),
+					)
+				);
+				
+						
+		if ($current_period_semester == 1) $semester = "Ganjil"; else $semester = "Genap";  
+		
+		for ($i = 1;$i <= $column;$i++) {
+			$this->excel->getActiveSheet()->getColumnDimension(num_to_letter($i))->setAutoSize(true);	
+		}
+		
+		
+		$title1 = "Data Mahasiswa Universitas Terbuka Korea Selatan";
+		$title2 = "Semester ". $semester ." Tahun ".$current_period_year;
+		
+		$this->excel->getDefaultStyle()->getFont()->setName('Arial');
+		$this->excel->getDefaultStyle()->getFont()->setSize(9);
+		
+		$this->excel->getActiveSheet()->setTitle('Data Mahasiswa');
+		
+		$this->excel->getActiveSheet()->setCellValue('A1', $title1);
+		$this->excel->getActiveSheet()->setCellValue('A2', $title2);
+		
+		$this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);		
+		$this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+		
+		$this->excel->getActiveSheet()->mergeCells('A1:'.num_to_letter($column).'1');				
+		$this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+		$this->excel->getActiveSheet()->getStyle('A2')->getFont()->setSize(12);		
+		$this->excel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+		
+		$this->excel->getActiveSheet()->mergeCells('A2:'.num_to_letter($column).'2');				
+		$this->excel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+		$table_row = 5;
+		foreach ($data as $key_period => $val_period) {			
+			foreach ($val_period as $key_major => $val_major) {
+				$table_title = "Semester : ".calculate_semester($key_period)." Jurusan : ".get_major($key_major);
+				$this->excel->getActiveSheet()->setCellValue('A'.$table_row, $table_title);
+				$this->excel->getActiveSheet()->mergeCells('A'.$table_row.":".num_to_letter($column).$table_row);
+				$table_row++;
+				
+				$table_header = array_shift(array_values($val_major));
+				//print_r($table_header);
+				$init_column = 1;
+				$ignore = array('major','entry_period');
+				
+				foreach ($table_header as $key_header => $val_header) {		
+					if (! in_array($key_header, $ignore)) {						
+						$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, $this->lang->line($key_header));
+						$this->excel->getActiveSheet()->getStyle(num_to_letter($init_column).$table_row)->applyFromArray($style_table_header);						
+						$init_column++;
+					}					
+				}
+				
+				
+				$table_row++;
+				
+								
+				foreach ($val_major as $key2 => $val2) {
+						$init_column = 1;
+						foreach ($val2 as $key => $val) {
+							if (! in_array($key, $ignore)) {
+								if ($key == 'phone') {
+									$this->excel->getActiveSheet()->setCellValueExplicit(num_to_letter($init_column).$table_row, "+".$val, PHPExcel_Cell_DataType::TYPE_STRING);									
+								} else if ($key == 'birth_date') {
+									$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, convertHumanDate($val));									
+								} else {
+									$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, $val);	
+								}
+								
+								$this->excel->getActiveSheet()->getStyle(num_to_letter($init_column).$table_row)->applyFromArray($style_table);
+								$init_column++;
+							}															
+						}
+
+						$table_row++;	
+					
+					
+				}
+				
+				$table_row++;
+			}
+			
+			$table_row++;
+		} 
+		
+				 
+		$filename='data_mahasiswa.xls'; //save our workbook as this file name
+		header('Content-Type: application/vnd.ms-excel'); //mime type
+		header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+		header('Cache-Control: max-age=0'); //no cache
+		     
+		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');		
+		$objWriter->save('php://output');
+		 
+	}
 }

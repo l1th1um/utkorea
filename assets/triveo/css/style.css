@@ -975,3 +975,9 @@ form.fancy select {height:21px; width:auto; background:url(../images/select-righ
 input.error {
 	border: 1px solid #ff0000 !important;
 }
+
+.hint {
+  font-size: .9em;
+  color: #777;
+  padding-left: 60px;
+}

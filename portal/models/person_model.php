@@ -352,4 +352,102 @@ class person_model extends CI_Model {
 			return false;
 		}
 	}
+	
+	function mahasiswa_semester($id) {
+		$this->db->select('entry_period');
+		$this->db->where('nim',$id);
+		$query = $this->db->get('mahasiswa');
+		
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			$user_period = $row->entry_period;
+			
+			return calculate_semester($user_period);
+		}
+	}
+	
+	function max_semester() {
+		$this->db->select_min('entry_period');
+		$query = $this->db->get('mahasiswa');
+		
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			$user_period = $row->entry_period;
+			
+			return calculate_semester($user_period);
+		}
+		
+	}
+	
+	function distinct_semester() {
+		$this->db->distinct();
+		$this->db->select('entry_period');
+		$query = $this->db->get('mahasiswa');
+		
+		if ($query->num_rows() > 0) {
+			$data = array();
+			foreach ( $query->result() as $row ) {
+				$data[$row->entry_period] = calculate_semester($row->entry_period);
+			}		
+			return $data;			
+		}
+		
+	}
+	
+	function field_export_data() {
+		$fields = $this->db->list_fields('mahasiswa');
+		
+		$ignore = array('password','major','last_education_major','teach','teach_at','teach_major','ijasah_image','photo_image','entry_period');
+		
+		$row = array();
+		
+		foreach ($fields as $field)
+		{
+			if (! in_array($field, $ignore)) $row[] = $field;
+		}
+		
+		return $row;
+	}
+
+	function export_data() {
+		$select = array('major','entry_period');
+		$select = array_merge($select,$this->input->post('row'));
+		$select = implode(',',$select);
+		
+		$this->db->select($select);
+		
+		if ($this->input->post('major') != 0) {
+			$this->db->where('major',$this->input->post('major'));
+		}
+		
+
+		if ($this->input->post('period') != 0) {
+			$this->db->where('entry_period',$this->input->post('period'));
+		}
+		
+		if ($this->input->post('status') != 0) {
+			$this->db->where('status',$this->input->post('status'));
+		}
+		
+		$this->db->order_by('entry_period');
+		$this->db->order_by('major');
+		
+		$query = $this->db->get('mahasiswa');
+		
+		if ($query->num_rows() > 0 ) {
+			$data = array();
+			$i = 0;
+			foreach ($query->result_array() as $row) {
+				$entry_period = $row['entry_period'];
+				$major = $row['major'];
+							
+				$data[$entry_period][$major][$i] = $row;
+				
+				$i++;
+			}
+			
+			return $data;			
+		}
+		
+	}
 }

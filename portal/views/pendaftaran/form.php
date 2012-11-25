@@ -17,7 +17,7 @@
 			</label>
 			<div class="element">
 				<?php echo form_input('name',$this->input->post('name'))?>
-				<span class='hint'>Nama Sesuai Ijasah Terakhir</span>				
+				<div class='hint'>Nama Sesuai Ijasah Terakhir</div>				
 			</div>
 		</li>	
 		<li>
@@ -84,7 +84,7 @@
 					echo form_dropdown('month_birth',$month_birth,$this->input->post('month_birth'));
 					echo form_dropdown('year_birth',$year_birth,$this->input->post('year_birth'));
 				?>
-				<span class='hint'>Tempat Tanggal Lahir Sesuai Ijasah Terakhir</span>
+				<div class='hint'>Tempat Tanggal Lahir Sesuai Ijasah Terakhir</div>
 			</div>
 		</li>
 		<li>

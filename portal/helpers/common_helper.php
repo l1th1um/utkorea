@@ -681,3 +681,43 @@ function highlight_notif($message) {
     return '<div class="ui-state-highlight">				
 				<p>'.$message.'</p></div>';
 }
+
+function get_settings($field) {
+	$ci =& get_instance();
+	$ci->db->select($field);
+	$query = $ci->db->get('settings');    
+        
+    if ($query->num_rows() > 0) {
+    	$row = $query->row(); 
+    	return $row->$field;	
+    }	
+}
+
+function calculate_semester($user_period,$current_period = '') {
+	if (empty($current_period)) {
+		$current_period = get_settings('time_period');
+		
+		$current_period_year = substr($current_period,0,4);
+		$current_period_semester = substr($current_period, 4,1);	
+	}	
+	
+			
+	$user_entry_year = substr($user_period,0,4);
+	$user_entry_semester = substr($user_period,4,1);
+			
+	$semester = ( intval($current_period_year) - intval($user_entry_year) ) * 2;
+			
+	if ($current_period_semester == $user_entry_semester) $semester = $semester + 1;
+	else if ($current_period_semester > $user_entry_semester) $semester = $semester + 2;
+			
+	return $semester;
+}
+
+function num_to_letter($num, $uppercase = TRUE)
+{
+	$num -= 1;
+
+	$letter = 	chr(($num % 26) + 97);
+	$letter .= 	(floor($num/26) > 0) ? str_repeat($letter, floor($num/26)) : '';
+	return 		($uppercase ? strtoupper($letter) : $letter); 
+}
