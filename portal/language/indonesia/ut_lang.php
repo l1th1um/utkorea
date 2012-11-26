@@ -80,13 +80,16 @@ yang diperlukan ke Sekretariat UT Korea.\n\n
 Salam,\n
 Tim Penerimaan Mahasiswa Baru Korea Selatan\n
 ";
-$lang['period'] = 'Semester';
-$lang['entry_period'] = 'Tahun Masuk';
-$lang['nim']= 'NIM';
-$lang['region'] = 'Daerah';
-$lang['major'] = 'Jurusan';
-$lang['verified_time'] = 'Waktu Verifikasi';
-$lang['verified_by']= 'Diverifikasi oleh';
-$lang['verified'] = 'Status Verifikasi';
-$lang['reg_time'] = 'Waktu Registrasi';
+$lang['period'] 							= 'Semester';
+$lang['entry_period'] 						= 'Tahun Masuk';
+$lang['nim']								= 'NIM';
+$lang['region'] 							= 'Daerah';
+$lang['major'] 								= 'Jurusan';
+$lang['verified_time'] 						= 'Waktu Verifikasi';
+$lang['verified_by']						= 'Diverifikasi oleh';
+$lang['verified'] 							= 'Status Verifikasi';
+$lang['reg_time'] 							= 'Waktu Registrasi';
+$lang['publish'] 							= 'Tampilkan';
+$lang['announcement'] 						= 'Pengumuman';
+$lang['saved'] 								= 'Telah Disimpan';
 ?>

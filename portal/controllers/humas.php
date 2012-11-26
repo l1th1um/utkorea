@@ -1,12 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class sms extends CI_Controller {
+class humas extends CI_Controller {
 	
 	public function __construct()
     {
         parent::__construct();								
     	$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');        
+		$this->load->model('announcement_model','announcement');
     }	
 	
 	public function index()
@@ -67,7 +68,7 @@ class sms extends CI_Controller {
 		echo $message;
 	}
 	
-	public function history() {
+	public function sms_history() {
 		$this->auth->check_auth();
 		
 		$message['data'] = $this->person->get_sms_history();
@@ -124,6 +125,35 @@ class sms extends CI_Controller {
 
 		echo json_encode ($data );
 		exit( 0 );
+	}
+	
+	public function announcements() {
+		$this->auth->check_auth();
+		
+		$data = array();
+		
+		if (isset($_POST['title'])) {
+			$this->_validate_announcements();
+			
+			if ($this->form_validation->run() == FALSE) {
+				$data['message'] = error_form(validation_errors());				
+			} else {
+				if ($this->announcement->save_announcement($_POST)) {
+					$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
+				} else {
+					$data['message'] = 	error_form($this->lang->line('db_error'));
+				}
+			}
+		}
+		$content['page'] = $this->load->view('humas/announcements',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
+	
+	public function _validate_announcements()
+	{
+		$this->form_validation->set_rules('title',$this->lang->line('title'),'trim|required|min_length[4]');
+		$this->form_validation->set_rules('news',$this->lang->line('announcement'),'trim|required|min_length[4]');		
 	}
 		
 }

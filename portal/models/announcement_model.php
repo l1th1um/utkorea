@@ -17,4 +17,17 @@ class announcement_model extends CI_Model {
 			return false;
 		}
 	}
+	
+	public function save_announcement($data) {
+		$insert = populate_form($data, 'announcements');
+		$this->db->set('created_time', 'now()', FALSE);
+		
+		$query = $this->db->insert('announcements',$insert);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -4,7 +4,7 @@
 	 * Auth
 	 * 
 	 * @package Helpdesk
-	 * @author ohyeah
+	 * @author Andri Fachrur Rozie
 	 * @copyright 2010
 	 * @version $Id$
 	 * @access public
@@ -87,6 +87,7 @@
 			  } else {
 			  		$newdata = array(
 	                   'username'  => $login['username'],
+	                   'id'  => $row['staff_id'],
 	                   'role'  => $row['group_id'],
 	                   'major'  => $row['major_id'],
 	                   'logged_in' => TRUE
