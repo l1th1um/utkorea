@@ -64,7 +64,7 @@ class bendahara extends CI_Controller {
 		if($this->form_validation->run())
 		{
 			// update tabel reregistration
-			$this->finance->update_daftar_ulang($this->input->post('id'),array('is_verified'=>1,'verified_by'=>$this->session->userdata('username'),'verified_time'=>date("Y-m-d H:i:s")));
+			$this->finance->update_daftar_ulang($this->input->post('id'),array('is_verified'=>1,'verified_by'=>$this->session->userdata('id'),'verified_time'=>date("Y-m-d H:i:s")));
 			echo "";
 		}else{
 			echo validation_errors();

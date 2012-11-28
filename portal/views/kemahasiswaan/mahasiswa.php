@@ -9,27 +9,30 @@
 
   
   <script type="text/javascript">
-	$(document).ready(function(){			
+	$(document).ready(function(){	
+	
 		$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "sms/getlistJQGRID/student" );
+						  echo site_url( "humas/getlistJQGRID/student" );
 						  ?>',
 					datatype: "json",
-					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Semester','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Key'],	
+					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Semester','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks','Key'],	
 					colModel:[
 						{name:'nim',width:250,index:'nim',editable:true,editrules:{required:true,number:true}},
-						{name:'name',width:600,index:'name',editable:true,editrules:{required:true}},
+						{name:'name',width:600,index:'name',editable:true,editrules:{required:true},formatter:add_view_link,unformat:unformat_add_view_link},
 						{name:'major',width:600,index:'major', stype:'select',searchoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}},editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}}},	
 						{name:'region',index:'region',hidden:true,editable:true,editrules:{edithidden:true}, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($region_arr as $key=>$row){if(!$first){echo ',';}echo '"'.$key.'":"'.$row.'"';$first=false;} ?>}}},
 						{name:'phone',index:'phone',hidden:true,editable:true,editrules:{edithidden:true,required:true,number:true}},
-						{name:'status',index:'status',align:'center',editable:true,stype:'select',searchoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}},edittype:'select',editoptions:{value:{'Aktif':'Aktif','Tidak Aktif':'Tidak Aktif'}}},
-						{name:'period',index:'period',align:'center',editable:true,editrules:{required:true,number:true}},
+						{name:'status',index:'status',align:'center',editable:true,formatter:'select',stype:'select',searchoptions:{value:{'1':'Aktif','0':'Tidak Aktif','2':'Cuti','3':'Alumni'}},edittype:'select',editoptions:{value:{'1':'Aktif','0':'Tidak Aktif','2':'Cuti','3':'Alumni'}}},
+						{name:'entry_period',index:'entry_period',align:'center',editable:false},
 						{name:'email',width:700,index:'email',hidden:true,editable:true,editrules:{edithidden:true,requried:true,email:true}},
 						{name:'birth_date',index:'birth_date',hidden:true,editable:true,editrules:{edithidden:true}},
 						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true},
 						{name:'gender',index:'gender',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
 						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'M':'Menikah','B':'Belum Menikah'}}},
 						{name:'address_id',index:'address_id',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
+						{name:'address_kr',index:'address_kr',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
+						{name:'remarks',index:'remarks',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'nim',index:'nim_key',hidden:true}
 					],
 					mtype : "POST",		
@@ -62,9 +65,43 @@
 				}).navButtonAdd("#pager2",{caption:"Export Current Table",buttonicon:"ui-icon-bookmark",
 					onClickButton:function(){
 						$("#grid_name").jqGrid('excelExport',{url:"<?php
-						  echo site_url( "mahasiswa/exportCurrentCRUD" );
+						  echo site_url( "kemahasiswaan/exportCurrentCRUD" );
 						  ?>"});
-				}, position: "last", title:"Export Current Table",cursor: "pointer"});				
+				}, position: "last", title:"Export Current Table",cursor: "pointer"});	
+
+		function add_view_link(cellValue, options, rowObject){
+			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" class="hdnnim" value="' + rowObject.nim  + '" /><input type="hidden" class="hdnname" value="' + cellValue  + '" /></a>';
+		}
+		
+		function unformat_add_view_link( cellvalue, options, cell){
+			return $("a",cell).children("input:hidden.hdnname").val();
+		}
+		
+		$(".viewStudent").live('click',function(){
+			$("#dialogcontainer").attr("title","Data Mahasiswa");
+			var data = $(this).children("input:hidden.hdnnim").val();
+			$.ajax({
+					  type: "POST",
+					  url: "<?php echo site_url("mahasiswa/get_mahasiswa_by_nim"); ?>/" + data + "/html",
+					  dataType: "html",					  
+					  beforeSend: function(){
+						$("#dialogcontainer").html("<div class=\"ajax_loader\"></div>");
+						$("#dialogcontainer").dialog({
+							modal: true,
+							position: {my: "top", at: "top", of: window},
+							width: 700,
+							height: 500,
+							close: function(event,ui){
+								$(this).dialog("destroy");
+							}
+						});
+					  },
+					  success: function(data){
+							$("#dialogcontainer").html(data);
+					  }
+			});	
+		});
+					
 								
 	});
   </script>
@@ -78,3 +115,4 @@
 	<?php if (isset($content)) echo "<h3>".$content."</h3>";  else $content= '';?>			
     <table id="grid_name"></table>
     <div id="pager2" ></div>         
+	<div id="dialogcontainer" style="display:none;"></div>

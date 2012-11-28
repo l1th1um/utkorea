@@ -16,7 +16,12 @@ class profiles extends CI_Controller {
 		$this->form_validation->set_rules('address',$this->lang->line('address'),'trim|required|min_length[10]');
 		$this->form_validation->set_rules('name',$this->lang->line('name'),'trim|required');
 		$this->form_validation->set_rules('phone',$this->lang->line('phone'),'required|numeric');
-		$this->form_validation->set_rules('email',$this->lang->line('email'),'trim|required|valid_email');		
+		$this->form_validation->set_rules('email',$this->lang->line('email'),'trim|required|valid_email');	
+		if(!is_numeric($this->session->userdata('username'))){
+			$this->form_validation->set_rules('bank','Nama Bank','trim|required');
+			$this->form_validation->set_rules('account','Nomor Account','required|xss_clean|trim');
+			$this->form_validation->set_rules('affiliation','Afiliasi','trim|required|xss_clean');	
+		}
 		
 		$delimiter_prefix = "<div class='error'>";
 		$delimiter_suffix = "</div>";
@@ -31,7 +36,10 @@ class profiles extends CI_Controller {
 						'address' => $this->input->post('address'),
 						'phone' => $this->input->post('phone'),
 						'email' => $this->input->post('email'),
-						'photo' => $this->input->post('photo')						
+						'photo' => $this->input->post('photo'),	
+						'account' => $this->input->post('account'),
+						'bank' => $this->input->post('bank'),
+						'affiliation' => $this->input->post('affiliation')
 					);
 					$this->person->update_tutor($this->session->userdata('username'),$col);
 					
@@ -55,7 +63,10 @@ class profiles extends CI_Controller {
 				'name'=>$data['name'],
 				'email'=>$data['email'],
 				'address'=>$data['address'],
-				'phone'=>$data['phone']
+				'phone'=>$data['phone'],
+				'bank'=>$data['bank'],
+				'account'=>$data['account'],
+				'affiliation'=>$data['affiliation']
 			);
 		}else{
 			$data = $this->person->get_mahasiswa_by_id($this->session->userdata('username'));

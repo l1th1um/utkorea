@@ -190,7 +190,7 @@ class mahasiswa extends CI_Controller {
 		if($this->form_validation->run())
 		{
 			// update tabel reregistration
-			$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array('verified'=>1,'verified_by'=>$this->session->userdata('username'),'verified_time'=>date("Y-m-d H:i:s")));
+			$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array('verified'=>1,'verified_by'=>$this->session->userdata('id'),'verified_time'=>date("Y-m-d H:i:s")));
 			echo "";
 		}else{
 			echo validation_errors();

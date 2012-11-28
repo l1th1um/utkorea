@@ -121,11 +121,11 @@ class person_model extends CI_Model {
 			
 		}else{
 			if($is_export){
-				$this->db->select("name,nim,phone,major.major as major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
+				$this->db->select("name,nim,phone,major.major as major,region,status,gender,entry_period,email,birth_date,address_id,address_kr,religion,marital_status,remarks");
 				$this->db->from("mahasiswa");
 				$this->db->join('major','mahasiswa.major = major.major_id');
 			}else{
-				$this->db->select("name,nim,phone,major,region,status,gender,period,email,birth_date,address_id,religion,marital_status");
+				$this->db->select("name,nim,phone,major,region,status,gender,entry_period,email,birth_date,address_id,address_kr,religion,marital_status,remarks");
 				$this->db->from("mahasiswa");			
 			}
 		}

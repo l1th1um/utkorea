@@ -36,6 +36,20 @@
 					  echo '<input type="hidden" name="photo" />';
 					  echo '<div id="photo_file_cnt" class="image_container"></div>'; ?></td>                
 		</tr>
+		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
+		<tr>
+			<td><label>Nomor Rekening</label></td>
+			<td><?php echo form_input('account',$data['account']); ?>&nbsp;<?php echo form_error('account'); ?></td>      	
+		</tr>	
+		<tr>
+			<td><label>Nama Bank</label></td>
+			<td><?php echo form_input('bank',$data['bank']); ?>&nbsp;<?php echo form_error('bank'); ?></td>      	
+		</tr>		
+		<tr>
+			<td><label>Afiliasi</label></td>
+			<td><?php echo form_input('affiliation',$data['affiliation']); ?>&nbsp;<?php echo form_error('affiliation'); ?></td>      	
+		</tr>		
+		<?php } ?>
 		<tr>
 			<td colspan="3"><button type="submit">
 			<?php echo $this->lang->line('save');?>
