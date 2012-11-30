@@ -19,7 +19,8 @@ class Main extends CI_Controller {
 			if ($this->announcement->get_recent_news() == false) {
 				$data['news'] = false;	
 			} else {
-				$data['news'] = $this->announcement->get_recent_news();				
+				$content['list'] = $this->announcement->get_recent_news();
+				$data['news'] = $this->load->view('announcement/list',$content,TRUE);
 			}
 			
 			$content['page'] = $this->load->view('welcome',$data,TRUE);

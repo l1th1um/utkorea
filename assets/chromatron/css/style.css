@@ -1024,7 +1024,7 @@ table input[type="checkbox"] {
 }
 
 /*  Login Page  */
-body.login { background:#e6e6e6; }
+body.login { background:#e6e6e6; height:auto;background:url(../img/pat_bg.jpg);}
 .login section[role=main] {
 	margin:120px auto 0;
 	width:380px;
