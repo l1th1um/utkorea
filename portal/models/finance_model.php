@@ -25,7 +25,7 @@ class finance_model extends CI_Model {
 	function get_list_JQGRID($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id,period,nim,account_no,payment_date,bank_name,sender_name,verified_by,verified_time,is_verified');
+		$this->db->select('id,nim,account_no,payment_date,bank_name,sender_name,verified_by,verified_time,is_verified');
 		$this->db->from('reregistration');		
 		
 		if (!empty($params))		{			
