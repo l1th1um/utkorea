@@ -125,11 +125,7 @@
 		
 		<?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
 		<fieldset>
-			<table>
-				<tr>		
-					<td  width="150px"><label><?php echo $this->lang->line('period');?></label></td>
-					<td><?php echo form_input('period'); ?></td>                
-				</tr>
+			<table>				
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('payment_date');?></label></td>
 					<td><?php echo form_input('payment_date'); ?></td>                
@@ -162,8 +158,8 @@
 			$( "input[name=payment_date]" ).datepicker({
 				changeMonth: true,
 				changeYear: true,
-				yearRange: '2012:2012',
-				dateFormat: "yy-mm-dd"
+				yearRange: '2012:2013',
+				dateFormat: "dd-mm-yy"
 			});
 	});
 	</script>

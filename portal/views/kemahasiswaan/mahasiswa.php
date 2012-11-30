@@ -7,7 +7,11 @@
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>css/add.css" />	
 <link rel="stylesheet" type="text/css" href="<?php echo admin_tpl_path()?>js/jqgrid/css/ui.jqgrid.css" />	
 
-  
+  <style>
+	.CaptionTD{
+		font-size:9pt;
+	}
+  </style>
   <script type="text/javascript">
 	$(document).ready(function(){	
 	
@@ -16,15 +20,15 @@
 						  echo site_url( "humas/getlistJQGRID/student" );
 						  ?>',
 					datatype: "json",
-					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Semester','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks','Key'],	
+					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Entry Period','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks','Key'],	
 					colModel:[
 						{name:'nim',width:250,index:'nim',editable:true,editrules:{required:true,number:true}},
 						{name:'name',width:600,index:'name',editable:true,editrules:{required:true},formatter:add_view_link,unformat:unformat_add_view_link},
 						{name:'major',width:600,index:'major', stype:'select',searchoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}},editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}}},	
-						{name:'region',index:'region',hidden:true,editable:true,editrules:{edithidden:true}, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($region_arr as $key=>$row){if(!$first){echo ',';}echo '"'.$key.'":"'.$row.'"';$first=false;} ?>}}},
+						{name:'region',index:'region',hidden:true,editable:true,editrules:{edithidden:true}, edittype:'select',formatter:'select',editoptions:{value:{'1':'Utara','2':'Selatan'}}},
 						{name:'phone',index:'phone',hidden:true,editable:true,editrules:{edithidden:true,required:true,number:true}},
 						{name:'status',index:'status',align:'center',editable:true,formatter:'select',stype:'select',searchoptions:{value:{'1':'Aktif','0':'Tidak Aktif','2':'Cuti','3':'Alumni'}},edittype:'select',editoptions:{value:{'1':'Aktif','0':'Tidak Aktif','2':'Cuti','3':'Alumni'}}},
-						{name:'entry_period',index:'entry_period',align:'center',editable:false},
+						{name:'entry_period',index:'entry_period',align:'center',editable:true},
 						{name:'email',width:700,index:'email',hidden:true,editable:true,editrules:{edithidden:true,requried:true,email:true}},
 						{name:'birth_date',index:'birth_date',hidden:true,editable:true,editrules:{edithidden:true}},
 						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true},
@@ -47,6 +51,8 @@
 					jsonReader: { repeatitems : false, id: "0"}
 				}).navGrid('#pager2',{edit:true,add:true,del:true, search: true},{
 					resize:false,
+					width:600,
+					
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}

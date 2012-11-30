@@ -114,7 +114,7 @@ class humas extends CI_Controller {
 			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
 			$newrecords = array();
 			foreach($records as $row){
-				$row['entry_period'] = calculate_semester($row['entry_period']);
+				//$row['entry_period'] = calculate_semester($row['entry_period']);
 				$newrecords[] = $row;
 			}
 			$records = $newrecords;

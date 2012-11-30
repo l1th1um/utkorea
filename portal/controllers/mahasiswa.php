@@ -70,6 +70,7 @@ class mahasiswa extends CI_Controller {
 			}else{
 				$this->load->model('finance_model','finance');
 				$datapembayaran = $this->input->post();
+				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'-');
 				$datapembayaran['nim'] = $this->session->userdata('username');
 				unset($datapembayaran['formhdn']);
 				
