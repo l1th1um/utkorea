@@ -13,6 +13,7 @@
 			}
 			
 			foreach($empty_val as $row) {
+				if($row!='remarks'){
 				echo '<tr><td width="150px"><label>'.$this->lang->line($row).'</label><td>';
 					if($row=='ijasah_image' or $row=='passport_image' or $row=='photo_image'){
 						echo form_upload(array('name'=>$row.'_file','class'=>'fileupload','data-url'=>base_url().'pendaftaran/do_upload/'.$row.'_file')).'&nbsp;'.form_error($row);
@@ -40,11 +41,29 @@
 						echo form_dropdown('employment',lang_list('employment_list'),$this->input->post('employment'));
 					}else if($row=='religion'){
 						echo form_dropdown('religion',lang_list('religion_list'),$this->input->post('religion'));
-					}else{
+					}else if($row=='gender'){ ?>
+						
+						<div class="element">
+							<?php
+								$gender1 = TRUE;
+								$gender2 = FALSE;
+								
+								if ($this->input->post($row) == 'P') 
+								{
+									$gender1 = FALSE;
+									$gender2 = TRUE;
+								}
+							?>
+							<?php echo form_radio('gender','L',$gender1);?>
+							<label>Laki-Laki</label>&nbsp;&nbsp;
+							<?php echo form_radio('gender','P',$gender2);?>
+							<label>Perempuan</label>
+						</div>					
+<?php				}else{
 						echo form_input(array('name'=>$row,'value'=>$this->input->post($row))).'&nbsp;'.form_error($row);
 					}
 				echo '</td></tr>';
-			}
+			}}
 		?>			
 		<input type="hidden" name="formhdn" value="0" />
 		<tr>

@@ -165,3 +165,5 @@ pip-log.txt
 portal/logs*/*
 portal/config/database.php
 *.sql
+
+portal/assets/uploads/*

@@ -22,6 +22,7 @@ class mahasiswa extends CI_Controller {
 		$data = array();
 		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));	
 		
+		
 		if(!$this->input->post('formhdn')){
 			$val_rule = array(
 				'passport'=>'trim|required|min_length[5]',				
@@ -38,7 +39,9 @@ class mahasiswa extends CI_Controller {
 				'last_education'=>'trim|required',
 				'year_graduate'=>'trim|required',
 				'birth_date'=>'trim|required',
-				'religion'=>'trim|required'				
+				'religion'=>'trim|required',
+				'gender'=>'trim|required|alpha|min_length[1]|max_length[1]',
+				'remarks'=>''
 			);
 			
 			foreach($data['empty_val'] as $row) {
@@ -190,7 +193,7 @@ class mahasiswa extends CI_Controller {
 		if($this->form_validation->run())
 		{
 			// update tabel reregistration
-			$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array('verified'=>1,'verified_by'=>$this->session->userdata('username'),'verified_time'=>date("Y-m-d H:i:s")));
+			$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array('verified'=>1,'verified_by'=>$this->session->userdata('id'),'verified_time'=>date("Y-m-d H:i:s")));
 			echo "";
 		}else{
 			echo validation_errors();

@@ -52,9 +52,15 @@
 		$(".viewStudent").live('click',function(){
 			$("#dialogcontainer").attr("title","Data Mahasiswa");
 			var data = $(this).html();
+			var urlloc;
+			if(data.length<5){
+				urlloc = "<?php echo site_url("mahasiswa/get_mahasiswa_baru_by_reg_code"); ?>/" + data + "/html";
+			}else{
+				urlloc = "<?php echo site_url("mahasiswa/get_mahasiswa_by_nim"); ?>/" + data + "/html";
+			}
 			$.ajax({
 					  type: "POST",
-					  url: "<?php echo site_url("mahasiswa/get_mahasiswa_by_nim"); ?>/" + data + "/html",
+					  url: urlloc,
 					  dataType: "html",					  
 					  beforeSend: function(){
 						$("#dialogcontainer").html("<div class=\"ajax_loader\"></div>");

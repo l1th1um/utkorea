@@ -112,6 +112,12 @@ class humas extends CI_Controller {
 
 			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
 			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
+			$newrecords = array();
+			foreach($records as $row){
+				$row['entry_period'] = calculate_semester($row['entry_period']);
+				$newrecords[] = $row;
+			}
+			$records = $newrecords;
 		}elseif($type=='tutor'){
 			$data->records = count ($this->person->get_list_JQGRID('tutor',$req_param,"all")->result_array());		
 			$records = $this->person->get_list_JQGRID('tutor',$req_param,"current")->result_array();

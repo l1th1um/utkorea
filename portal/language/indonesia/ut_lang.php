@@ -92,5 +92,6 @@ $lang['reg_time'] 							= 'Waktu Registrasi';
 $lang['publish'] 							= 'Tampilkan';
 $lang['announcement'] 						= 'Pengumuman';
 $lang['saved'] 								= 'Telah Disimpan';
+$lang['remarks'] 							= 'Catatan';
 $lang['payment_success'] 					= 'Data Pembayaran Telah Disimpan';
 ?>
