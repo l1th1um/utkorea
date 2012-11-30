@@ -9,6 +9,15 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo $row->news ?></td>
+		<td>
+			<?php
+			$news = $row->news;  
+			if ($this->config->item('live_site') == 1) {
+				$news = str_replace('utkorea/','',$news);
+			}
+			
+			echo $news
+			?>
+		</td>
 	</tr>
 </table>

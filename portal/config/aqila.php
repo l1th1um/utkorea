@@ -1,5 +1,6 @@
 <?php
 //Custom Configuration File
+$config['live_site']    	= "1";
 $config['absolute_path']    = "E:/utkorea/";
 //$config['absolute_path']    = "/iweb/utk0r12/wwwhome/portal/";
 $config['admin_tpl']        = "chromatron";
