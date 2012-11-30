@@ -9,3 +9,8 @@ Status Mahasiswa
 
 Notes :
 - Tambah Field Remarks di Mahasiswa
+
+finance->check_registration_status() 
+0 => belum bayar
+1 => Belum Diverifikasi
+2 => Sudah Diverifikasi

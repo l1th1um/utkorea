@@ -63,6 +63,7 @@ jQuery(function(){
 			alert('No Pendaftaran Anda Salah');
 		} else {
 			$.post("<?php echo base_url()?>pendaftaran/check_registration_status", { reg_code: no_reg},function(data) {
+				if (data == false) data = "Maaf, No Pendaftaran Tidak Ditemukan";
 			   $('#status_content').html(data);
 			   var OSX = {
 						container: null,
@@ -158,15 +159,7 @@ jQuery(function(){
                         <ul class="sf-menu">
                             <li class="current"><a href="<?php echo base_url()."pendaftaran"?>">Home</a></li>
                             <li><a href="<?php echo base_url()."pendaftaran/registrasi"?>">Pendaftaran</a></li>
-                            <!--  
-                            <li><a href="services.html">Services</a>
-                            	<ul class="subnav">
-                                    <li><a href="index2.html">Home Alternate</a></li>
-                                    <li><a href="fullwidth.html">Fullwidth Page</a></li>
-                            	</ul>
-                            </li>                          
-                            <li><a href="portfolio.html">Portfolio</a></li>
-                            <li><a href="contact.html">Contact</a></li>-->
+                            <li><a href="<?php echo base_url()."pendaftaran/pembayaran"?>">Konfirmasi Pembayaran</a></li>                            
                         </ul>
                     </div>
                     <div id="search-box">
@@ -185,10 +178,8 @@ jQuery(function(){
                     <div id="slideshow-container">
                     	<div id="slideshow-inner">
                         	<ul id="slide-image-type2">
-                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide1.jpg" alt="" class="type1-slide" /></li>
-                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/utkorea.png" alt="" class="type1-slide" /></li>
-                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide3.jpg" alt="" class="type1-slide" /></li>
-                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/type2-slide4.jpg" alt="" class="type1-slide" /></li>
+                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/utkorea.jpg" alt="" class="type1-slide" /></li>
+                                <li class="slide-image"><img src="<?php echo template_path('triveo')?>images/mahasiswa.jpg" alt="" class="type1-slide" /></li>
                             </ul>                            
                       </div>                        
                     </div>

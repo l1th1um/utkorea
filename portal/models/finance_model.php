@@ -8,7 +8,13 @@ class finance_model extends CI_Model {
 
 	function insert_konfirmasi_pembayaran($data){
 		$affected = $this->db->insert('reregistration',$data);
-		return $this->db->insert_id();
+		
+		if ($this->db->affected_rows() > 0) {
+			return $this->db->insert_id();	
+		} else {
+			return FALSE;
+		}
+		
 	}
 	
 	function update_daftar_ulang($id,$data){
@@ -68,6 +74,22 @@ class finance_model extends CI_Model {
 		}
 
 		return $query;
+	}
+
+function check_payment_status($nim) 
+	{
+		$this->db->select('verified_by');
+		$query = $this->db->get_where('reregistration',array('nim' => $nim));
+		
+		if ( $query->num_rows() > 0 ) 
+		{
+			$row = $query->row();
+			
+			if (empty($row->verified_by)) return 1;
+			else return 2;
+		} else {
+			return 0;
+		} 
 	}
 }
 ?>

@@ -327,7 +327,7 @@ class person_model extends CI_Model {
 				$data .= "Selamat Anda Sudah Diterima menjadi Calon Mahasiswa Universitas Terbuka Korea Selatan";
 			}
 		} else {
-			$data = "Maaf, No Pendaftaran Tidak Ditemukan";
+			$data = false;
 		} 
 		
 		return $data;

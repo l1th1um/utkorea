@@ -288,8 +288,8 @@ function convertHumanDate($date) {
 	}    
 }
 
-function convertToMysqlDate($date) {
-	$date = explode("/",$date);
+function convertToMysqlDate($date,$delimiter = "/") {
+	$date = explode($delimiter,$date);
 		
 	return $date[2]."-".$date[1]."-".$date[0];
 }

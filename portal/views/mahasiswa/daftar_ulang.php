@@ -139,8 +139,7 @@
 		
 		</form>
 	<script type="text/javascript" >
-	$(document).ready(function(){
-		
+	$(document).ready(function(){		
 			$( "input[name=payment_date]" ).datepicker({
 				changeMonth: true,
 				changeYear: true,

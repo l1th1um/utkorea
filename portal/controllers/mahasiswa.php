@@ -24,7 +24,7 @@ class mahasiswa extends CI_Controller {
 		
 		if(!$this->input->post('formhdn')){
 			$val_rule = array(
-				'passport'=>'trim|required|min_length[5]',
+				'passport'=>'trim|required|min_length[5]',				
 				'place_of_birth'=>'trim|required|min_length[3]',
 				'address_id'=>'trim|required|min_length[10]',
 				'address_kr'=>'trim|required|min_length[10]',			

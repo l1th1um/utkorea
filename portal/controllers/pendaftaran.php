@@ -6,6 +6,7 @@ class pendaftaran extends CI_Controller {
 		parent::__construct();
 		//$this->output->enable_profiler(TRUE);	
 		$this->load->model('person_model','person');
+		$this->load->model('finance_model','finance');
 	}
 	
 	public function index()	
@@ -202,5 +203,51 @@ class pendaftaran extends CI_Controller {
 	function check_registration_status() {
 		$reg_code = substr($this->input->post('reg_code'),5,4);
 		echo  $this->person->check_registration_status($reg_code);
+	}
+
+	public function pembayaran() {
+		$data = array();
+		$data['show_form'] = true;
+		
+		if (isset($_POST['sender_name'])) {		
+			
+			$this->_validate_pembayaran();
+			
+			if ($this->form_validation->run() == FALSE) {
+				$data['message'] = validation_errors();				
+			} else {				
+				$insert_data = populate_form($this->input->post(), 'reregistration');
+				$insert_data['nim'] = substr($this->input->post('nim'),5,4);
+				$insert_data['payment_date'] = convertToMysqlDate($this->input->post('payment_date'));
+				
+				if ($this->finance->insert_konfirmasi_pembayaran($insert_data) == FALSE) {
+					$data['message'] = $this->lang->line('db_error');
+				} else {
+					$data['message'] = "<h2>".$this->lang->line('payment_success')."</h2>";
+					$data['show_form'] = false;
+				}				
+			}			
+		}
+		
+		$content['page'] = $this->load->view('pendaftaran/pembayaran',$data,TRUE);
+		$this->load->view('pendaftaran/registrasi',$content);
+	}
+	
+	public function _validate_pembayaran() {
+		$this->form_validation->set_rules('nim',$this->lang->line('nim'),'trim|required');
+		$this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'),'trim|required');
+		$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
+		$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
+		$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+		
+		$delimiter_prefix = "<div class='error'>";
+		$delimiter_suffix = "</div>";
+	
+		$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
+	}
+	
+	function check_payment_status() {
+		$reg_code = substr($this->input->post('nim'),5,4);
+		echo  $this->finance->check_payment_status($reg_code);
 	}
 }

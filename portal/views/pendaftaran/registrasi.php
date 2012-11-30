@@ -71,15 +71,7 @@ jQuery(function(){
                         <ul class="sf-menu">
                             <li class="current"><a href="<?php echo base_url()."pendaftaran"?>">Home</a></li>
                             <li><a href="<?php echo base_url()."pendaftaran/registrasi"?>">Pendaftaran</a></li>
-                            <!--  
-                            <li><a href="services.html">Services</a>
-                            	<ul class="subnav">
-                                    <li><a href="index2.html">Home Alternate</a></li>
-                                    <li><a href="fullwidth.html">Fullwidth Page</a></li>
-                            	</ul>
-                            </li>                          
-                            <li><a href="portfolio.html">Portfolio</a></li>
-                            <li><a href="contact.html">Contact</a></li>-->
+                            <li><a href="<?php echo base_url()."pendaftaran/pembayaran"?>">Konfirmasi Pembayaran</a></li>                            
                         </ul>
                     </div>
                     <div id="search-box">
@@ -122,7 +114,7 @@ jQuery(function(){
                             <div class="follow"><a href="http://www.facebook.com/groups/utkorea/"><strong>Become a fan</strong></a> on Facebook</div>
                         </div>
                         <div class="copyright">
-                        Copyright © 2012 Universitas Terbuka Korea. All rights reserved
+                        Copyright ï¿½ 2012 Universitas Terbuka Korea. All rights reserved
                         </div>
                     </div>
                 </div>

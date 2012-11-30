@@ -8,7 +8,7 @@ class announcement_model extends CI_Model {
     }
 	
 	public function get_recent_news() {
-		$this->db->order_by('publish_date','desc');
+		$this->db->order_by('created_time','desc');
 		$query = $this->db->get('announcements',10,0);
 		
 		if ($query->num_rows() > 0) {
