@@ -60,12 +60,12 @@
 		<!-- /Main Navigation -->
 		
 		<!-- Sidebar -->
-		  
-		<section class="sidebar nested"> <!-- Use class .nested for diferent style -->
+		<!--
+		<section class="sidebar nested">
 			<h2>Pengumuman</h2>
 			<p>Tidak Ada Pengumuman.</p>			
 		</section>
-		
+		-->
 		<!-- /Sidebar -->
 		
 	

@@ -94,4 +94,6 @@ $lang['announcement'] 						= 'Pengumuman';
 $lang['saved'] 								= 'Telah Disimpan';
 $lang['remarks'] 							= 'Catatan';
 $lang['payment_success'] 					= 'Data Pembayaran Telah Disimpan';
+$lang['no_announcement'] 					= 'Tidak Ada Pengumuman';
+$lang['date'] 								= 'Tanggal';
 ?>

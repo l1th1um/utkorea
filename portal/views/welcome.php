@@ -4,11 +4,13 @@ Selamat Datang, <?php echo user_detail('name',$this->session->userdata('username
 	<?php
 		if ($news == false && empty($message)) {
 	?>
-			<h1 style="text-align: center;font-size: 20px">
-				Maaf Tidak Ada Pengumuman				
-			</h1>
+			<h2 style="text-align: center;font-size: 20px">
+				<?php echo $this->lang->line('no_announcement')?>			
+			</h2>
 	<?php	
 		}  else {
+			echo $news;	
+			
 		if(!empty($message)){
 			echo '<table>
 				  <thead>

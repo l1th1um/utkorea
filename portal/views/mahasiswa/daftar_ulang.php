@@ -125,7 +125,9 @@
 		
 		<?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
 		<fieldset>
-			<table>				
+
+			<table>			
+
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('payment_date');?></label></td>
 					<td><?php echo form_input('payment_date'); ?></td>                
@@ -160,6 +162,7 @@
 				changeYear: true,
 				yearRange: '2012:2013',
 				dateFormat: "dd-mm-yy"
+
 			});
 	});
 	</script>

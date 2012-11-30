@@ -3,16 +3,13 @@
 <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-
 <head>
 	<meta charset="UTF-8">
 	<!--[if IE 8 ]><meta http-equiv="X-UA-Compatible" content="IE=7"><![endif]-->
 	<title>.:: Portal Universitas Terbuka - Korea Selatan ::.</title>
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
 	<!-- CSS Styles -->
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/style.css">
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/jquery.tipsy.css">
@@ -24,10 +21,11 @@
     
 </head>
 <body class="login">
-	<section role="main">
-	
-		<a href="index.html" title="Back to Homepage"></a>
-	    
+	<section role="main">	
+		<!--<a href="index.html" title="Back to Homepage"></a>-->
+		<h1 style='font-size: 1.6em;text-align: center;color: #FFFFFF;'>
+			Portal Akademik <br />Universitas Terbuka Korea Selatan
+		</h1>	    
         <!-- Login box -->
 		<article id="login-box">
 			<form action="main/ajax_login" id="frmLogin">

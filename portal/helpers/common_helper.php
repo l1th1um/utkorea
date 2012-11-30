@@ -263,7 +263,7 @@ function convertDate($date,$datepicker=FALSE) {
 	}     
 }
 
-function convertHumanDate($date) {
+function convertHumanDate($date,$display_time = true) {
 	if (! empty($date)) {
 	    $check = explode(" ",$date);
     	$ci =& get_instance();
@@ -280,7 +280,7 @@ function convertHumanDate($date) {
 		$month_idx = $date[1];
 		$show_date = $date[2]." ".$month[$month_idx]." ".$date[0];  
 		
-		if (count($check) == '2') {
+		if ((count($check) == '2') && ($display_time)) {
 			return $show_date. "  ".$check[1]; 
 		} else {
 			return $show_date;

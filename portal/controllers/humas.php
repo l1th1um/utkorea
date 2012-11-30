@@ -5,7 +5,7 @@ class humas extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();								
-    	$this->output->enable_profiler(TRUE);
+    	//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');        
 		$this->load->model('announcement_model','announcement');
     }	
@@ -160,6 +160,13 @@ class humas extends CI_Controller {
 	{
 		$this->form_validation->set_rules('title',$this->lang->line('title'),'trim|required|min_length[4]');
 		$this->form_validation->set_rules('news',$this->lang->line('announcement'),'trim|required|min_length[4]');		
+	}
+	
+	public function display_announcement() {
+		$id = $this->input->post('id');
+		$data['row'] = $this->announcement->display($id);
+		
+		echo $this->load->view('announcement/display',$data,TRUE);
 	}
 		
 }
