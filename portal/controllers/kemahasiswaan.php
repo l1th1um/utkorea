@@ -121,7 +121,7 @@ class kemahasiswaan extends CI_Controller {
 						case 'add':
 							unset($col['oper']);
 							unset($col['id']);							
-							$col['password'] = md5($col['nim']);
+							$col['password'] = hashPassword($col['nim']);
 							
 							$this->person->add_mahasiswa($col);
 							break;
