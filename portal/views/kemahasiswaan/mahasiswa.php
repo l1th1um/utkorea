@@ -20,7 +20,7 @@
 						  echo site_url( "humas/getlistJQGRID/student" );
 						  ?>',
 					datatype: "json",
-					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Entry Period','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks','Key'],	
+					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Entry Period','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks'],	
 					colModel:[
 						{name:'nim',width:250,index:'nim',editable:true,editrules:{required:true,number:true}},
 						{name:'name',width:600,index:'name',editable:true,editrules:{required:true},formatter:add_view_link,unformat:unformat_add_view_link},
@@ -31,16 +31,16 @@
 						{name:'entry_period',index:'entry_period',align:'center',editable:true},
 						{name:'email',width:700,index:'email',hidden:true,editable:true,editrules:{edithidden:true,requried:true,email:true}},
 						{name:'birth_date',index:'birth_date',hidden:true,editable:true,editrules:{edithidden:true}},
-						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true},
-						{name:'gender',index:'gender',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'Pria':'Pria','Wanita':'Wanita'}}},
-						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'M':'Menikah','B':'Belum Menikah'}}},
+						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true; foreach(lang_list('religion_list') as $key=>$row){if(!$first){echo ',';} echo "'".$key."':'".$row."'";$first=false; } ?>}}},
+						{name:'gender',index:'gender',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'P':'Pria','L':'Wanita'}}},
+						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'1':'Menikah','0':'Belum Menikah'}}},
 						{name:'address_id',index:'address_id',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'address_kr',index:'address_kr',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
-						{name:'remarks',index:'remarks',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
-						{name:'nim',index:'nim_key',hidden:true}
+						{name:'remarks',index:'remarks',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true}}
+						
 					],
 					mtype : "POST",		
-					editurl: "<?php echo site_url( "mahasiswa/CRUD" ); ?>",
+					editurl: "<?php echo site_url( "kemahasiswaan/CRUD" ); ?>",
 					sortname: 'name',
 					rownumbers: true,
 					pager: "#pager2",
@@ -57,12 +57,14 @@
 						if(data.responseText!=''){alert(data.responseText)};
 					}
 				},
-					{resize:false,					
+					{resize:false,	
+						width:600,
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}
 				},
-					{resize:false,					
+					{resize:false,	
+						width:600,
 					afterComplete: function(data){						
 						if(data.responseText!=''){alert(data.responseText)};
 					}

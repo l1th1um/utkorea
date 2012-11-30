@@ -75,11 +75,12 @@ class kemahasiswaan extends CI_Controller {
 					$this->form_validation->set_rules('region', 'Region', 'required');
 					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
 					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
+					$this->form_validation->set_rules('entry_period', 'Entry Period', 'required|numeric');
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
 					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
 					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('address_kr', 'Address KR', 'required|xss_clean');
 					$this->form_validation->set_rules('gender', 'gender', 'required');
 					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');	
 					$col = $this->input->post();
@@ -91,11 +92,12 @@ class kemahasiswaan extends CI_Controller {
 					$this->form_validation->set_rules('region', 'Region', 'required');
 					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
 					$this->form_validation->set_rules('status', 'Status', 'required');
-					$this->form_validation->set_rules('period', 'Period', 'required|numeric');
+					$this->form_validation->set_rules('entry_period', 'Entry Period', 'required|numeric');
 					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
 					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
 					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('address_kr', 'Address KR', 'required|xss_clean');
 					$this->form_validation->set_rules('gender', 'gender', 'required');
 					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');					
 					$col = $this->input->post();
@@ -119,6 +121,8 @@ class kemahasiswaan extends CI_Controller {
 						case 'add':
 							unset($col['oper']);
 							unset($col['id']);							
+							$col['password'] = md5($col['nim']);
+							
 							$this->person->add_mahasiswa($col);
 							break;
 						case 'del':

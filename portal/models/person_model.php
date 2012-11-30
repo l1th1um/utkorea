@@ -27,7 +27,7 @@ class person_model extends CI_Model {
 
 	function get_list_mahasiswa()
 	{
-		$sql = 'SELECT * from mahasiswa order by name asc'; 
+		$sql = $result = $this->db->get('mahasiswa');
 		$res = $this->db->query($sql);
 		return $res;
 	}		
@@ -35,7 +35,9 @@ class person_model extends CI_Model {
 
 	function check_nim($nim)
 	{
-		$result = $this->db->query('SELECT 1 FROM mahasiswa WHERE nim = '.$nim);
+		
+		$this->db->where("nim", $nim); 
+		$result = $this->db->get('mahasiswa');
 		if($result->num_rows())return true;
 		return false;
 	}

@@ -18,7 +18,7 @@
 		<td width="150px"><?php echo convertHumanDate($row->created_time,false)?></td>
 		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
 	</tr>
-	<?
+	<?php
 		} 
 	?>												
 	</tbody>	
@@ -87,4 +87,4 @@
 	});
 	
 </script>
-<link href="<?php echo template_path('core')?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
+<link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
