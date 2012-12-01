@@ -10,6 +10,14 @@ class Main extends CI_Controller {
     
     public function index()
 	{
+			
+		if ($this->config->item('live_site') == 1) {
+			if ( (base_url() == 'http://www.utkorea.org/portal/') || (base_url() == 'http://utkorea.org/portal/') ) {
+				redirect('http://portal.utkorea.org');
+			} 
+		}
+		
+		
 		if ($this->session->userdata('logged_in') == TRUE) {
 			$this->load->model('announcement_model','announcement');
 			

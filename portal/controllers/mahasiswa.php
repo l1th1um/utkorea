@@ -16,8 +16,6 @@ class mahasiswa extends CI_Controller {
 		   
 	}	
 	
-	
-	
 	function daftar_ulang() {
 		$this->auth->check_auth();		
 		$data = array();
