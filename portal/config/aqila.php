@@ -9,6 +9,6 @@ $config['clickatell_username'] = "l1th1um";
 #$config['clickatell_username'] = "salah_user";
 $config['clickatell_password'] = "HRccfdREAYTgZA";
 $config['clickatell_api'] = "3385991";
-$config['mail_from']        = "pendaftaran@utkorea.org";
+$config['mail_from']        = "kemahasiswaan@utkorea.org";
 $config['mail_from_name']   = "Penerimaan Mahasiswa Baru UT Korea Selatan";
 ?>

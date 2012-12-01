@@ -25,11 +25,17 @@ class person_model extends CI_Model {
 	}
 	
 
-	function get_list_mahasiswa()
+	function get_list_mahasiswa($option = "all")
 	{
-		$sql = $result = $this->db->get('mahasiswa');
-		$res = $this->db->query($sql);
-		return $res;
+		if ($option == 'active') {
+			$this->db->where('status',1);	
+		}
+		
+		$query = $this->db->get('mahasiswa');
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();	
+		}
 	}		
 	
 
@@ -273,13 +279,13 @@ class person_model extends CI_Model {
 		$this->db->where('nim',$id);
 		$query = $this->db->get($table);
 		
-		$ignore_list = array('teach','teach_at','teach_major','verified','verified_by','verified_time');
+		$ignore_list = array('teach','teach_at','teach_major','verified','verified_by','verified_time','remarks');
 		
 		$empty_val = array();
 		if ($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				foreach ($row as $key => $value ) {
-					if (empty($value)) {
+					if (is_null($value)) {
 						if(! in_array($key,$ignore_list)) $empty_val[] = $key;
 					}
 				}

@@ -277,7 +277,7 @@ function convertHumanDate($date,$display_time = true) {
     	}
     	
 		$month = $ci->lang->line('month_array');
-		$month_idx = $date[1];
+		$month_idx = intval($date[1]);
 		$show_date = $date[2]." ".$month[$month_idx]." ".$date[0];  
 		
 		if ((count($check) == '2') && ($display_time)) {

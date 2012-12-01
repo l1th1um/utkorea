@@ -12,6 +12,7 @@
 				$year_graduate[$v] = $v;
 			}
 			
+			print_r($empty_val);
 			foreach($empty_val as $row) {
 				if($row!='remarks'){
 				echo '<tr><td width="150px"><label>'.$this->lang->line($row).'</label><td>';
@@ -121,7 +122,10 @@
 	}else{ 	
 ?>		
 		
-		<?php echo success_form("Data Anda telah disimpan. Silahkan Lakukan konfirmasi Pembayaran"). "\n"; ?>
+		<?php 
+			//echo success_form("Data Anda telah disimpan. Silahkan Lakukan konfirmasi Pembayaran"). "\n"; 
+			if ($is_paid == 0):
+		?>
 		
 		<?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
 		<fieldset>
@@ -130,7 +134,7 @@
 
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('payment_date');?></label></td>
-					<td><?php echo form_input('payment_date'); ?></td>                
+					<td><?php echo form_input('payment_date','','style="width:8em"'); ?></td>                
 				</tr>
 				<tr>
 					<td><label><?php echo $this->lang->line('bank_name');?></label></td>
@@ -161,9 +165,16 @@
 				changeMonth: true,
 				changeYear: true,
 				yearRange: '2012:2013',
-				dateFormat: "dd-mm-yy"
+				dateFormat: "dd/mm/yy"
 
 			});
 	});
 	</script>
+	<?php
+		elseif ($is_paid == 1):
+			echo success_form("Anda sudah melakukan pembayaran dan menunggu konfirmasi bendahara UT Korea Selatan"); 
+		else:
+			echo success_form("Anda sudah melakukan pembayaran. Terima Kasih");
+		endif; 
+	?>
 <?php } ?>

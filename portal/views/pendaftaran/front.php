@@ -158,8 +158,9 @@ jQuery(function(){
                     <div id="nav-menu">
                         <ul class="sf-menu">
                             <li class="current"><a href="<?php echo base_url()."pendaftaran"?>">Home</a></li>
+                            <li><a href="<?php echo base_url()."pendaftaran/prosedur"?>">Prosedur</a></li>
                             <li><a href="<?php echo base_url()."pendaftaran/registrasi"?>">Pendaftaran</a></li>
-                            <li><a href="<?php echo base_url()."pendaftaran/pembayaran"?>">Konfirmasi Pembayaran</a></li>                            
+                            <li><a href="<?php echo base_url()."pendaftaran/pembayaran"?>">Konfirmasi Pembayaran</a></li>
                         </ul>
                     </div>
                     <div id="search-box">
@@ -195,7 +196,7 @@ jQuery(function(){
                 	<div class="front-icon"><img src="<?php echo template_path('triveo')?>images/front-icon1.jpg" alt="" /></div>
                     <h3>Bergabung Bersama Kami</h3>
                     <p>Tambah Teman, Tambah Ilmu</p>
-                    <p>Nanti Diisi sesuatu di sini yah kakak-kakak.</p>
+                    <!--<p>Nanti Diisi sesuatu di sini yah kakak-kakak.</p>-->
                     <a href="#"><img src="<?php echo template_path('triveo')?>images/read-more.jpg" alt="" /></a>
                 </div>
                 <div class="front-spacer">&nbsp;</div>
@@ -215,12 +216,12 @@ jQuery(function(){
                 <div class="front-spacer">&nbsp;</div>
                 <div class="three-column">
                 	<div class="front-icon"><img src="<?php echo template_path('triveo')?>images/front-icon3.jpg" alt="" /></div>
-                    <h3>Kesan Mahasiswa</h3>
-                    <p>Apa Kata Mahasiswa</p>
+                    <h3>Quote</h3>
+                    <p>&nbsp;</p>
                     <blockquote>
-                    <p>Belajarnya asik, tutornya mantap2. Apalagi Team IT-nya, ganteng-ganteng</p>
+                    <p>Kita tidak bisa mengajari orang apapun. Kita hanya bisa membantu mereka menemukannya di dalam diri mereka</p>
                     </blockquote>
-                    <p><strong>Ceu Lilis - Ansan</strong></p>
+                    <p><strong>Galileo Galilei</strong></p>
                 </div>
                 
                 <!-- Begin of Newsflash -->
@@ -229,16 +230,16 @@ jQuery(function(){
                     <div class="newsflash-title"><h4>Newsflash</h4></div>
                     <div class="news-spacer">&nbsp;</div>
                     <div class="newsflash-text">
-                    	<div>Pendaftaran Mahasiswa Baru Dibuka Pada Tanggal xx Desember 2012. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
-                        <div>Pendaftaran Mahasiswa Baru Ditutup Pada Tanggal xx Januari 2013. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
-                        <div>Pengumuman Mahasiswa Baru Pada Tanggal xx Januari 2013. Jangan Ketinggalan Jangan Ketinggalan Jangan Ketinggalan</div>
+                    	<div>Pendaftaran Mahasiswa Baru, Dibuka  Pada Tanggal 1 Desember 2012  Sampai  Dengan  5 Januari 2013. Jangan sampai ketinggalan</div>
+                    	<div>Pendaftaran Mahasiswa Baru, Dibuka  Pada Tanggal 1 Desember 2012  Sampai  Dengan  5 Januari 2013. Jangan sampai ketinggalan</div>
+                        
                     </div>                
                 </div>
                 <!-- End Newsflash -->
                 
                 <div class="maincontent">
                 <h3>Butuh Bantuan ?</h3>
-                <p>Pertanyaan dapat dikirimkan ke humas@utkorea.org</p>                
+                <p>Pertanyaan dapat dikirimkan ke kemahasiswaan@utkorea.org</p>                
                 </div>
                 <!-- 
                 <div id="sidebox">

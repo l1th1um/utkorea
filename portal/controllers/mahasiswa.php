@@ -7,6 +7,7 @@ class mahasiswa extends CI_Controller {
         parent::__construct();								
     	//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
+		$this->load->model('finance_model','finance');
     }	
 	
 	public function index()
@@ -20,7 +21,8 @@ class mahasiswa extends CI_Controller {
 	function daftar_ulang() {
 		$this->auth->check_auth();		
 		$data = array();
-		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));	
+		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));
+		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'));	
 		
 		
 		if(!$this->input->post('formhdn')){
@@ -71,7 +73,7 @@ class mahasiswa extends CI_Controller {
 				$this->load->model('finance_model','finance');
 				$datapembayaran = $this->input->post();
 
-				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'-');
+				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
 				$datapembayaran['nim'] = $this->session->userdata('username');
 
 				unset($datapembayaran['formhdn']);
@@ -83,8 +85,6 @@ class mahasiswa extends CI_Controller {
 				$this->message->post_to_member($this->session->userdata('username'),'system',$msg);
 				redirect('main');
 			}
-		}else{
-			//validation false
 		}
 		
 		$content['page'] = $this->load->view('mahasiswa/daftar_ulang',$data,TRUE);

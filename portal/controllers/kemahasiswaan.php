@@ -21,7 +21,7 @@ class kemahasiswaan extends CI_Controller {
 			$major_arr[] = $row;
 		 }
 		 $region_arr = array();
-		 $region_arr['K'] = 'KBRI Seoul';
+		 $region_arr['K'] = 'Seoul';
 		 $region_arr['A'] = 'Ansan';
 		 $region_arr['G'] = 'Guro';
 		 $region_arr['U'] = 'Ujiongbu';

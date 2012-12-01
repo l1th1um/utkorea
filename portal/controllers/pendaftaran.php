@@ -61,7 +61,7 @@ class pendaftaran extends CI_Controller {
 
 		if ( ! $this->upload->do_upload($field_name))
 		{
-			echo $this->upload->display_errors();
+			echo $this->upload->display_errors('<p>', '</p>');
 		}
 		else
 		{
@@ -129,7 +129,6 @@ class pendaftaran extends CI_Controller {
 		$this->form_validation->set_rules('last_education_major','Kode Jurusan','trim|required');
 		$this->form_validation->set_rules('mother_name','Kode Jurusan','trim|required');
 		$this->form_validation->set_rules('ijasah_image','Scan Ijasah','trim|required');
-		$this->form_validation->set_rules('passport_image','Scan Passport','trim|required');
 		$this->form_validation->set_rules('photo_image','Foto','trim|required');
 	
 		$delimiter_prefix = "<div class='error'>";
@@ -146,10 +145,22 @@ class pendaftaran extends CI_Controller {
 	}
 	
 	public function mail_new_registrant($name,$email,$reg_id) {
-		$this->load->library('email');
+		$config = Array(
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,
+	      'smtp_user' => 'utkorsel@gmail.com',
+	      'smtp_pass' => 'UTkorea2012'
+	       
+	    );
+	     
+	    $this->load->library('email', $config);    
+	    $this->email->set_newline("\r\n"); 
+		
 				
 		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
 		$this->email->to($email);
+		$this->email->bcc('utkorsel@gmail.com');
 		
 		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
 		$message = $this->lang->line('new_student_email_content');
@@ -160,11 +171,39 @@ class pendaftaran extends CI_Controller {
 		$this->email->send();
 		//echo $this->email->print_debugger();		
 	}
-/*
+
+	/*
 	public function test_email() {
-		$this->mail_new_registrant("Andri", "4r53n1c@gmail.com",'3261');
-	}
-	*/
+		//$this->mail_new_registrant("Andri", "4r53n1c@gmail.com",'3261');
+		error_reporting(E_ALL);		
+		 $config = Array(
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,
+	      'smtp_user' => '4r53n1c@gmail.com',
+	      'smtp_pass' => ''
+	       
+	    );
+	     
+	    $this->load->library('email', $config);    
+	    $this->email->set_newline("\r\n"); 
+	     
+	    $this->email->from('4r53n1c@gmail.com', 'Andri Fachrur Rozie');
+	    $this->email->to('andri@korea.ac.kr');
+	    $this->email->subject('This is an email test');
+	    $this->email->message('it is working Darling ');
+	     
+	    if($this->email->send())
+	    {
+	      echo 'Your email was sent, dammit';
+	    }
+	    else
+	    {
+	      show_error($this->email->print_debugger());
+	    }
+		
+	} */
+	
 	function show_pdf($uuid) {
 		
 		$id = uuid_to_id($uuid, 'reg_code');		
@@ -249,5 +288,50 @@ class pendaftaran extends CI_Controller {
 	function check_payment_status() {
 		$reg_code = substr($this->input->post('nim'),5,4);
 		echo  $this->finance->check_payment_status($reg_code);
+	}
+	
+	public function prosedur() {		
+		$content['page'] = $this->load->view('pendaftaran/prosedur','',TRUE);
+		$this->load->view('pendaftaran/registrasi',$content);
+	}
+	
+	public function mail_all_students() {
+		$config = Array(
+		  'mail_type' => 'html',
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,	      
+	      'smtp_user' => 'utkorsel@gmail.com',
+	      'smtp_pass' => 'UTkorea2012'
+	       
+	    );
+	     
+	    $this->load->library('email', $config);    
+	    $this->email->set_newline("\r\n");
+		
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		
+		$this->email->subject('Portal Akademik Universitas Terbuka Korea Selatan');
+		$list = $this->person->get_list_mahasiswa();
+		$i = 0;
+		foreach ($list as $row) {
+			$name = $row->name;
+			$username = $row->nim;
+			$password = $row->nim;
+			$email = $row->email;
+			
+			$message = $this->lang->line('mail_portal_info');			
+			$message = sprintf($message,$name,$username,$password);
+			
+			$this->email->to($email);
+			
+			$this->email->message($message);
+			
+			if($this->email->send() == FALSE) {
+				echo $nim." - ".$name." - ".$email."<br />";	
+			}
+			
+			$i++;	
+		}			
 	}
 }

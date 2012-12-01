@@ -70,6 +70,7 @@ jQuery(function(){
                   <div id="nav-menu">
                         <ul class="sf-menu">
                             <li class="current"><a href="<?php echo base_url()."pendaftaran"?>">Home</a></li>
+                            <li><a href="<?php echo base_url()."pendaftaran/prosedur"?>">Prosedur</a></li>
                             <li><a href="<?php echo base_url()."pendaftaran/registrasi"?>">Pendaftaran</a></li>
                             <li><a href="<?php echo base_url()."pendaftaran/pembayaran"?>">Konfirmasi Pembayaran</a></li>                            
                         </ul>

@@ -96,4 +96,21 @@ $lang['remarks'] 							= 'Catatan';
 $lang['payment_success'] 					= 'Data Pembayaran Telah Disimpan';
 $lang['no_announcement'] 					= 'Tidak Ada Pengumuman';
 $lang['date'] 								= 'Tanggal';
+$lang['mail_portal_info'] = "
+Hi %s, \n\n
+Untuk memperlancar proses akademik, Universitas Terbuka Korea Selatan telah mempunyai portal akademik, 
+dan seluruh proses akademik akan dilakukan di portal akademik.\n\n
+
+Seluruh mahasiswa Universitas Terbuka Korea Selatan dapat melakukan login di portal akademik Korea Selatan, 
+dengan mengunjungi http://portal.utkorea.org. \n
+Username : %s \n
+Password : %s \n
+
+Untuk melihat cara penggunaan portal akademik Universitas Terbuka Korea Selatan, anda dapat melihat video tutorial di 
+http://www.youtube.com/watch?v=P_RzydRdY5A\n 
+
+
+Salam,\n
+Divisi IT Universitas Terbuka Korea Selatan\n
+";
 ?>
