@@ -80,7 +80,10 @@ class mahasiswa extends CI_Controller {
 				
 				$msg = 'Konfirmasi pembayaran telah disimpan disistem. Nomor konfirmasi pembayaran anda adalah : <strong>'.$conf_number.'</strong><br />Untuk pertanyaan silahkan kirimkan email melalui <i>humas@utkorea.org</i>';
 				
-				$this->message->post_to_member($this->session->userdata('username'),'system',$msg);
+				$this->message->post_to_member($this->session->userdata('username'),'system',$msg);				
+				
+				$this->send_mail_notification($datapembayaran);
+				
 				redirect('main');
 			}
 		}
@@ -199,6 +202,48 @@ class mahasiswa extends CI_Controller {
 		}else{
 			echo validation_errors();
 		}
+	}
+	
+	public function send_mail_notification($data) {
+		$config = Array(
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,
+	      'smtp_user' => 'utkorsel@gmail.com',
+	      'smtp_pass' => 'UTkorea2012'
+	       
+	    );
+	     
+	    $this->load->library('email', $config);    
+	    $this->email->set_newline("\r\n"); 
+		
+				
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		$this->email->to('diansilvia.as@gmail.com');
+		$this->email->cc('octaviamantik@gmail.com');
+		
+		$this->email->subject('Konfirmasi Pembayaran Uang Pendaftaran');
+		$message = "Kepada Tim Bendahara, \n\n
+		Berikut Detail konfirmasi pembayran Baru : \n
+		
+		Nama : ".$data['sender_name']."\n
+		".(strlen($data['nim'])<5)?'Nomor Registrasi':'NIM'." : ".$data['nim']."\n
+		Nama Bank : ".$data['bank_name']."\n
+		Account : ".$data['account']."\n
+		Waktu Transfer : ".$data['payment_date']."\n\n
+		
+		Harap melakukan validasi terhadap informasi terkait melalui halaman.\n
+		".site_url('bendahara/daftar_ulang')."\n\n
+				
+		
+		Terima Kasih,
+		Portal Akademik UT Korea Selatan\n
+		\n
+		";
+		
+		$this->email->message($message);		
+		$this->email->send();
+		//echo $this->email->print_debugger();		
 	}
 	
 }
