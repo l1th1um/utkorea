@@ -20,7 +20,7 @@
                 $("#listcontainer").show();				
 				$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "sms/getlistJQGRID/tutor" );
+						  echo site_url( "humas/getlistJQGRID/tutor" );
 						  ?>',
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIP'],
@@ -50,7 +50,7 @@
                 $("#listcontainer").show();				
 				$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "sms/getlistJQGRID/staff" );
+						  echo site_url( "humas/getlistJQGRID/staff" );
 						  ?>',
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIP'],
@@ -81,7 +81,7 @@
                 $("#listcontainer").show();				
 				$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "sms/getlistJQGRID" );
+						  echo site_url( "humas/getlistJQGRID" );
 						  ?>',
 					datatype: "json",
 					colNames:['Nama','Telepon', 'NIM'],
@@ -120,9 +120,8 @@
             $(".counter").html(char_left);
         });
         
-        $('#frmSms').submit(function(event){
+        $('#frmSms').live('submit',function(event){
            event.preventDefault()
-
            if ($('#message').val() === '') {
                 alert('Mohon Isi Pesan Terlebih Dahulu');                
            } else {
