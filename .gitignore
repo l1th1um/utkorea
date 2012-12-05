@@ -166,4 +166,4 @@ portal/logs*/*
 portal/config/database.php
 *.sql
 
-portal/assets/uploads/*
+assets/uploads/*

@@ -169,6 +169,20 @@ class pendaftaran extends CI_Controller {
 		$filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
 		$this->email->attach($filename);
 		$this->email->send();
+		
+		//to kemahasiswaan (rengganis)
+		$this->email->to('rengganis.rachmat@gmail.com','abo_smile@yahoo.com');
+		$this->email->bcc('utkorsel@gmail.com');
+		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
+		$message = "Kepada Tim Kemahasiswaan, \n\n
+		Pendaftaran Mahasiswa Baru Nomor Registrasi : ".$reg_id."\n\n
+				
+		Silahkan cek dokumen pendaftaran yang terlampir bersama email ini.
+		
+		Terima Kasih,
+		Portal Akademik UT Korea Selatan";
+		$this->email->message($message);		
+		$this->email->send();
 		//echo $this->email->print_debugger();		
 	}
 
