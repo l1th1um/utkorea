@@ -229,6 +229,7 @@ class pendaftaran extends CI_Controller {
 		$data['id'] = $id;
 		$data['row'] = $this->person->get_new_student_details($id);
 	     
+		 
 		if ($data['row'] != FALSE) {
 			$html = $this->load->view('pendaftaran/form_pdf', $data, true);
 			

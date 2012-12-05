@@ -264,7 +264,7 @@ function convertDate($date,$datepicker=FALSE) {
 }
 
 function convertHumanDate($date,$display_time = true) {
-	if (! empty($date)) {
+	if ( (! empty($date)) || ($date <> '0000-00-00 00:00:00') )  {
 	    $check = explode(" ",$date);
     	$ci =& get_instance();
     	
@@ -278,13 +278,17 @@ function convertHumanDate($date,$display_time = true) {
     	
 		$month = $ci->lang->line('month_array');
 		$month_idx = intval($date[1]);
-		$show_date = $date[2]." ".$month[$month_idx]." ".$date[0];  
 		
-		if ((count($check) == '2') && ($display_time)) {
-			return $show_date. "  ".$check[1]; 
-		} else {
-			return $show_date;
+		if($month_idx != 0) {
+			$show_date = $date[2]." ".$month[$month_idx]." ".$date[0];  
+		
+			if ((count($check) == '2') && ($display_time)) {
+				return $show_date. "  ".$check[1]; 
+			} else {
+				return $show_date;
+			}	
 		}
+		
 	}    
 }
 

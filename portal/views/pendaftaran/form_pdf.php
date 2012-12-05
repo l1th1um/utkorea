@@ -1,8 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>Pendaftaran Mahasiswa Baru</title>
 <style type="text/css">
 
 @page {
@@ -13,7 +11,7 @@ body {
   font-family: sans-serif;
   font-size : 13px;
   margin: 3cm 0 2cm 0;
-  text-align: justify;
+  text-align: justify;  
 }
 
 #header,
@@ -73,7 +71,7 @@ h2 {
 }
 
 table#regFrm tr {
-	line-height:30px
+	line-height:20px
 }
 
 
@@ -81,7 +79,7 @@ table#regFrm tr {
   
 </head>
 
-<body>
+<body marginwidth="0" marginheight="0">
 <div id="header">
   <table "width: 100%;">
     <tr >
@@ -104,6 +102,61 @@ table#regFrm tr {
   <div class="page-number"></div>
 </div>
 
+<!-- Halaman 1 -->
+<p style="padding-bottom:20px">Kepada Yth. <?php echo $row->name; ?></p>
+<p>Terima kasih telah mendaftar sebagai calon mahasiswa UT Korea Semester Ganjil Tahun 2013</p>
+<p>Berkas yang perlu dikirimkan adalah sebagai berikut</p>
+<ol>
+	<li>Formulir pendaftaran yang telah ditandatangani</li>
+	<li>Satu lembar fotokopi ijazah yang telah dilegalisasi oleh pejabat yang berwenang</li>
+	<li>Pas Foto 2 x 3 sebanyak 3 lembar</li>
+</ol>
+
+<p>Berkas dokumen diatas dikirimkan kepada (pilih salah satu dari dua opsi) :</p>
+
+<p><b>1. Jika Berkas berada di Indonesia</b></p>
+
+<div style='padding-left:10px;border:1px solid #000000;line-height: 1em'>
+	<p>Universitas Terbuka UPBJJ Jakarta (a.n. Yasir UT Korea)</p>
+	<p>Jl. Pemuda, Rawamangun, Komp. Universitas Negeri Jakarta, Jakarta Timur 13220</p>
+	<p>Telp. 021-4701577, 4751172, 4893638 Fax. 021-4701577, 4751172</p>
+</div>
+
+<p><b>2. Jika Berkas berada di Korea</b></p>
+<p>a. Untuk Wilayah Utara (Seoul dan sekitarnya)</p>
+
+<div style='padding-left:10px;border:1px solid #000000;line-height: 1em'>
+	<p>Rengganis</p>
+	<p>CJ International House</p>
+	<p>Room 627B Korea University, Anam-dong, Seongbuk-gu, Seoul 136-701</p>
+</div>
+
+<p>b. Untuk Wilayah Selatan (Daegu-Busan dan sekitarnya)</p>
+
+<div style='padding-left:10px;border:1px solid #000000;line-height: 1em'>
+	<p>Dian Kharismadewi</p>
+	<p>School of Chemical Engineering #302</p>
+	<p>Yeungnam University 214-1 Dae-dong, Gyeongsan, Gyeongbuk  712-749</p>
+</div>
+
+<p>
+	Catatan :
+</p>
+
+
+<ol>
+	<li>Pastikan anda telah memiliki back-up berkas yang akan dikirimkan, bisa berupa scan, foto atau fotokopi 
+		sebelum semua dokumen dikirimkan melalui pos ke alamat diatas untuk mengantisipasi jika berkas tidak diterima oleh UT Korea</p>
+	<li>Berkas harus sudah dikirimkan paling lambat pada tanggal 5 Januari 2013 (cap pos) ke alamat diatas.</li>
+</li>
+</ol>
+
+<p>Terima kasih</p>
+<p>UT Korea</p>
+<p>Berkarya dan Berpendidikan</p>
+<!-- End Halaman 1 -->
+<hr>
+
 <div style="width:100px;height:30px;margin-left:1cm;border:1px solid #000000;position:absolute;text-align: center">
 	<div style="padding:8px;font-size: 12px;font-weight: bold">UTKOR<?php echo $id?></div>
 </div>
@@ -113,12 +166,11 @@ table#regFrm tr {
 <h2>TAHUN 2013<h2>
 
 
-	
+<!--	
 <div style="width:3cm;height:4cm;margin-left:16cm;border:1px solid #000000;position:absolute;">
 	<div style="padding-top:1.8cm;">3 x 4 cm</div>
-</div>
-<p>	
-<table style="width:80%;padding-top:70px" align="center"  id="regFrm">
+</div>-->
+<table style="width:80%;padding-top:40px" align="center"  id="regFrm">
 	<tr>
 		<td width="200px"><?php echo $this->lang->line('name');?></td>
 		<td width="20px">:</td>
@@ -150,7 +202,14 @@ table#regFrm tr {
 	<tr>
 		<td valign="top"><?php echo $this->lang->line('address_kr');?></td>
 		<td valign="top">:</td>
-		<td><?php echo $row->address_kr; ?></td>
+		<td><?php 
+		if (strlen($row->address_kr) != strlen(utf8_decode($row->address_kr))) {
+			echo "<p style='font-family : batang'>".$row->address_kr."</p>";
+		} else {
+			echo $row->address_kr;	
+		}
+		 
+		?></td>
 	</tr>
 	<tr>
 		<td><?php echo $this->lang->line('phone');?></td>
@@ -261,22 +320,13 @@ table#regFrm tr {
 			<?php echo get_region($row->region); ?>
 		</td>
 	</tr>
-	<tr valign="bottom" height="200px">
+	<tr valign="bottom" height="150px">
 		<td colspan="3">Dengan ini saya menyatakan bahwa semua data diatas adalah benar.</td>
 	</tr>
-	<tr style="line-height:150px;" valign="bottom">
+	<tr style="line-height:100px;" valign="bottom">
 		<td colspan="3">(<span><u><?php echo $row->name;?></u></span>)</td>		
-	</tr>
-	<tr>
-		<td colspan="3">
-			* Kirimkan formulir ini beserta Pas Foto 3 x 4 cm 2 buah, Fotocopy KTP, Fotocopy Passport, Ijasah yang telah dilegalisir ke Sekretariat Universitas Terbuka Korea Selatan
-		</td>		
-	</tr>
+	</tr>	
 </table>
-</p>
+</hr>
 
-<!--<hr >
-
-Halaman 2
-<hr >-->
 </body></html>

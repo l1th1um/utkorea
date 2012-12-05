@@ -113,4 +113,5 @@ http://www.youtube.com/watch?v=P_RzydRdY5A\n
 Salam,\n
 Divisi IT Universitas Terbuka Korea Selatan\n
 ";
+$lang['reg_code'] 							= 'No Pendaftaran';
 ?>

@@ -59,7 +59,7 @@
 						$("#dialogcontainer").dialog({
 							modal: true,
 							position: {my: "top", at: "top", of: window},
-							width: 700,
+							width: 800,
 							height: 500,
 							close: function(event,ui){
 								$(this).dialog("destroy");

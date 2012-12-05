@@ -128,7 +128,7 @@
            } else {
                 if (confirm("Anda Yakin Untuk Mengirim SMS?")) {
                     $.blockUI({ message: '<h1><img src="<?php echo admin_tpl_path()?>img/ajax-loader.gif" />   Mohon Tunggu Sebentar...</h1>' });
-                    $.post("<?php echo base_url() ?>sms/send_sms", $(this).serialize(),function(data){
+                    $.post("<?php echo base_url() ?>humas/send_sms", $(this).serialize(),function(data){
 						alert(data);
 						window.location = '<?php echo current_url()?>'; //redirects to homepage						
                     });           

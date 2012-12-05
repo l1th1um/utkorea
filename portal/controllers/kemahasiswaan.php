@@ -296,7 +296,8 @@ class kemahasiswaan extends CI_Controller {
 								if ($key == 'phone') {
 									$this->excel->getActiveSheet()->setCellValueExplicit(num_to_letter($init_column).$table_row, "+".$val, PHPExcel_Cell_DataType::TYPE_STRING);									
 								} else if ($key == 'birth_date') {
-									$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, convertHumanDate($val));									
+									//$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, convertHumanDate($val));									
+									$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, $val);
 								} else {
 									$this->excel->getActiveSheet()->setCellValue(num_to_letter($init_column).$table_row, $val);	
 								}

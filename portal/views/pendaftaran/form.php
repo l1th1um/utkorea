@@ -164,9 +164,14 @@
 								  'maxlength' => '3',
 								  'readonly' => 'readonly');
 				echo form_input($data_edu)?> 
+				Klik 
 				<a href='javascript://' class='contact'>
 					<img src='<?php echo template_path('core')?>images/search.png' alt='' />
 				</a>
+				Untuk Memilih Jurusan
+				<div class='hint'>
+					Pilih kode jurusan sesuai jurusan pada ijazah terakhir. Misalnya jika anda lulusan SMA pilih 101, SMEA pilih 104
+				</div>				
 			</div>
 		</li>
 		<li>
