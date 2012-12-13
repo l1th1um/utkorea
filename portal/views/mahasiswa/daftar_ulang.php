@@ -12,7 +12,7 @@
 				$year_graduate[$v] = $v;
 			}
 			
-			print_r($empty_val);
+			
 			foreach($empty_val as $row) {
 				if($row!='remarks'){
 				echo '<tr><td width="150px"><label>'.$this->lang->line($row).'</label><td>';
@@ -142,7 +142,7 @@
 				</tr>		
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('account_no');?></label></td>
-					<td><?php echo form_input('account_no'); ?></td>                
+					<td><?php echo form_input('account_no'); ?><span style="font-size:8pt;"><i>Masukan hanya angka tanpa (-) ataupun spasi</i></span></td>                
 				</tr>				
 				<tr>		
 					<td  width="150px"><label><?php echo $this->lang->line('sender_name');?></label></td>
