@@ -495,4 +495,14 @@ class person_model extends CI_Model {
 		}
 		
 	}
+	
+	function check_email($email)
+	{
+		
+		$this->db->where("email", $email); 
+		$result = $this->db->get('mahasiswa_baru');
+		if($result->num_rows())return true;
+		return false;
+	}
+	
 }
