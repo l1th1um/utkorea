@@ -134,7 +134,7 @@
 
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('payment_date');?></label></td>
-					<td><?php echo form_input('payment_date','','style="width:8em"'); ?></td>                
+					<td><?php echo form_input('payment_date','','readonly="readonly" style="width:8em"'); ?></td>                
 				</tr>
 				<tr>
 					<td><label><?php echo $this->lang->line('bank_name');?></label></td>
@@ -142,7 +142,7 @@
 				</tr>		
 				<tr>
 					<td  width="150px"><label><?php echo $this->lang->line('account_no');?></label></td>
-					<td><?php echo form_input('account_no'); ?><span style="font-size:8pt;"><i>Masukan hanya angka tanpa (-) ataupun spasi</i></span></td>                
+					<td><?php echo form_input('account_no'); ?>&nbsp;<span style="font-size:8pt;"><i>Masukan hanya angka tanpa (-) ataupun spasi</i></span></td>                
 				</tr>				
 				<tr>		
 					<td  width="150px"><label><?php echo $this->lang->line('sender_name');?></label></td>
