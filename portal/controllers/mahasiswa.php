@@ -52,10 +52,7 @@ class mahasiswa extends CI_Controller {
 			$delimiter_suffix = "</div>";
 			$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
 		}else{
-			$this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'),'trim|required');
-			$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
-			$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
-			$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+			$this->_validate_payment();
 		}
 		
 		if ($this->form_validation->run()){
@@ -68,7 +65,6 @@ class mahasiswa extends CI_Controller {
 				$this->person->update_mahasiswa($this->session->userdata('username'),$col);
 				$data['empty_val'] = '';
 			}else{
-				$this->load->model('finance_model','finance');
 				$datapembayaran = $this->input->post();
 
 				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
@@ -245,5 +241,53 @@ class mahasiswa extends CI_Controller {
 		$this->email->send();
 		//echo $this->email->print_debugger();		
 	}
+	
+	function _validate_payment() {
+		$this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'),'trim|required');
+		$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
+		$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
+		$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+	}
+	
+	function biaya_studi() {
+		$this->auth->check_auth();		
+		$data = array();
+		
+		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'payment');
+		
+		if (setting_val('time_period') == user_detail('entry_period', $this->session->userdata('username'))) {
+			$data['amount'] = setting_val('payment_new');						
+		} else {
+			$data['amount'] = setting_val('payment');
+		}
+			
+		
+		if (isset($_POST['sender_name'])) {
+			$this->_validate_payment();
+			if ($this->form_validation->run()){
+				$datapembayaran = $this->input->post();
+
+				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
+				$datapembayaran['nim'] = $this->session->userdata('username');
+				$datapembayaran['period'] = setting_val('time_period');
+				$datapembayaran['amount'] = $data['amount'];
+				
+				if ($conf_number = $this->finance->save_payment($datapembayaran)) {
+					$msg = 'Pembayaran biaya studi telah disimpan disistem. Nomor konfirmasi pembayaran anda adalah : <strong>'.$conf_number.'</strong>';
+				
+					$this->message->post_to_member($this->session->userdata('username'),'system',$msg);			
+									
+					redirect('main');	
+				} else {
+					$data['message'] = error_form($this->lang->line('db_error')); 
+				}				
+			}				
+		}
+		
+		$data['amount'] = setting_val('currency')." ".number_format($data['amount']);
+		
+		$content['page'] = $this->load->view('mahasiswa/biaya_studi',$data,TRUE);
+        $this->load->view('dashboard',$content);		
+	}	
 	
 }

@@ -489,7 +489,7 @@ function mysql_to_datepicker($date) {
 function setting_val($val) {
     $ci =& get_instance();
     $ci->db->select($val);
-    $query = $ci->db->get('setting');    
+    $query = $ci->db->get('settings');    
     $row = $query->row();
     
     return $row->$val;

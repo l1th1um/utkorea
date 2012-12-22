@@ -12,7 +12,7 @@
 				$year_graduate[$v] = $v;
 			}
 			
-			print_r($empty_val);
+			//print_r($empty_val);
 			foreach($empty_val as $row) {
 				if($row!='remarks'){
 				echo '<tr><td width="150px"><label>'.$this->lang->line($row).'</label><td>';
@@ -31,7 +31,14 @@
 										  'maxlength' => '3',
 										  'readonly' => 'readonly');
 						echo form_input($data_edu);
-						echo '<a href="javascript://" class="contact" ><img src="'.template_path('core').'images/search.png" alt="" /></a>';
+						echo "<div>Klik 
+								<a href='javascript://' class='contact'>
+									<img src='".template_path('core')."images/search.png' alt='' style='border:0;background-color:transparent' />
+								</a>
+							Untuk Memilih Jurusan
+							<div class='hint'>
+								Pilih kode jurusan sesuai jurusan pada ijazah terakhir. Misalnya jika anda lulusan SMA pilih 101, SMEA pilih 104
+							</div></div>";
 					}else if($row=='year_graduate'){					
 						echo form_dropdown($row,$year_graduate,$this->input->post('year_gaduate'));
 					}else if($row=='last_education'){
