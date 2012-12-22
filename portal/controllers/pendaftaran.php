@@ -125,7 +125,7 @@ class pendaftaran extends CI_Controller {
 		$this->form_validation->set_rules('address_id','Alamat di Indonesia','trim|required|min_length[10]');
 		$this->form_validation->set_rules('address_kr','Alamat di Korea','trim|required|min_length[10]');
 		$this->form_validation->set_rules('phone','No Telepon','trim|required|min_length[8]');
-		$this->form_validation->set_rules('email','Email','trim|required|valid_email');
+		$this->form_validation->set_rules('email','Email','trim|required|valid_email|callback__check_email');
 		$this->form_validation->set_rules('last_education_major','Kode Jurusan','trim|required');
 		$this->form_validation->set_rules('mother_name','Kode Jurusan','trim|required');
 		$this->form_validation->set_rules('ijasah_image','Scan Ijasah','trim|required');
@@ -317,7 +317,7 @@ class pendaftaran extends CI_Controller {
 	      'smtp_host' => 'ssl://smtp.googlemail.com',
 	      'smtp_port' => 465,	      
 	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea2012'
+	      'smtp_pass' => 'UTkorea^&2012'
 	       
 	    );
 	     
@@ -348,5 +348,15 @@ class pendaftaran extends CI_Controller {
 			
 			$i++;	
 		}			
+	}
+
+	public function _check_email($email){
+		
+		if($this->person->check_email($email)){
+			$this->form_validation->set_message('_check_email', 'Email sudah digunakan, harap gunakan email lain');
+			return false;
+		}else{
+			return true;
+		}
 	}
 }

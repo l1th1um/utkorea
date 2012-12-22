@@ -110,7 +110,7 @@ class person_model extends CI_Model {
 	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false)
 	{	
 		if($type=='staff'){
-			$this->db->select("name,nip,phone");
+			$this->db->select("staff_id,name,phone,email,affiliation");
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);
 		}elseif($type=='baru'){			
@@ -495,4 +495,14 @@ class person_model extends CI_Model {
 		}
 		
 	}
+	
+	function check_email($email)
+	{
+		
+		$this->db->where("email", $email); 
+		$result = $this->db->get('mahasiswa_baru');
+		if($result->num_rows())return true;
+		return false;
+	}
+	
 }
