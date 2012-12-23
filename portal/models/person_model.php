@@ -229,8 +229,13 @@ class person_model extends CI_Model {
 		if (empty($username)) {
 			$username = $this->session->userdata('username');
 		}
-	
-		$where = array ('password'=>hashPassword($password),'username'=>$username);
+		
+		if($table=='mahasiswa'){
+			$where = array ('password'=>hashPassword($password),'nim'=>$username);
+		}else{
+			$where = array ('password'=>hashPassword($password),'username'=>$username);	
+		}
+		
 		$query = $this->db->get_where($table,$where);
 	
 		if ($query->num_rows() > 0)
@@ -245,7 +250,11 @@ class person_model extends CI_Model {
 		}
 		
 		$set = array ('password'=>hashPassword($password));
-		$where = array ('username'=>$username);
+		if($table=='mahasiswa'){
+			$where = array ('nim'=>$username);
+		}else{
+			$where = array ('username'=>$username);
+		}
 	
 		$query = $this->db->update($table,$set,$where);
 	

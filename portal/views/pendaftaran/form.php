@@ -179,7 +179,7 @@
 				<?php echo $this->lang->line('year_graduate')?>
 			</label>
 			<div class="element">
-				<?php echo form_dropdown('year_graduate',$year_graduate,$this->input->post('year_gaduate'));?>
+				<?php echo form_dropdown('year_graduate',$year_graduate,$this->input->post('year_graduate'));?>
 			</div>
 		</li>
 		<li>

@@ -214,7 +214,7 @@ table#regFrm tr {
 	<tr>
 		<td><?php echo $this->lang->line('phone');?></td>
 		<td>:</td>
-		<td>+82<?php echo $row->phone; ?></td>
+		<td>+<?php echo $row->phone; ?></td>
 	</tr>
 	<tr>
 		<td><?php echo $this->lang->line('email');?></td>
@@ -256,7 +256,7 @@ table#regFrm tr {
 	<tr>
 		<td><?php echo $this->lang->line('major_code');?></td>
 		<td>:</td>
-		<td><?php echo $row->major; ?></td>
+		<td><?php echo $row->last_education_major; ?></td>
 	</tr>
 	<tr>
 		<td><?php echo $this->lang->line('year_graduate');?></td>
