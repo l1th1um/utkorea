@@ -81,7 +81,7 @@
                 } else {
                     $.post("<?php base_url()?>main/check_login", {username:uval, password:passval},
                      function(data) {
-                       console.log("datanya " + data)
+                       //console.log("datanya " + data)
                        if (data == "0") {
 							$('#notif_error').html("<p><strong>Username atau Password Tidak Sesuai</strong></p>");
                             $('#notif_error').animate({
