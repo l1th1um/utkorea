@@ -114,4 +114,5 @@ Salam,\n
 Divisi IT Universitas Terbuka Korea Selatan\n
 ";
 $lang['reg_code'] 							= 'No Pendaftaran';
+$lang['data_saved'] 						= 'Data Telah Disimpan';
 ?>

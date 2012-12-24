@@ -256,7 +256,22 @@ class pendaftaran extends CI_Controller {
 	
 	function check_registration_status() {
 		$reg_code = substr($this->input->post('reg_code'),5,4);
-		echo  $this->person->check_registration_status($reg_code);
+		$payment_status = $this->finance->check_payment_status($reg_code);
+		$reg_status = $this->person->check_registration_status($reg_code);
+		
+		if ($payment_status <> 0) {
+			$payment_status = "Anda Sudah Melakukan Pembayaran";
+		} else {
+			$payment_status = "Anda Belum Melakukan Pembayaran";
+		}
+		
+		
+		if (!($reg_status)) {
+			return false;
+		} else {
+			echo  $reg_status."<br />".$payment_status;	
+		}
+		
 	}
 
 	public function pembayaran() {

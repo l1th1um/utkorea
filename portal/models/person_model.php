@@ -320,7 +320,7 @@ class person_model extends CI_Model {
 	
 	function check_registration_status($reg_code) 
 	{
-		$this->db->select('name,status');
+		$this->db->select('name,status,verified');
 		$query = $this->db->get_where('mahasiswa_baru',array('reg_code' => $reg_code));
 		
 		if ( $query->num_rows() > 0 ) 
@@ -328,13 +328,14 @@ class person_model extends CI_Model {
 			$row = $query->row();
 			$data = "Nama    : ".$row->name."<br />";
 			$data .= "Status    : ";
-			if (empty($row->status)) {				
+			
+			if (empty($row->verified)) {				
 				$data .= "Dokumen Belum Diterima/ Menunggu Verifikasi Dokumen";
-			} else if ($row->status == 1) {
+			} else if ($row->verified == 1) {
 				$data .= "Dokumen Sudah di Verifikasi";
-			} else if ($row->status == 1) {
-				$data .= "Selamat Anda Sudah Diterima menjadi Calon Mahasiswa Universitas Terbuka Korea Selatan";
 			}
+			
+			 
 		} else {
 			$data = false;
 		} 

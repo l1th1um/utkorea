@@ -7,6 +7,7 @@ class tutor extends CI_Controller {
         parent::__construct();								
 		//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
+		$this->load->model('tutor_model');
     }	
 	
 	public function index()
@@ -115,8 +116,57 @@ class tutor extends CI_Controller {
 			}
 		}				
 		
-		echo $response;
-		
+		echo $response;		
 	}	
 
+	public function assignment() {
+		$this->auth->check_auth();
+		$data = array();
+		
+		$major = array(0 => "-- Pilih Jurusan --");
+		$data['major'] = $major + major_list();		
+							
+		$content['page'] = $this->load->view('tutor/assignment',$data,TRUE);
+        $this->load->view('dashboard',$content);		
+	}
+	
+	public function assignment_major($id) {
+		//$this->auth->check_auth();
+		$data = array();
+		$i = 1;
+			
+		$courses = array();
+		
+		foreach ($this->tutor_model->course_list($id) as $row) {
+			if ($row->semester <> $i) {
+				$i = $row->semester;				
+			}
+			
+			$courses[$i][] = $row;
+		}				
+		$tutor = array(0 => "-- Pilih Tutor --");
+		$data['tutor'] = $tutor + $this->tutor_model->tutor_by_major($id);
+		$data['course'] = $courses;
+		$this->load->view('tutor/assignment_major',$data);
+	}
+	
+	public function save_assignment() {
+		$i = 0;
+		$data = explode('&',$this->input->post('frmdata'));
+		foreach ($data as $key => $val) {
+			$val = explode('=',$val);
+			if (! empty($val[1])) {
+				$course_id = str_replace('tutor', '', $val[0]);
+				
+				$insert = $this->tutor_model->save_assignment($val[1], $course_id);
+				
+				if ($insert) {
+					$i++;	
+				}
+			}	
+		}
+		
+		echo ($i > 0)? '1' : '0';
+	}
 }
+
