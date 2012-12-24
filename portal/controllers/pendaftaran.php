@@ -150,7 +150,7 @@ class pendaftaran extends CI_Controller {
 	      'smtp_host' => 'ssl://smtp.googlemail.com',
 	      'smtp_port' => 465,
 	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea2012'
+	      'smtp_pass' => 'UTkorea^&2012'
 	       
 	    );
 	     
