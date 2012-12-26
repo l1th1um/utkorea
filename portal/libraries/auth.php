@@ -72,7 +72,8 @@
 	      	  $this->CI->db->where('username', $login['username']);	
 		      $query = $this->CI->db->get('staff');		      
 	      }
-	      
+		  
+		  $remarks = "Username = '".$login['username']."', Password '".$login['password']."'";
 	
 	      if ($query->num_rows() >= 1) {
 	      		$row = $query->row_array();
@@ -94,15 +95,20 @@
 	               );
 			  }	
                
-                
                $this->CI->session->set_userdata($newdata);
-               
+               $result = "success";
                echo "1";		      			      	
 	      } else {
+	      	  $result = "failure";
 	           echo "0";
-	      }
-		      	  
-    	  	  
+		  }
+		  
+		  $logs_data = array('activity' => 'login',
+		  					 'result' => $result,
+							 'remarks' => $remarks,
+							 'user_agent' => check_user_agent());
+							 
+		 insert_logs($logs_data);	  
     }
       
 	

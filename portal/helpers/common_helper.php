@@ -725,3 +725,42 @@ function num_to_letter($num, $uppercase = TRUE)
 	$letter .= 	(floor($num/26) > 0) ? str_repeat($letter, floor($num/26)) : '';
 	return 		($uppercase ? strtoupper($letter) : $letter); 
 }
+
+function insert_logs($data)
+{
+	$ci =& get_instance();
+	$ci->db->set('activity_time', 'now()', FALSE);
+    $ci->db->insert('logs',$data);
+    
+	if ($ci->db->affected_rows() > 0) {
+		return TRUE;	
+	}  else {
+		return FALSE;
+	}
+}
+
+function check_user_agent() 
+{
+	$ci =& get_instance();
+		
+	$ci->load->library('user_agent');
+
+	if ($ci->agent->is_browser())
+	{
+	    $agent = $ci->agent->browser().' '.$ci->agent->version();
+	}
+	elseif ($ci->agent->is_robot())
+	{
+	    $agent = $ci->agent->robot();
+	}
+	elseif ($ci->agent->is_mobile())
+	{
+	    $agent = $ci->agent->mobile();
+	}
+	else
+	{
+	    $agent = 'Unidentified User Agent';
+	}
+	
+	return $agent." | ".$ci->agent->platform();
+}
