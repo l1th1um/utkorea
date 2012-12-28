@@ -5,7 +5,7 @@ class message{
 	function message()
     {   
 		$this->CI =& get_instance();	
-		$this->CI->auth->check_auth();
+		
     }
 	
 	function post_to_member($to,$from,$message){
