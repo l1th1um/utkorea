@@ -32,7 +32,7 @@ class mahasiswa extends CI_Controller {
 				'mother_name'=>'trim|required',
 				'ijasah_image'=>'trim',
 				'passport_image'=>'trim',
-				'photo_image'=>'trim|required',
+				'photo_image'=>'trim',
 				'last_education_major'=>'trim|required',
 				'marital_status'=>'trim|required',
 				'employment'=>'trim|required',

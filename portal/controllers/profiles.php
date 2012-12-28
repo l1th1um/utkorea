@@ -21,6 +21,8 @@ class profiles extends CI_Controller {
 			$this->form_validation->set_rules('bank','Nama Bank','trim|required');
 			$this->form_validation->set_rules('account','Nomor Account','required|xss_clean|trim');
 			$this->form_validation->set_rules('affiliation','Afiliasi','trim|required|xss_clean');	
+		}else{
+			$this->form_validation->set_rules('birth_date','Tanggal Lahir','trim|required');
 		}
 		
 		$delimiter_prefix = "<div class='error'>";
@@ -49,7 +51,8 @@ class profiles extends CI_Controller {
 						'address_kr' => $this->input->post('address'),
 						'phone' => $this->input->post('phone'),
 						'email' => $this->input->post('email'),
-						'photo_image' => $this->input->post('photo')
+						'photo_image' => $this->input->post('photo'),
+						'birth_date' => $this->input->post('birth_date')
 					);
 					$this->person->update_mahasiswa($this->session->userdata('username'),$col);
 			}		
@@ -75,7 +78,8 @@ class profiles extends CI_Controller {
 				'name'=>$data['name'],
 				'email'=>$data['email'],
 				'address'=>$data['address_kr'],
-				'phone'=>$data['phone']
+				'phone'=>$data['phone'],
+				'birth_date' => $data['birth_date']
 			);
 		}	
 		
@@ -143,6 +147,55 @@ class profiles extends CI_Controller {
 		}	
 	}
 	
+	function inbox(){
+		$this->auth->check_auth();
+		$data = array();
+		$content['page'] = $this->load->view('profiles/inbox',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
 	
+	public function getinboxJQGRID($username)
+	{
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=20;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='id';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='ASC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		$data->records = count ($this->message_model->get_user_inboxJQGRID($req_param,"all",$username)->result_array());		
+		$records = $this->message_model->get_user_inboxJQGRID($req_param,"current",$username)->result_array();
+
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+	}
+	
+	function delete_msg(){
+		$this->form_validation->set_rules('msgid','ID','required');
+		if($this->form_validation->run())
+		{
+			$this->message->delete_message($this->input->post('msgid'));	
+		}
+	}
 
 }
