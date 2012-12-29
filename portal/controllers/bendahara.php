@@ -174,7 +174,7 @@ class bendahara extends CI_Controller {
 		$this->email->attach($filename);
 		$this->email->send();		
 		
-		echo $this->email->print_debugger();		
+		//echo $this->email->print_debugger();		
 	}
 
 	public function sent_receipt_reregistration(){
@@ -225,7 +225,7 @@ class bendahara extends CI_Controller {
 				$data['receipt_no'] = $receipt_data['receipt_status']."/".sprintf("%1$03d",$receipt_id)."/KEU/".$receipt_period;
 				
 				$this->receipt($receipt_id,$data);
-				$this->mail_receipt_reregistrant($subject,$data['payment'][0]['type'],$user_detail['nim'],$user_detail['email'],$receipt_id);				
+				$this->mail_receipt_reregistrant($subject,$data['payment'][0]['type'],$user_detail['name'],$user_detail['email'],$receipt_id);				
 			}
 			
 		}

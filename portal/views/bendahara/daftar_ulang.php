@@ -140,7 +140,7 @@
 					  data: {id:data},
 					  success: function(data){
 						if(data!="1"){
-							alert(data);							
+							alert("Kuitansi Telah Dikirim");							
 						}
 						$("#grid_name").trigger("reloadGrid");							
 					  }
