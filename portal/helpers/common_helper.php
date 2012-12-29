@@ -33,6 +33,7 @@ function menu($role) {
 		$i = 0;
 		foreach ($query->result() as $row) {
 			$menu[$i]['page'] = $row->page;
+			$menu[$i]['icons'] = $row->icons;
 			
 			$ci->db->like('permission',$role);
 			$ci->db->WHERE('parent',$row->id);
@@ -68,7 +69,7 @@ function generate_menu($role) {
 	if ($menu != FALSE) {
 		
 		foreach ($menu as $key => $val) {
-			$list .=  "<li><a href='#' title='' class='projects'>".$val['page']."</a> \n <ul>";
+			$list .=  "<li><a href='#' title='' class='".$val['icons']."'>".$val['page']."</a> \n <ul>";
 			
 			if (isset($val['child'])) {
 				foreach ($val['child'] as $key2 => $val2) {

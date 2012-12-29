@@ -93,6 +93,7 @@
 			<!-- /Article Header -->
             
 		    <?php if (isset($page)) echo $page;  else $page= '';?>
+		    <div style="height:20px;">&nbsp;</div>
 			<!-- Article Footer -->
 			
 			<footer style="text-align:center;position:fixed;bottom:0;left:47%;">

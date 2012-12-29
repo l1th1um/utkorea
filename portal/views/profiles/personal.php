@@ -49,6 +49,13 @@
 			<td><label>Afiliasi</label></td>
 			<td><?php echo form_input('affiliation',$data['affiliation']); ?>&nbsp;<?php echo form_error('affiliation'); ?></td>      	
 		</tr>		
+		<?php }else{ ?>
+		<tr>
+			<td><label>Tanggal Lahir</label></td>
+			<td><?php echo form_input('birth_date',$data['birth_date']); ?>&nbsp;<?php echo form_error('birth_date'); ?><br />
+				<span style="font-size:8pt">Format : Tahun-Bulan-Hari</span>
+			</td>      	
+		</tr>	
 		<?php } ?>
 		<tr>
 			<td colspan="3"><button type="submit">

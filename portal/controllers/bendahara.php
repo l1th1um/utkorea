@@ -232,4 +232,48 @@ class bendahara extends CI_Controller {
 
 	}
 		
+	function rekap_mahasiswa_lama(){
+		$this->auth->check_auth();
+		$data = array();					
+		$content['page'] = $this->load->view('bendahara/rekap_mahasiswa_lama',$data,TRUE);
+        $this->load->view('dashboard',$content);			
+	}	
+	
+	public function get_rekap_mahasiswa_lama($type='all')
+	{
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=20;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='a.nim';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='ASC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		$data->records = count ($this->finance->get_rekap_mahasiswa_lama($req_param,"all",$type)->result_array());		
+		$records = $this->finance->get_rekap_mahasiswa_lama($req_param,"current",$type)->result_array();
+
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+	}
+	
+		
 }

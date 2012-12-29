@@ -214,5 +214,68 @@ class finance_model extends CI_Model {
 			return FALSE;
 		}
 	}
+	
+	function get_rekap_mahasiswa_lama($params = "" , $page = "all",$type="all")
+	{
+		$this->db->select('a.nim,b.is_verified as semesterpayment,c.is_verified as registrationpayment');
+		$this->db->from('mahasiswa a');
+		$this->db->join('payment b', 'a.nim = b.nim','left');
+		$this->db->join('reregistration c', 'a.nim = c.nim','left');
+		if($type==1){
+			$this->db->where('b.is_verified = 1 AND c.is_verified = 1');
+		}else if($type==2){
+			$this->db->where('c.is_verified = 1 AND (b.is_verified = 0 OR b.is_verified IS NULL)');
+		}else if($type==3){
+			$this->db->where('c.is_verified = 0');
+		}
+		
+		if (!empty($params))		{			
+			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
+			{
+				$ops = array (
+							"eq" => "=",
+							"ne" => "<>",
+							"lt" => "<",
+							"le" => "<=",
+							"gt" => ">",
+							"ge" => ">="
+				);										
+				
+				if(!empty($params['search_field'])){
+					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
+						if($params['search_operator']=='cn'){
+							$this->db->like($params['search_field'],$params['search_str']);
+						}else{
+							$this->db->not_like($params['search_field'],$params['search_str']);
+						}
+					}else{
+						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
+					}
+					
+				}
+				
+				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
+
+
+				if ($page != "all")
+				{
+					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
+				}
+
+				$query = $this->db->get();
+				
+
+			}
+		}
+		else
+		{			
+				$this->db->limit (25);
+				$query = $this->db->get();
+
+		}
+
+		return $query;
+	}
+	
 }
 ?>
