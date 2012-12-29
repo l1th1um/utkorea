@@ -13,7 +13,9 @@
 	<!-- CSS Styles -->
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/style.css">
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/jquery.tipsy.css">
-
+	<noscript>
+    	<h1 style="text-align: center;color:#000000;font-size: 24px">Javascript Harus Diaktifkan</h1>
+    </noscript>
 	<script src="<?php echo admin_tpl_path()?>js/libs/modernizr-1.7.min.js"></script>
     <style>
     #notif_error,#notif_information {position: absolute;width: 332px;z-index: -1;margin-top:-87px;opacity:0}     
@@ -114,7 +116,7 @@
 		   });
 		   
         });
-    </script>
+    </script>    
 </body>
 
 </html>

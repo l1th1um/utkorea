@@ -259,8 +259,10 @@ class pendaftaran extends CI_Controller {
 		$payment_status = $this->finance->check_payment_status($reg_code);
 		$reg_status = $this->person->check_registration_status($reg_code);
 		
-		if ($payment_status <> 0) {
-			$payment_status = "Anda Sudah Melakukan Pembayaran";
+		if ($payment_status == 1) {
+			$payment_status = "Sedang Menunggu Verifikasi dari Bendahara";
+		} else if ($payment_status == 2) {
+			$payment_status = "Anda Telah Melakukan Pembayaran";
 		} else {
 			$payment_status = "Anda Belum Melakukan Pembayaran";
 		}

@@ -115,4 +115,10 @@ Divisi IT Universitas Terbuka Korea Selatan\n
 ";
 $lang['reg_code'] 							= 'No Pendaftaran';
 $lang['data_saved'] 						= 'Data Telah Disimpan';
+
+$lang['send_mail_receipt_reregistration'] = "
+Dear %s, \n\n
+Berikut ini kami kirimkan bukti pembayaran untuk %s.\n\n\n
+Salam,\n
+Bendahara UT Korea Selatan";
 ?>

@@ -35,9 +35,9 @@ class tutor_model extends CI_Model {
 		}
 	}
 	
-	function save_assignment($staff_id, $course_id) 
+	function save_assignment($staff_id, $course_id,$region) 
 	{
-		$where = array('course_id'=>$course_id,'time_period'=>setting_val('time_period'));
+		$where = array('course_id'=>$course_id,'time_period'=>setting_val('time_period'),'region'=>$region);
 		$query = $this->db->get_where('assignment',$where);	
 		
 		$data = array('staff_id'=>$staff_id);

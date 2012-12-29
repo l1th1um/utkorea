@@ -42,7 +42,7 @@ class Main extends CI_Controller {
 				redirect('tutor');
 			}*/			
 		} else {
-		    redirect('login');  
+		    redirect('login','refresh');  
 		}
         
 	}

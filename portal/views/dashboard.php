@@ -24,7 +24,9 @@
     <link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/jquery.facebox.css" />
     <link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/jquery-ui-1.8.19.custom.css" />
 	<link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/ui.spinner.css" />
-    
+    <noscript>
+    	<h1 style="text-align: center;color:#000000;font-size: 24px">Javascript Harus Diaktifkan</h1>
+    </noscript>
 	<script src="<?php echo admin_tpl_path()?>js/libs/modernizr-1.7.min.js"></script>
 </head>
 <body>
@@ -92,6 +94,7 @@
             
 		    <?php if (isset($page)) echo $page;  else $page= '';?>
 			<!-- Article Footer -->
+			
 			<footer style="text-align:center;position:fixed;bottom:0;left:47%;">
 				<p>Copyright &copy; 2012 Universitas Terbuka Korea Selatan. All Rights Reserved</p>
 			</footer>

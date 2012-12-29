@@ -20,12 +20,16 @@ class finance_model extends CI_Model {
 	function update_daftar_ulang($id,$data){
 		$this->db->where("id",$id);
 		$this->db->update('reregistration',$data);
+		
+		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
 	}
 	
 	function get_list_JQGRID($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id,nim,account_no,payment_date,bank_name,sender_name,verified_by,verified_time,is_verified');
+		$this->db->select('id, IF( nim <100000, CONCAT(  "UTKOR", nim ) , nim ) as nim,
+						   account_no,DATE_FORMAT(payment_date,"%e %M %Y") as payment_date,bank_name,sender_name,
+						   verified_by,verified_time, is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent',FALSE);
 		$this->db->from('reregistration');		
 		
 		if (!empty($params))		{			
@@ -160,6 +164,55 @@ class finance_model extends CI_Model {
 	function update_payment($id,$data){
 		$this->db->where("id",$id);
 		$this->db->update('payment',$data);
+		
+		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
+	}
+	
+	public function change_receipt_status($id,$table){
+		$this->db->where("id",$id);
+		$this->db->update($table,array('receipt_sent' => '1'));
+		
+		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
+	}
+	
+	public function get_userid_reregistration($id) {
+		$this->db->select('nim');
+		
+		$query = $this->db->get_where('reregistration',array('id'=>$id));
+		
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			return $row->nim;
+		} else {
+			return FALSE;
+		}
+	}
+	
+	public function save_receipt($data) {
+		$this->db->select_max('receipt_order');
+		$this->db->where('receipt_period',$data['receipt_period']);
+		$query = $this->db->get('receipt');
+		
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			$receipt_order = $row->receipt_order + 1;	
+		} else {
+			$receipt_order = 1;
+		}
+		
+		$data = array('receipt_order' => $receipt_order,
+					  'receipt_period'	=> $data['receipt_period'],
+					  'receipt_status'	=> $data['receipt_status'],
+					  'remarks'	=> $data['remarks'],
+					  'subject'	=> $data['subject'],
+					 );
+		$this->db->insert('receipt',$data);
+		
+		if ($this->db->affected_rows() > 0 ) {
+			return $this->db->insert_id();
+		} else {
+			return FALSE;
+		}
 	}
 }
 ?>

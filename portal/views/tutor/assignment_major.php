@@ -66,7 +66,7 @@
 			
 			
 			$.post("<?php echo base_url()?>tutor/save_assignment", 
-					{ major: <?php echo $this->uri->segment('3')?>, frmdata:$(this).serialize()}, function(data) {
+					{ major: <?php echo $this->uri->segment('3')?>, region:<?php echo $region?>, frmdata:$(this).serialize()}, function(data) {
 				
 				if (data == 0) {
 					message = '<?php echo $this->lang->line('db_error')?>';

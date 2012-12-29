@@ -1,3 +1,4 @@
+
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-ina.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
@@ -13,15 +14,16 @@
 						  echo site_url( "bendahara/getlistJQGRID" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Konfirmasi','NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Status'],	
-					colModel:[
-						{name:'id',index:'id'},
-						{name:'nim',width:80,align:'center',index:'nim',formatter:add_view_link},						
+					colNames:['NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Status','Receipt','Ket'],	
+					colModel:[						
+						{name:'nim',width:80,align:'left',index:'nim',formatter:add_view_link},						
 						{name:'account_no',index:'account_no'},
 						{name:'bank_name',index:'bank_name'},
-						{name:'payment_date',width:90,align:'center',index:'payment_date'},
+						{name:'payment_date',width:140,align:'center',index:'payment_date'},
 						{name:'sender_name',index:'sender_name'},
-						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},						
+						{name:'is_verified',index:'is_verified',width:140,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
+						{name:'receipt_sent',index:'receipt_sent',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Send','1':'Sent','2':'Not Verified'}},formatter:check_sent},
+						{name:'id',index:'id',width:40,align:'center'}
 					],
 					mtype : "POST",							
 					sortname: 'id',
@@ -38,11 +40,21 @@
 
 		function check_verified(cellValue, options, rowObject){
 			if(cellValue==1){
-				return '<button class="blue small" style="width:140px">Verified</button>';
+				return '<button class="blue small" style="width:120px">Verified</button>';
 			}else{
-				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.id  + '" /></button>';
+				return '<button class="unverified" class="red small" style="width:120px">Not Verified<input type="hidden" value="' + rowObject.id  + '" /></button>';
 			}
 		}	
+		
+		function check_sent(cellValue, options, rowObject){
+			if(cellValue == 2) {
+				return '';
+			} else if(cellValue == 1){
+				return '<button class="blue small" style="width:80px">Sent</button>';
+			} else {	
+				return '<button class="sent_receipt" class="red small" style="width:80px">Not Send<input type="hidden" value="' + rowObject.id  + '" /></button>';
+			}
+		}
 		
 		function add_view_link(cellValue, options, rowObject){
 			return '<a href="#" class="viewStudent">' + cellValue + '</a>';
@@ -112,14 +124,49 @@
 			});
 			
 		});			
+		
+		$(".sent_receipt").live('click',function(){			
+			var data = $(this).children("input:hidden").val();			
+			$("#dialogcontainer").html("Kirim Kuitansi?");
+			$("#dialogcontainer").attr("title","Konfirmasi Kuitansi");
+			$("#dialogcontainer").dialog({
+				modal: true,
+				buttons: {
+                "Yes": function() {
+                    $.ajax({
+					  type: "POST",
+					  url: "<?php echo site_url("bendahara/sent_receipt_reregistration"); ?>",
+					  dataType: "html",
+					  data: {id:data},
+					  success: function(data){
+						if(data!="1"){
+							alert(data);							
+						}
+						$("#grid_name").trigger("reloadGrid");							
+					  }
+					});
+					$(this).dialog("close");
+                },
+                Cancel: function() {
+                    $( this ).dialog("close");
+                }
+				},
+				close: function(event,ui){
+					$(this).dialog("destroy");
+				},
+				resizable: false
+			});
+			
+		});
 								
 	});
   </script>
- </head>
- <body>			
- <span style="font-size:8pt;"><i>Klik nomor NIM untuk melihat data mahasiswa</i></span>
- <table id="grid_name" style="font-size:10pt"></table>
- <div id="pager2" ></div> 
- <div id="dialogcontainer" style="display:none;"></div> 
- 
- 
+  <style>
+ 	.viewStudent {text-decoration : none;font-weight:bold} 
+ </style>
+ <div style="padding-bottom:50px">
+	 <span style="font-size:8pt;"><i>Klik nomor NIM untuk melihat data mahasiswa</i></span>
+	 <table id="grid_name" style="font-size:10pt"></table>
+	 <div id="pager2" ></div> 
+	 <div id="dialogcontainer" style="display:none;"></div>   
+ </div>

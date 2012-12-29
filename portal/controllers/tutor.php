@@ -125,12 +125,15 @@ class tutor extends CI_Controller {
 		
 		$major = array(0 => "-- Pilih Jurusan --");
 		$data['major'] = $major + major_list();		
-							
+		
+		$region = array(0 => "-- Pilih Lokasi --","Utara","Selatan");
+		$data['region'] = $region;
+		
 		$content['page'] = $this->load->view('tutor/assignment',$data,TRUE);
         $this->load->view('dashboard',$content);		
 	}
 	
-	public function assignment_major($id) {
+	public function assignment_major($id,$region) {
 		//$this->auth->check_auth();
 		$data = array();
 		$i = 1;
@@ -147,10 +150,13 @@ class tutor extends CI_Controller {
 		$tutor = array(0 => "-- Pilih Tutor --");
 		$data['tutor'] = $tutor + $this->tutor_model->tutor_by_major($id);
 		$data['course'] = $courses;
+		$data['region'] = $region;
 		$this->load->view('tutor/assignment_major',$data);
 	}
 	
 	public function save_assignment() {
+		$region = $this->input->post('region');
+		
 		$i = 0;
 		$data = explode('&',$this->input->post('frmdata'));
 		foreach ($data as $key => $val) {
@@ -158,7 +164,7 @@ class tutor extends CI_Controller {
 			if (! empty($val[1])) {
 				$course_id = str_replace('tutor', '', $val[0]);
 				
-				$insert = $this->tutor_model->save_assignment($val[1], $course_id);
+				$insert = $this->tutor_model->save_assignment($val[1], $course_id,$region);
 				
 				if ($insert) {
 					$i++;	
