@@ -1,3 +1,9 @@
+<?php if($message!='') { ?>
+<div class="notification success">
+						<a href="#" class="close-notification" title="Hide Notification" rel="tooltip">x</a>
+						<p><strong><?php echo $message; ?></strong></p>
+					</div>
+<?php } ?>
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/i18n/grid.locale-ina.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jqgrid/js/jquery.jqGrid.src.js" type="text/javascript"></script>
 <script src="<?php echo admin_tpl_path()?>js/jquery.blockUI.js" type="text/javascript"></script>
@@ -51,8 +57,8 @@
 		}
 		
 		function add_baca(cellValue, options, rowObject){
-			return '<a href="<?php
-						  echo site_url( "message/read/" );
+			return '<a target="_blank" href="<?php
+						  echo site_url( "profiles/read_message/" );
 						  ?>/' + cellValue + '">Baca</a>';	
 		}		
 			

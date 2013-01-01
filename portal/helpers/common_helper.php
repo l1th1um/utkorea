@@ -61,6 +61,7 @@ function menu($role) {
 
 
 function generate_menu($role) {
+	$ci =& get_instance();
 	$menu = menu($role);
 	
 	$list = "<nav id='main-nav'> \n <ul> \n";
@@ -69,7 +70,14 @@ function generate_menu($role) {
 	if ($menu != FALSE) {
 		
 		foreach ($menu as $key => $val) {
-			$list .=  "<li><a href='#' title='' class='".$val['icons']."'>".$val['page']."</a> \n <ul>";
+			$list .=  "<li><a href='#' title='' class='".$val['icons']."'>".$val['page']."</a>";
+			if($val['page']=='Messaging'){
+				$col = $ci->message->get_unread_message($ci->session->userdata('username'));
+				if($col){
+					$list .= "<span title='Jumlah Pesan Belum Terbaca'>".$col->num_rows()."</span>";	
+				}				
+			}
+			$list .=  "\n <ul>";
 			
 			if (isset($val['child'])) {
 				foreach ($val['child'] as $key2 => $val2) {
@@ -738,6 +746,13 @@ function insert_logs($data)
 	}  else {
 		return FALSE;
 	}
+}
+
+function get_last_insert_id()
+{
+	$ci =& get_instance();
+	return $ci->db->insert_id();   
+	
 }
 
 function check_user_agent() 

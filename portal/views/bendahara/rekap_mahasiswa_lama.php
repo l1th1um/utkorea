@@ -145,15 +145,17 @@
  <input name="filter" type="radio" value="3" />&nbsp;Belum Melakukan Pembayaran&nbsp;<br />
  <input name="filter" type="radio" value="2" />&nbsp;Sudah bayar pendaftaran namun belum bayar/konfirmasi uang semester &nbsp;<br />
  <br />
- <div id="tabs">
+ <div id="tabs" style="display:none;">
     <ul>
         <li><a href="#tabs-1">Forward List</a></li>        
     </ul>
     <div id="tabs-1">
+    	<form method="POST">
     	<h2>Kirim Pesan beserta dengan Daftar Mahasiswa dibawah</h2><hr />
         <label>Pesan</label><br />
         <textarea name="pesan" rows="10" cols="75"></textarea><br />
-        <button>Kirim</button>
+       <input type="submit" value="Kirim" />
+       </form>
     </div>    
  </div>
  

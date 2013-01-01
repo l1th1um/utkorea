@@ -10,10 +10,19 @@ class message_model extends CI_Model {
 		return $this->db->insert('message',$data);
 	}
 	
-	function get_user_unread_message($username)
+	function update_message($id,$data)
+	{
+		$this->db->where('id',$id);
+		$this->db->update('message',$data);
+	}
+	
+	function get_user_unread_message($username,$is_system_only)
 	{
 		$this->db->where('is_read',0);
 		$this->db->where('to',$username);
+		if($is_system_only){
+			$this->db->where('from','system');
+		}
 		$result = $this->db->get('message');
 		if($result->num_rows()>0)
 		{
@@ -21,6 +30,19 @@ class message_model extends CI_Model {
 		}else{
 			return '';
 		}
+	}
+	
+	function get_message_by_id($id)
+	{
+		
+		$this->db->select('message.from,mahasiswa.name as mname,staff.name as sname,message.timestamp,message.id,message.is_read,message.to,message.message');		
+		$this->db->from('message');	
+		$this->db->join('mahasiswa', 'mahasiswa.nim = message.from','left');
+		$this->db->join('staff', 'staff.staff_id = message.from','left');
+		$this->db->where('id',$id);
+		$result = $this->db->get();
+		return $result->row();
+		
 	}
 	
 	function delete_message($id){

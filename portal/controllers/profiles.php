@@ -147,9 +147,9 @@ class profiles extends CI_Controller {
 		}	
 	}
 	
-	function inbox(){
+	function inbox($message = ''){
 		$this->auth->check_auth();
-		$data = array();
+		$data = array('message'=>$message);
 		$content['page'] = $this->load->view('profiles/inbox',$data,TRUE);
         $this->load->view('dashboard',$content);
 	}
@@ -196,6 +196,46 @@ class profiles extends CI_Controller {
 		{
 			$this->message->delete_message($this->input->post('msgid'));	
 		}
+	}
+	
+	function read_message($id){
+		$this->form_validation->set_rules('message','Pesan','required|xss_clean');
+		$this->form_validation->set_rules('to','Kepada','required');
+		if($this->form_validation->run()){
+			$this->message->post_to_member($this->input->post('to'),$this->session->userdata('username'),$this->input->post('message'));
+			$this->inbox('Pesan anda berhasil dikirim');
+			
+		}else{
+			$data = $this->message->validate_and_get($id);
+			if($data){
+				if(!$data->is_read)
+					$this->message->set_read($id);			
+				$content['page'] = $this->load->view('profiles/read_message',$data,TRUE);
+		        $this->load->view('dashboard',$content);
+			}else{
+				echo 'Anda tidak dapat membaca pesan ini';
+			}
+		}
+		
+		
+	}
+	
+	function write_new(){
+		$this->form_validation->set_rules('message','Pesan','required|xss_clean');
+		$this->form_validation->set_rules('to','Kepada','required');
+		if($this->form_validation->run()){
+			$to_arr = explode(",",$this->input->post('to'));
+			foreach($to_arr as $row){
+				$this->message->post_to_member($row,$this->session->userdata('username'),$this->input->post('message'));
+			}			
+			$this->inbox('Pesan anda berhasil dikirim');
+			
+		}else{
+			$data = array();
+			$content['page'] = $this->load->view('profiles/write_new',$data,TRUE);
+	   		 $this->load->view('dashboard',$content);
+		}
+		
 	}
 
 }

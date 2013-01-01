@@ -23,7 +23,7 @@ class Main extends CI_Controller {
 			
 			$data = array();
 			
-			$data['message'] = $this->message->get_unread_message($this->session->userdata('username'));
+			$data['message'] = $this->message->get_unread_message($this->session->userdata('username'),true);
 			if ($this->announcement->get_recent_news() == false) {
 				$data['news'] = false;	
 			} else {
