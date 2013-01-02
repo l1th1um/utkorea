@@ -13,9 +13,13 @@
   <script type="text/javascript">
 	$(document).ready(function(){	
 		$("input[name='radio']").click(function(){
+			$(".dynamiccontainer").hide();
 			$("#selectable").html('');
 			$('#grid_name').jqGrid('GridUnload');
 			switch(this.value){
+			case 'manual':
+				$("#manualinput").show();
+				break;
 			case 'tutor':
                 $("#listcontainer").show();				
 				$("#grid_name").jqGrid({
@@ -135,6 +139,14 @@
            } 
            
         });
+        
+        $("#manual").next().click(function(){        	
+        	if(isNaN($("#manual").val())==false){
+        		$("#selectable").append("<li><label>" + $("#manual").val() + "</label><input type=\"hidden\" name=\"who[]\" value=\"" + $.trim($("#manual").val()) + "\" /><div class=\"list-close\" >&nbsp;</a></li>");
+        	}else{
+        		alert("Harap masukan angka");
+        	}
+        });
 	});
   </script>
 </head>
@@ -165,13 +177,23 @@
             </tr>
             <tr>
                 <td>&nbsp;</td>
+                <td><input type="radio" name="radio" value="manual" />Manual Input</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
                 <td colspan="2">
                     <br />
-                    <div id="listcontainer" style="display:none">
+                    <div class="dynamiccontainer" id="listcontainer" style="display:none">
                 		<b style="font-weight:900">Double Click to Add</b> <hr />
                 		<table id="grid_name"></table>
                 		<div id="pager2" ></div>                        
 
+                	</div>
+                	<div class="dynamiccontainer" id="manualinput" style="display:none">
+                		<input type="text" id="manual" />&nbsp;<input type="button" value="Insert" /><br />
+                		<span><i>Masukan nomor telepon lalu tekan <b style="font-weight:bold;">Insert</b> (Diawali dengan 82), <br /> lakukan berulang untuk memasukan banyak nomor telepon.</i></span><br />
+                		<span>Setelah selesai tekan <b style="font-weight:bold;">Kirim</b></span>
                 	</div>
                     <br />	                	
                 	<ol id="selectable">

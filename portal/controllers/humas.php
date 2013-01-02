@@ -40,6 +40,9 @@ class humas extends CI_Controller {
 				case "staff":
 									$people = $this->person->get_staff_sms($staff_select,$this->input->post('who'));
 									break;
+				case "manual":
+									$people = explode(",",$this->input->post('who'));
+									break;
                 default :
 									return false;
 		}
@@ -48,16 +51,28 @@ class humas extends CI_Controller {
 		
 		$success = 0;
 		$failed = 0;
-
-		foreach ($people as $row) {		
-			//Send Message and return the ID of message
-			$apimsgid = send_message($row->phone,$message);
-			if($apimsgid != FALSE) {
-				$this->person->save_history_sms($row->userid,$apimsgid,$row->phone,$message);				
-				$success++;
-			} else {
-				$failed++;
-			}	
+		
+		if($this->input->post('radio')=='manual'){
+			foreach ($people as $row) {
+				$apimsgid = send_message($row,$message);
+				if($apimsgid != FALSE) {
+					$this->person->save_history_sms(99999,$apimsgid,$row,$message);				
+					$success++;
+				} else {
+					$failed++;
+				}
+			}
+		}else{
+			foreach ($people as $row) {		
+				//Send Message and return the ID of message
+				$apimsgid = send_message($row->phone,$message);
+				if($apimsgid != FALSE) {
+					$this->person->save_history_sms($row->userid,$apimsgid,$row->phone,$message);				
+					$success++;
+				} else {
+					$failed++;
+				}	
+			}
 		}
 		
 		$message = "Sent Message : ".$success." sent";
