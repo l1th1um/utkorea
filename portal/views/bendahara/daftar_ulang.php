@@ -57,12 +57,18 @@
 		}
 		
 		function add_view_link(cellValue, options, rowObject){
-			return '<a href="#" class="viewStudent">' + cellValue + '</a>';
+			nim = cellValue;
+			
+			if (isNaN(cellValue)) {
+				nim = cellValue.substr(5,4); 
+			}
+			
+			return '<a href="#" class="viewStudent" id="'+nim+'">' + cellValue + '</a>';
 		}
 		
 		$(".viewStudent").live('click',function(){
 			$("#dialogcontainer").attr("title","Data Mahasiswa");
-			var data = $(this).html();
+			var data = $(this).attr("id");
 			var urlloc;
 			if(data.length<5){
 				urlloc = "<?php echo site_url("mahasiswa/get_mahasiswa_baru_by_reg_code"); ?>/" + data + "/html";
