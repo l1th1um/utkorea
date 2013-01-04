@@ -41,7 +41,10 @@ class humas extends CI_Controller {
 									$people = $this->person->get_staff_sms($staff_select,$this->input->post('who'));
 									break;
 				case "manual":
-									$people = explode(",",$this->input->post('who'));
+									$people = $this->input->post('who');
+									if(!is_array($people)){
+										$people = explode(",",$people);
+									}
 									break;
                 default :
 									return false;
