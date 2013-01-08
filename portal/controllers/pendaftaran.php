@@ -218,9 +218,13 @@ class pendaftaran extends CI_Controller {
 		
 	} */
 	
-	function show_pdf($uuid) {
+	function show_pdf($uuid,$isusingregcode = false) {
 		
-		$id = uuid_to_id($uuid, 'reg_code');		
+		if(!$isusingregcode){
+			$id = uuid_to_id($uuid, 'reg_code');
+		}else{
+			$id = $uuid;
+		}		
 		$file = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$id.".pdf";
 		$filename = 'form_registrasi.pdf';
 		

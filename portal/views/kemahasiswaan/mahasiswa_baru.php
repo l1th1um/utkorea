@@ -14,13 +14,14 @@
 						  echo site_url( "mahasiswa/getlistJQGRID/baru" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status'],	
+					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status','Form F1'],	
 					colModel:[
 						{name:'reg_code',index:'reg_code',width:70,align:'center'},
 						{name:'name',align:'center',index:'name',formatter:add_view_link},
 						{name:'email',align:'center',index:'email'},
 						{name:'reg_time',align:'center',index:'reg_time',width:90},						
-						{name:'verified',index:'verified',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},						
+						{name:'verified',index:'verified',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
+						{name:'none',formatter:attach_link_f1,align:'center'}						
 					],
 					mtype : "POST",							
 					sortname: 'name',
@@ -34,6 +35,10 @@
 				}).navGrid('#pager2',{edit:false,add:false,del:false, search: true},{},{},{},{					
 					sopt:['cn']
 		});
+		
+		function attach_link_f1(cellValue, options, rowObject){
+			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_pdf/' + rowObject.reg_code + '/true">Download</a>'
+		}
 
 		function check_verified(cellValue, options, rowObject){
 			if(cellValue==1){
