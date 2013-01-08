@@ -114,7 +114,7 @@ class person_model extends CI_Model {
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);
 		}elseif($type=='baru'){			
-			$this->db->from("mahasiswa_baru");	
+			$this->db->from("mahasiswa_baru_trimmed");	
 		}elseif($type=='tutor'){
 			if($is_export){
 				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");
