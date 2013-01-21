@@ -162,12 +162,13 @@ class bendahara extends CI_Controller {
 		}
 	}
 	
-	public function mail_receipt_reregistrant($subject,$type,$name,$email,$receipt_id) {
+	public function mail_receipt($receipt_type,$subject,$type,$name,$email,$receipt_id) {
 		$this->email->to($email);
 		$this->email->bcc('bendahara@utkorea.org');
 		
 		$this->email->subject($subject);
-		$message = $this->lang->line('send_mail_receipt_reregistration');
+        $message = $this->lang->line('send_mail_receipt');
+        
 		$message = sprintf($message,$name,$type);
 		$this->email->message($message);
 		$filename = $this->config->item('absolute_path')."assets/core/pdf/receipt/kuitansi_".$receipt_id.".pdf";
@@ -182,7 +183,7 @@ class bendahara extends CI_Controller {
 		$registration_id = $this->change_receipt_status('reregistration', $id);
 				
 		if ($registration_id <> FALSE) {
-			$user_id = $this->finance->get_userid_reregistration($id);
+			$user_id = $this->finance->get_userid_payment($id);
 			echo $user_id;
 			
 			if ($user_id < 10000) {
@@ -225,13 +226,59 @@ class bendahara extends CI_Controller {
 				$data['receipt_no'] = $receipt_data['receipt_status']."/".sprintf("%1$03d",$receipt_id)."/KEU/".$receipt_period;
 				
 				$this->receipt($receipt_id,$data);
-				$this->mail_receipt_reregistrant($subject,$data['payment'][0]['type'],$user_detail['name'],$user_detail['email'],$receipt_id);				
+				$this->mail_receipt('reregistrant',$subject,$data['payment'][0]['type'],$user_detail['name'],$user_detail['email'],$receipt_id);				
 			}
 			
 		}
 
 	}
 		
+  	public function sent_receipt_payment(){
+		$id = $this->input->post('id');
+		$registration_id = $this->change_receipt_status('payment', $id);
+				
+		if ($registration_id <> FALSE) {
+			$user_id = $this->finance->get_userid_payment($id,'payment');
+			echo $user_id;
+			
+			$user_detail = $this->person->get_mahasiswa_by_id($user_id);
+			$data['nim']       = $user_detail['nim'];
+			$data['semester']  = numberToRoman(calculate_semester($user_detail['entry_period']));
+			$data['payment'][0]['type']  = "Pembayaran Biaya Studi Mahasiswa UT Korea Selatan";
+			
+			
+   			$data['name']      = $user_detail['name'];
+			$data['major']     = get_major($user_detail['major']); 
+			$data['payment'][0]['amount'] = $this->input->post('amount');
+			
+			$data['current_date']      = convertHumanDate(date("Y-m-d"));
+			
+			$subject = "Bukti Pembayaran ".$data['payment'][0]['type'];
+			
+			//$receipt_id => id di tabel receipt
+			//Save receipt data to database
+			$receipt_period = get_settings('time_period');
+			$receipt_period = substr($receipt_period, 4)."/".substr($receipt_period, 0,4);
+			$receipt_subject = $data['name']."(".$data['nim'].")";
+			
+			$receipt_data = array('receipt_period' => $receipt_period,
+								  'remarks' => $data['payment'][0]['type'],
+								  'receipt_status' => 'M',
+								  'subject' => $receipt_subject);
+								  
+			$receipt_id = $this->finance->save_receipt($receipt_data);
+			
+			if ($receipt_id <> FALSE) {
+				$data['receipt_no'] = $receipt_data['receipt_status']."/".sprintf("%1$03d",$receipt_id)."/KEU/".$receipt_period;
+				
+				$this->receipt($receipt_id,$data);
+				$this->mail_receipt('payment',$subject,$data['payment'][0]['type'],$user_detail['name'],$user_detail['email'],$receipt_id);				
+			}
+			
+		}
+
+	}
+    
 	function rekap_mahasiswa_lama(){
 		$this->auth->check_auth();
 		$data = array();					

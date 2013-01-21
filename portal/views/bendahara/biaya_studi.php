@@ -13,7 +13,7 @@
 						  echo site_url( "bendahara/get_payment_list" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Konfirmasi','NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status'],	
+					colNames:['Kode Konfirmasi','NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status','Receipt'],	
 					colModel:[
 						{name:'id',index:'id'},
 						{name:'nim',width:80,align:'center',index:'nim',formatter:add_view_link},						
@@ -22,7 +22,8 @@
 						{name:'payment_date',width:90,align:'center',index:'payment_date'},
 						{name:'sender_name',index:'sender_name'},
 						{name:'amount',index:'amount'},
-						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},						
+						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
+                        {name:'receipt_sent',index:'receipt_sent',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Send','1':'Sent','2':'Not Verified'}},formatter:check_sent}						
 					],
 					mtype : "POST",							
 					sortname: 'id',
@@ -43,7 +44,19 @@
 			}else{
 				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.id  + '" /></button>';
 			}
-		}	
+		}
+        
+        function check_sent(cellValue, options, rowObject){
+			if(cellValue == 2) {
+				return '';
+			} else if(cellValue == 1){
+				return '<button class="blue small" style="width:80px">Sent</button>';
+			} else {	
+				return '<button class="sent_receipt" class="red small" style="width:80px">Not Send<input type="hidden" name="id" value="' + rowObject.id  + '" /><input type="hidden" name="amount" value="' + rowObject.amount  + '" /></button>';
+			}
+		}
+        
+        	
 		
 		function add_view_link(cellValue, options, rowObject){
 			return '<a href="#" class="viewStudent">' + cellValue + '</a>';
@@ -112,7 +125,43 @@
 				resizable: false
 			});
 			
-		});			
+		});	
+        
+		$(".sent_receipt").live('click',function(){
+		    var user_id = $(this).children("input:hidden[name=id]").val();
+            var amount = $(this).children("input:hidden[name=amount]").val();
+            						
+			$("#dialogcontainer").html("Kirim Kuitansi?");
+			$("#dialogcontainer").attr("title","Konfirmasi Kuitansi");
+			$("#dialogcontainer").dialog({
+				modal: true,
+				buttons: {
+                "Yes": function() {
+                    $.ajax({
+					  type: "POST",
+					  url: "<?php echo site_url("bendahara/sent_receipt_payment"); ?>",
+					  dataType: "html",
+					  data: {id:user_id,amount:amount},
+					  success: function(data){
+						if(data!="1"){
+							alert("Kuitansi Telah Dikirim");							
+						}
+						$("#grid_name").trigger("reloadGrid");							
+					  }
+					});
+					$(this).dialog("close");
+                },
+                Cancel: function() {
+                    $( this ).dialog("close");
+                }
+				},
+				close: function(event,ui){
+					$(this).dialog("destroy");
+				},
+				resizable: false
+			});
+			
+		});		
 								
 	});
   </script>

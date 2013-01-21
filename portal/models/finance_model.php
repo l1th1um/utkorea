@@ -110,7 +110,8 @@ class finance_model extends CI_Model {
 	function get_payment_list($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id,nim,account_no,payment_date,bank_name,sender_name,amount,verified_by,verified_time,is_verified');
+		$this->db->select('id,nim,account_no,payment_date,bank_name,sender_name,amount,verified_by,
+                            verified_time,is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent ', FALSE);
 		$this->db->from('payment');		
 		
 		if (!empty($params))		{			
@@ -175,10 +176,10 @@ class finance_model extends CI_Model {
 		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
 	}
 	
-	public function get_userid_reregistration($id) {
+	public function get_userid_payment($id,$table = 'reregistration') {
 		$this->db->select('nim');
 		
-		$query = $this->db->get_where('reregistration',array('id'=>$id));
+		$query = $this->db->get_where($table,array('id'=>$id));
 		
 		if ($query->num_rows() > 0) {
 			$row = $query->row();

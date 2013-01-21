@@ -167,3 +167,4 @@ portal/config/database.php
 *.sql
 
 assets/uploads/*
+portal/helpers/dompdf/lib/fonts/log.htm
