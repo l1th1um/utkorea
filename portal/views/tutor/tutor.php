@@ -12,7 +12,7 @@
 	$(document).ready(function(){			
 		$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "sms/getlistJQGRID/tutor" );
+						  echo site_url( "humas/getlistJQGRID/tutor" );
 						  ?>',
 					datatype: "json",
 					colNames:['Nama', 'Major','Region','Phone','Email','Affiliation','Birth','Key'],	

@@ -32,7 +32,7 @@
 			        	?>
 			        </td>
 			    </tr>
-			<?			        
+			<?php			        
 			}
 			echo '</tbody></table></fieldset>'; 
     		echo '</div>';
@@ -54,8 +54,8 @@
 		<p><button class="simplemodal-close">Close</button> <span>( Atau Tekan Enter)</span></p>
 	</div>
 </div>
-<script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
-<link href="<?php echo template_path('core')?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
+<script type='text/javascript' src="<?php echo template_path('core'); ?>js/jquery.simplemodal.js"></script>
+<link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
 
 <script>
     $(function() {

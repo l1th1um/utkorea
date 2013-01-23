@@ -59,4 +59,112 @@ class tutor_model extends CI_Model {
 			return FALSE;
 		}		
 	}
+	
+	function get_available_class($major,$semester,$region)
+	{
+			$this->db->select('*,a.id as asgmntid');
+			$this->db->from('assignment a');
+			$this->db->join('settings c','a.time_period = c.time_period');
+			$this->db->join('staff d','a.staff_id = d.staff_id');
+			if($semester<7){
+				$this->db->join('courses b','a.course_id = b.course_id');	
+				$this->db->where('b.semester',$semester);
+			}else{
+				$this->db->join('courses b','a.course_id = b.course_id');				
+			}			
+			
+			
+			$this->db->where('b.major',$major);
+			if($region==1||$region=='K'||$region=='G'||$region=='A'){
+				$this->db->where('a.region',1);
+			}else{
+				$this->db->where('a.region',2);
+			}
+			
+			$res = $this->db->get();
+			if($res->num_rows()>0){
+				return $res;
+			}else{
+				return false;
+			}	
+
+	}
+	
+	function save_class($nim,$classid)
+	{
+		$data = array();		
+		if(!is_array($classid)){
+					$classid = explode(",",$classid);
+		}
+		
+		foreach($classid as $row){
+			$data[] = array(
+				'id_assignment'=>$row,
+				'id_student'=>$nim
+			);
+		}
+		return $this->db->insert_batch('class', $data);	 
+		
+	}
+
+	function get_class_by_tutor($staff_id){
+		$this->db->from('assignment a');
+		$this->db->join('courses b','a.course_id = b.course_id');
+		$this->db->where('a.staff_id',$staff_id);
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}
+	}
+	
+	function get_class_by_id($id){
+		$this->db->from('assignment a');
+		$this->db->join('courses b','a.course_id = b.course_id');
+		$this->db->where('a.id',$id);
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res->row();
+		}else{
+			return false;
+		}
+	}
+	
+	function update_batch_assignment($data,$filter){
+		return $this->db->update_batch('assignment', $data, $filter); 
+	}
+	
+	function get_list_classes_for_student($nim){
+		$this->db->select('*,b.id as asgnmtid');
+		$this->db->from('class a');
+		$this->db->join('assignment b','a.id_assignment = b.id');
+		$this->db->join('settings d','b.time_period = d.time_period');
+		$this->db->join('courses c','b.course_id = c.course_id');
+		$this->db->join('staff e','b.staff_id = e.staff_id');
+		$this->db->where('a.id_student',$nim);
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}		
+	}
+
+	function get_list_classes_for_tutor($staff_id){
+		$this->db->select('*,b.id as asgnmtid');		
+		$this->db->from('assignment b');
+		$this->db->join('settings d','b.time_period = d.time_period');
+		$this->db->join('courses c','b.course_id = c.course_id');
+		$this->db->join('staff e','b.staff_id = e.staff_id');
+		
+		$this->db->where('b.staff_id',$staff_id);
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}		
+	}
+	
 }

@@ -393,7 +393,7 @@ class person_model extends CI_Model {
 	function edit_mahasiswa_baru($reg_code,$val)
 	{
 		$this->db->where('reg_code',$reg_code);
-		return $this->db->update('mahasiswa_baru',$val);
+		return $this->db->update('mahasiswa_baru_trimmed',$val);
 	}
 	
 	function get_staff_by_username($username)
