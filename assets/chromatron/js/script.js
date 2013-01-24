@@ -18,7 +18,7 @@ $(function () {
 	$('.wysiwyg').wysiwyg({ iFrameClass:'wysiwyg-iframe' });
 	
 	// jQuery dataTables
-	$('.datatable').dataTable();
+	//$('.datatable').dataTable();
 
 	// Check all checkboxes
 	$('.check-all').click(

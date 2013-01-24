@@ -99,8 +99,9 @@ class scribd {
    * @param array $tags : list of tags
    * @return string containing DISPLAYABLE", "DONE", "ERROR", or "PROCESSING" for the current document.
    */
-	public function changeSettings($doc_ids, $title = null, $description = null, $access = null, $license = null, $parental_advisory = null, $show_ads = null, $tags = null){
+	public function changeSettings($doc_ids,$params, $title = null, $description = null, $access = null, $license = null, $parental_advisory = null, $show_ads = null, $tags = null){
 		$method = "docs.changeSettings";
+		$params = $params;
 		$params['doc_ids'] = $doc_ids;
 		$params['title'] = $title;
 		$params['description'] = $description;
@@ -266,5 +267,15 @@ class scribd {
 		  return (string)$sxml;
 		}
 	}
+	
+	public function getDownloadLink($doc_id){
+		$method = "docs.getDownloadUrl";
+		$params['doc_id'] = $doc_id;
+		$params['doc_type'] = 'original';		
+
+		$result = $this->postRequest($method, $params);
+		return $result;
+	}
+	
 }
 ?>

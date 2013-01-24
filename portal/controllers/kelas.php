@@ -54,7 +54,7 @@ class kelas extends CI_Controller {
 			}
 			echo $res;
 		}else{
-			echo "<tr><td colspan='2' style='font-size:12pt;'><b>Tidak Ada Arsip</b></td></tr>";
+			echo "<tr><td></td><td style='font-size:12pt;'><b>Tidak Ada Arsip</b></td></tr>";
 		}
 	}
 	
@@ -124,6 +124,46 @@ class kelas extends CI_Controller {
 		$content['page'] = $this->load->view('kelas/register',$data,TRUE);
         $this->load->view('dashboard',$content);
 	}
+	
+	public function arsip(){
+		$this->auth->check_auth();
+		
+		$res = $this->tutor_model->get_list_classes_for_tutor($this->session->userdata('id'));
+		$data['list'] = $res;
+		
+		$content['page'] = $this->load->view('kelas/arsip',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
+	public function do_upload($id_assignment){
+		
+		if(isset($_FILES['upload'])){
+			$this->scribd->my_user_id = 'assignment_'.$id_assignment;
+			$doc_type = null;
+			$access = null;
+			$rev_id = null;
+			$res = $this->scribd->upload($_FILES['upload']['tmp_name'], $doc_type, $access, $rev_id);
+			$this->scribd->changeSettings($res['doc_id'],array('download_formats'=>'original'),$_FILES['upload']['name']);
+			echo json_encode(array('doc_id'=>$res['doc_id'],'access_key'=>$res['access_key'],'id'=>$id_assignment));
+		}		
+	}
+	
+	public function arsip_download($doc_id,$assignment_id){
+		$this->scribd->my_user_id = 'assignment_'.$assignment_id;
+		//print_r($this->scribd->getDownloadLink($doc_id));
+		$res = $this->scribd->getDownloadLink($doc_id);
+		redirect($res['download_link'],'refresh');
+	}
+	
+	public function arsip_delete($doc_id,$assignment_id){
+		$this->scribd->my_user_id = 'assignment_'.$assignment_id;
+		$res = $this->scribd->delete($doc_id);
+	}
+	
+	/*public function debug_get_settings($doc_id){
+		$this->scribd->my_user_id = 'assignment_1';
+		print_r($this->scribd->getConversionStatus($doc_id));
+	}*/
 	
 	
 	

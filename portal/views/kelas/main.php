@@ -7,6 +7,9 @@
   
   	scribd_doc.addParam( 'jsapi_version', 2 );  
   	scribd_doc.write('embedded_presentation');	
+  	scribd_doc.addEventListener('docReady',function(){
+	  		$("#embedded_presentation").append('<a target="_blank" href="<?php echo base_url(); ?>kelas/arsip_download/' + doc_id + '/<?php echo $class_settings->id ?>"><button class="blue" style="float:right;margin:4px;">Download</button></a>');
+	  	});
   }  
 </script>
 
@@ -14,8 +17,10 @@
 <?php if($class_settings->chopt=='ustream') { ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		<?php if($file){ ?>
-			getdocscribd(<?php echo $file['result '.count($file)]['doc_id']; ?>, '<?php echo $file['result '.count($file)]['access_key']; ?>' );
+		<?php if($file){ 
+			$totalc = (count($file)>1)?' '.count($file):'';
+			?>
+			getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
 		<?php } ?> 
 		$.ajax({
 			type: "POST",			 
