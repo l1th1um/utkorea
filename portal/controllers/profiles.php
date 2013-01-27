@@ -5,7 +5,7 @@ class profiles extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();								
-    	//$this->output->enable_profiler(TRUE);
+    	$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
     }	
 	
@@ -236,6 +236,10 @@ class profiles extends CI_Controller {
 	   		 $this->load->view('dashboard',$content);
 		}
 		
+	}
+
+	function reset_pwd($nim,$table='mahasiswa'){
+		$this->person->change_password($table,$nim,$nim);
 	}
 
 }

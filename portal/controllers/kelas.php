@@ -13,6 +13,8 @@ class kelas extends CI_Controller {
 	
 	public function index($id=''){
 		
+		$this->auth->check_auth();	
+		
 		if($id!=''){			
 			$class_settings = $this->tutor_model->get_class_by_id($id);
 			if($class_settings){				
@@ -40,6 +42,45 @@ class kelas extends CI_Controller {
 		}				
 		
         $this->load->view('dashboard',$content);
+	}
+
+	public function absnilai($assignment_id=''){
+		$this->auth->check_auth();	
+		$data['success'] = 0;
+		
+		$res = $this->tutor_model->get_tutor_student($this->session->userdata('id'));
+		if($res){
+			foreach($res->result() as $row){
+				$this->form_validation->set_rules('abs_'.$row->id_assignment.'_'.$row->nim,'Absensi '.$row->nim,'xss_clean');
+				for($i=1;$i<=3;$i++){
+					$this->form_validation->set_rules('tugas_'.$row->id_assignment.'_'.$row->nim.'_'.$i,'Tugas '.$row->nim.'_'.$i,'xss_clean');	
+				}				
+			}
+			if($this->form_validation->run()){				
+				foreach($res->result() as $row){
+					if(is_array($this->input->post('abs_'.$row->id_assignment.'_'.$row->nim))){
+						$abs = implode(",",$this->input->post('abs_'.$row->id_assignment.'_'.$row->nim)); 
+					}else{
+						$abs = $this->input->post('abs_'.$row->id_assignment.'_'.$row->nim);
+					}					
+					
+					$update = array(
+						'id_student' => $row->id_student,
+						'id_assignment' => $row->id_assignment,
+						'absensi' => $abs,
+						'tugas1' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_1'),
+						'tugas2' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_2'),
+						'tugas3' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_3')
+					);
+					$this->tutor_model->update_absnilai($update);
+				}				
+				$res = $this->tutor_model->get_tutor_student($this->session->userdata('id'));				
+			}
+			$data['list'] = $res;
+		}		
+		
+		$content['page'] = $this->load->view('kelas/absnilai',$data,TRUE);
+		$this->load->view('dashboard',$content);
 	}
 
 	public function get_class_archive($id){

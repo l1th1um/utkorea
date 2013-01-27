@@ -167,4 +167,28 @@ class tutor_model extends CI_Model {
 		}		
 	}
 	
+	function get_tutor_student($staff_id){
+		$this->db->from('class a');
+		$this->db->join('assignment b','a.id_assignment = b.id');
+		$this->db->join('settings d','b.time_period = d.time_period');
+		$this->db->join('courses c','b.course_id = c.course_id');
+		$this->db->join('mahasiswa m','m.nim = a.id_student');
+		
+		$this->db->where('b.staff_id',$staff_id);
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}	
+	}
+	
+	function update_absnilai($data){
+		$this->db->where('id_assignment',$data['id_assignment']);
+		$this->db->where('id_student',$data['id_student']);
+		unset($data['id_assignment']);
+		unset($data['id_student']);
+		$this->db->update('class',$data);
+	}
+	
 }
