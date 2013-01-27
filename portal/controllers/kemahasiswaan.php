@@ -10,6 +10,32 @@ class kemahasiswaan extends CI_Controller {
     }	
 	
 	public function index()
+    {
+        $this->auth->check_auth();
+        
+        $data = array();
+        
+        foreach (major_list() as $key => $value)
+        {
+            $data[$key]['major'] = $value;
+            
+            $entry_period_arr = $this->person->get_active_semester($key);
+            $i = 0;
+            foreach ($entry_period_arr as $row) {
+                $data[$key]['details'][$i]['entry'] = $row->entry_period;
+                $data[$key]['details'][$i]['total_utara'] = $this->person->get_total_student($key,$row->entry_period,'1');
+                $data[$key]['details'][$i]['total_selatan'] = $this->person->get_total_student($key,$row->entry_period,'2');
+                
+                $i++;
+            }
+        }
+        
+        $page['data'] = $data;
+        $content['page'] = $this->load->view('kemahasiswaan/index',$page,TRUE);
+        $this->load->view('dashboard',$content);
+    }
+    
+    public function data($major,$semester,$region)
 	{
 		$this->auth->check_auth();
 		
@@ -28,10 +54,17 @@ class kemahasiswaan extends CI_Controller {
 		 $region_arr['D'] = 'Daegu';
 		 $region_arr['C'] = 'Cheonan';
 		 $region_arr['J'] = 'Gwangju';
-		 $region_arr['B'] = 'Busan';		 
+		 $region_arr['B'] = 'Busan';
+         
+         $data = array('major_arr'=>$major_arr,
+                       'region_arr'=>$region_arr,
+                       'major' => $major,
+                       'semester' => $semester,
+                       'region' => $region);
+         		 
 		 
 		
-		 $content['page'] = $this->load->view('kemahasiswaan/mahasiswa',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
+		 $content['page'] = $this->load->view('kemahasiswaan/mahasiswa',$data,TRUE);		 
          $this->load->view('dashboard',$content);       
 	}
 	
@@ -328,4 +361,48 @@ class kemahasiswaan extends CI_Controller {
 		$objWriter->save('php://output');
 		 
 	}
+    
+    function list_mahasiswa($major,$entry_period,$region) 
+    {
+        $page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=10;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='name';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='ASC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		
+        $data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all",false,$major,$entry_period,$region)->result_array());		
+		$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current",false,$major,$entry_period,$region)->result_array();
+		$newrecords = array();
+		foreach($records as $row){
+		  //$row['entry_period'] = calculate_semester($row['entry_period']);
+		  $newrecords[] = $row;
+		}
+		$records = $newrecords;
+		
+		
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+    }
 }

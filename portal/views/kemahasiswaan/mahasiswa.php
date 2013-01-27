@@ -17,7 +17,7 @@
 	
 		$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "humas/getlistJQGRID/student" );
+						  echo site_url( "kemahasiswaan/list_mahasiswa/".$major."/".$semester."/".$region );
 						  ?>',
 					datatype: "json",
 					colNames:['NIM','Nama', 'Major','Region','Phone','Status','Entry Period','Email','Tangal Lahir','Agama','Gender','Marital Status','Address Indonesia','Address Korea','Remarks'],	

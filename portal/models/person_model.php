@@ -57,6 +57,7 @@ class person_model extends CI_Model {
 			$this->db->where_in('nim',$where);
 		}
 		$this->db->where("phone IS NOT ", "NULL",false); 
+        $this->db->where("status", "1");
 		
 		$query = $this->db->get('mahasiswa');
 		
@@ -107,7 +108,7 @@ class person_model extends CI_Model {
 	}
 	
 
-	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false)
+	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false,$major="",$entry_period="",$region="")
 	{	
 		if($type=='staff'){
 			$this->db->select("staff_id,name,phone,email,affiliation");
@@ -128,6 +129,20 @@ class person_model extends CI_Model {
 			}
 			
 		}else{
+		    if (! empty($major)) {
+		        $this->db->where("major",$major);
+		    }
+            
+            if (! empty($entry_period)) {
+		        $this->db->where("entry_period",$entry_period);
+		    }
+            
+            if (! empty($region)) {
+		        $this->db->where("region",$region);
+		    }
+            
+            $this->db->order_by('name');
+            
 			if($is_export){
 				$this->db->select("name,nim,phone,major.major as major,region,status,gender,entry_period,email,birth_date,address_id,address_kr,religion,marital_status,remarks");
 				$this->db->from("mahasiswa");
@@ -514,5 +529,29 @@ class person_model extends CI_Model {
 		if($result->num_rows())return true;
 		return false;
 	}
+    
+    function get_active_semester($major)
+    {
+        $this->db->distinct();
+        $this->db->select('entry_period');
+        $this->db->where('status','1');
+        $this->db->where('major',$major);
+        $this->db->order_by('entry_period',"desc");
+        
+        $query = $this->db->get('mahasiswa');
+        
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+    }
+    
+    function get_total_student($major,$entry_period,$region)
+    {
+        $where = array('status' => '1','major'=>$major,'entry_period'=>$entry_period,'region'=>$region);
+        $this->db->where($where);
+        
+        return $this->db->count_all_results('mahasiswa');
+
+    }
 	
 }
