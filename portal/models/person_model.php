@@ -141,7 +141,10 @@ class person_model extends CI_Model {
 		        $this->db->where("region",$region);
 		    }
             
+            $this->db->where('status','1');
+            
             $this->db->order_by('name');
+            
             
 			if($is_export){
 				$this->db->select("name,nim,phone,major.major as major,region,status,gender,entry_period,email,birth_date,address_id,address_kr,religion,marital_status,remarks");
