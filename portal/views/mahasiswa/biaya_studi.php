@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/simplemodal.css" />
 <?php if (isset($message)) echo $message;  else $message= '';?>
-<?php if ($is_paid == 0): ?>		
+<?php if ($is_paid == 0 || $is_paid == 1): ?>		
 <?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
+<?php if ($is_paid == 1) {
+	echo success_form("Anda sudah melakukan pembayaran biaya studi dan menunggu konfirmasi bendahara UT Korea Selatan, silahkan masukan pembayaran tambahan jika diperlukan"); 
+} ?>
 <i>Biaya yang harus dibayarkan adalah biaya kuliah (₩450.000) di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang</i>
 <fieldset>
 	<table>
@@ -50,9 +53,7 @@ $(document).ready(function(){
 		});
 });
 </script>
-<?php
-	elseif ($is_paid == 1):
-		echo success_form("Anda sudah melakukan pembayaran biaya studi dan menunggu konfirmasi bendahara UT Korea Selatan"); 
+<?php		
 	else:
 		echo success_form("Anda sudah melakukan pembayaran. Terima Kasih");
 	endif; 
