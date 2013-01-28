@@ -257,9 +257,9 @@ class mahasiswa extends CI_Controller {
 		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'payment');
 		
 		if (setting_val('time_period') == user_detail('entry_period', $this->session->userdata('username'))) {
-			$data['amount'] = array(200000,400000);						
+			$data['amount'] = array(100000,200000,400000);						
 		} else {
-			$data['amount'] = array(150000,200000,350000);
+			$data['amount'] = array(100000,150000,200000,350000);
 		}
 			
 		
