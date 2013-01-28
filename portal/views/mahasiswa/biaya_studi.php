@@ -2,11 +2,16 @@
 <?php if (isset($message)) echo $message;  else $message= '';?>
 <?php if ($is_paid == 0): ?>		
 <?php echo form_open_multipart(current_url(), array('id'=>'frmPersonal')); ?>
+<i>Biaya yang harus dibayarkan adalah biaya kuliah (₩450.000) di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang</i>
 <fieldset>
 	<table>
 		<tr>
 			<td  width="150px"><label>Biaya Kuliah</label></td>
-			<td><?php echo $amount;?></td>                
+			<td>
+				<?php foreach($amount as $row){
+					echo '<input type="radio" name="amount" value="'.$row.'" checked="checked"" />&nbsp;₩'.$row.'<br />';
+				}?>				
+			</td>                
 		</tr>
 		<tr>
 			<td  width="150px"><label><?php echo $this->lang->line('payment_date');?></label></td>

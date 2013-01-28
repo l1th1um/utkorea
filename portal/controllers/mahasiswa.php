@@ -247,6 +247,7 @@ class mahasiswa extends CI_Controller {
 		$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
 		$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
 		$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+		$this->form_validation->set_rules('amount',$this->lang->line('amount'),'trim|required');
 	}
 	
 	function biaya_studi() {
@@ -256,9 +257,9 @@ class mahasiswa extends CI_Controller {
 		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'payment');
 		
 		if (setting_val('time_period') == user_detail('entry_period', $this->session->userdata('username'))) {
-			$data['amount'] = setting_val('payment_new');						
+			$data['amount'] = array(200000,400000);						
 		} else {
-			$data['amount'] = setting_val('payment');
+			$data['amount'] = array(150000,200000,350000);
 		}
 			
 		
@@ -270,7 +271,7 @@ class mahasiswa extends CI_Controller {
 				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
 				$datapembayaran['nim'] = $this->session->userdata('username');
 				$datapembayaran['period'] = setting_val('time_period');
-				$datapembayaran['amount'] = $data['amount'];
+				//$datapembayaran['amount'] = $data['amount'];
 				
 				if ($conf_number = $this->finance->save_payment($datapembayaran)) {
 					$msg = 'Pembayaran biaya studi telah disimpan disistem. Nomor konfirmasi pembayaran anda adalah : <strong>'.$conf_number.'</strong>';
@@ -284,7 +285,7 @@ class mahasiswa extends CI_Controller {
 			}				
 		}
 		
-		$data['amount'] = setting_val('currency')." ".number_format($data['amount']);
+		//$data['amount'] = setting_val('currency')." ".number_format($data['amount']);
 		
 		$content['page'] = $this->load->view('mahasiswa/biaya_studi',$data,TRUE);
         $this->load->view('dashboard',$content);		

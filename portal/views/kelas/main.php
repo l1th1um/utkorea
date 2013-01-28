@@ -21,7 +21,9 @@
 			$totalc = (count($file)>1)?' '.count($file):'';
 			?>
 			getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
-		<?php } ?> 
+		<?php }else{
+			echo '$("#embedded_presentation").html("Scribd Service Currently not available");';
+		} ?> 
 		$.ajax({
 			type: "POST",			 
 			url: "http://api.ustream.tv/json/channel/<?php echo $class_settings->ustreamch; ?>/getCustomEmbedTag?key=<?php echo $this->config->item('ustream_key'); ?>&params=autoplay:false;mute:false;height:270;width:360",

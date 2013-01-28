@@ -19,7 +19,13 @@ class kelas extends CI_Controller {
 			$class_settings = $this->tutor_model->get_class_by_id($id);
 			if($class_settings){				
 				$this->scribd->my_user_id = 'assignment_'.$id;		
-				$datas = $this->scribd->getList(array('api_key'=>$this->config->item('scribd_key')));			
+				try{
+					$datas = $this->scribd->getList(array('api_key'=>$this->config->item('scribd_key')));	
+				}catch(exception $e){
+					//$datas = $e->getMessage();
+					$datas = false;
+				}
+							
 				$data['file'] = $datas;					
 			}				
 			$data['class_settings'] = $class_settings;
@@ -30,15 +36,17 @@ class kelas extends CI_Controller {
 			if(is_numeric($this->session->userdata('username'))){
 				$res = $this->tutor_model->get_list_classes_for_student($this->session->userdata('username'));
 				if(!$res){
-					$this->register_class();					
+					$data = $this->register_class();	
+					$content['page'] = $this->load->view('kelas/register',$data,TRUE);				
 				}else{
-					$data['list'] = $res;					
+					$data['list'] = $res;	
+					$content['page'] = $this->load->view('kelas/list',$data,TRUE);				
 				}
 			}else{
 				$res = $this->tutor_model->get_list_classes_for_tutor($this->session->userdata('id'));
 				$data['list'] = $res;				
-			}	
-			$content['page'] = $this->load->view('kelas/list',$data,TRUE);
+				$content['page'] = $this->load->view('kelas/list',$data,TRUE);
+			}				
 		}				
 		
         $this->load->view('dashboard',$content);
@@ -162,8 +170,7 @@ class kelas extends CI_Controller {
 				
 		$data['classes'] = $classes;
 		
-		$content['page'] = $this->load->view('kelas/register',$data,TRUE);
-        $this->load->view('dashboard',$content);
+		return $data;        
 	}
 	
 	public function arsip(){
