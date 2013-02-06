@@ -7,10 +7,25 @@ class tutor_model extends CI_Model {
         parent::__construct();
     }
 	
-	function course_list($major)
+	function course_list($major,$region)
 	{
-		$this->db->where('major',$major);
-		$this->db->order_by("course_id asc,semester asc");
+		/*
+        SELECT c.*,a.staff_id,a.region FROM utkor_courses c
+        left JOIN utkor_assignment a
+        ON c.course_id = a.course_id and time_period = '20131' AND region = '1'
+        WHERE major = '54'
+        */
+        $assign_param = 'c.course_id = a.course_id ';
+        $assign_param .= 'and time_period = "'.get_settings('time_period').'"';
+        $assign_param .= 'AND region = '.$region;
+        
+        $this->db->select('c.*,a.staff_id,a.region');
+        $this->db->from('courses c');
+        $this->db->join('assignment a', $assign_param,'left');
+
+        $this->db->where('c.major',$major);
+        $this->db->group_by('c.course_id');
+		//$this->db->order_by("course_id asc,semester asc");
 		$query = $this->db->get('courses');
 		
 		if ($query->num_rows() > 0) {

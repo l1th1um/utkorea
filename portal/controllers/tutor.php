@@ -140,7 +140,7 @@ class tutor extends CI_Controller {
 			
 		$courses = array();
 		
-		foreach ($this->tutor_model->course_list($id) as $row) {
+		foreach ($this->tutor_model->course_list($id,$region) as $row) {
 			if ($row->semester <> $i) {
 				$i = $row->semester;				
 			}

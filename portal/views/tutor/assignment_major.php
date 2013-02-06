@@ -1,14 +1,12 @@
 <?php echo form_open('','id="assignment"');?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Semester 1</a></li>
-        <li><a href="#tabs-2">Semester 2</a></li>
-        <li><a href="#tabs-3">Semester 3</a></li>
-        <li><a href="#tabs-4">Semester 4</a></li>
-        <li><a href="#tabs-5">Semester 5</a></li>
-        <li><a href="#tabs-6">Semester 6</a></li>
-        <li><a href="#tabs-7">Semester 7</a></li>
-        <li><a href="#tabs-8">Semester 8</a></li>
+        <?php
+            for ($i=1; $i<9; $i++) {
+                echo "<li><a href='#tabs-$i'>Semester $i</a></li>";
+            } 
+        ?>
+        
     </ul>
   	<?php
   		foreach ($course as $key => $tab) {
@@ -27,7 +25,7 @@
 			        			echo "UT Pusat";
 			        		} else {
 			        			$name = 'tutor'.$val->course_id;
-			        			echo form_dropdown($name,$tutor);
+			        			echo form_dropdown($name,$tutor,$val->staff_id);
 			        		}
 			        	?>
 			        </td>
