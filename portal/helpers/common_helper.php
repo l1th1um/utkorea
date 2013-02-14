@@ -537,6 +537,12 @@ function success_form($message) {
 				<p><strong>'.$message.'</strong></p></div>';
 }
 
+function info_form($message) {
+    return '<div class="notification information">
+				<a href="#" class="close-notification" title="Hide Notification" rel="tooltip">x</a>
+				<p><strong>'.$message.'</strong></p></div>';
+}
+
 function create_breadcrumb(){
 	$ci =& get_instance();
 	

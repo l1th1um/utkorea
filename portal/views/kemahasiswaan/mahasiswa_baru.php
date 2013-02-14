@@ -16,15 +16,14 @@
 					datatype: "json",
 					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status','Form F1'],	
 					colModel:[
-						{name:'reg_code',index:'reg_code',width:70,align:'center'},
+						{name:'nim',index:'nim',width:70,align:'center'},
 						{name:'name',align:'center',index:'name',formatter:add_view_link},
 						{name:'email',align:'center',index:'email'},
 						{name:'reg_time',align:'center',index:'reg_time',width:90},						
 						{name:'verified',index:'verified',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
 						{name:'none',formatter:attach_link_f1,align:'center'}						
 					],
-					mtype : "POST",							
-					sortname: 'name',
+					mtype : "POST",					
 					rownumbers: true,
 					pager: "#pager2",
 					autowidth: true,
@@ -37,19 +36,19 @@
 		});
 		
 		function attach_link_f1(cellValue, options, rowObject){
-			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_pdf/' + rowObject.reg_code + '/true">Download</a>'
+			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_pdf/' + rowObject.nim + '/true">Download</a>'
 		}
 
 		function check_verified(cellValue, options, rowObject){
 			if(cellValue==1){
 				return '<button class="blue small" style="width:140px">Verified</button>';
 			}else{
-				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.reg_code  + '" /></button>';
+				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.nim  + '" /></button>';
 			}
 		}	
 		
 		function add_view_link(cellValue, options, rowObject){
-			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" value="' + rowObject.reg_code  + '" /></a>';
+			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" value="' + rowObject.nim  + '" /></a>';
 		}
 		
 		$(".viewStudent").live('click',function(){

@@ -113,9 +113,12 @@ class person_model extends CI_Model {
 		if($type=='staff'){
 			$this->db->select("staff_id,name,phone,email,affiliation");
 			$this->db->from("staff");
-			$this->db->where("group_id IS NOT ","NULL",false);
-		}elseif($type=='baru'){			
-			$this->db->from("mahasiswa_baru_trimmed");	
+			$this->db->where("group_id IS NOT ","NULL",false);		
+		}elseif($type=='baru'){
+			$this->db->select("mahasiswa.name,mahasiswa.nim,mahasiswa.phone,mahasiswa.major,mahasiswa.region,mahasiswa.status,mahasiswa.gender,mahasiswa.entry_period,mahasiswa.email,mahasiswa.birth_date,mahasiswa.address_id,mahasiswa.address_kr,mahasiswa.religion,mahasiswa.marital_status,mahasiswa.remarks,mahasiswa_baru.reg_time,mahasiswa_baru.verified");			
+			$this->db->from("mahasiswa");
+			$this->db->join('mahasiswa_baru','mahasiswa.nim = mahasiswa_baru.reg_code','left');
+			$this->db->where("length(nim)<5");
 		}elseif($type=='tutor'){
 			if($is_export){
 				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");

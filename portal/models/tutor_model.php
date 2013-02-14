@@ -206,4 +206,85 @@ class tutor_model extends CI_Model {
 		$this->db->update('class',$data);
 	}
 	
+	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false,$assignment_id="")
+	{	
+		if($type=='pengumuman_kelas'){			
+			$this->db->from("announce_class");					
+		}
+		
+		if($assignment_id!=""){
+			$this->db->where('assignment_id',$assignment_id);
+		}
+		
+		if (!empty($params))		{			
+			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
+			{
+				$ops = array (
+							"eq" => "=",
+							"ne" => "<>",
+							"lt" => "<",
+							"le" => "<=",
+							"gt" => ">",
+							"ge" => ">="
+				);										
+				
+				if(!empty($params['search_field'])){
+					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
+						if($params['search_operator']=='cn'){
+							$this->db->like($params['search_field'],$params['search_str']);
+						}else{
+							$this->db->not_like($params['search_field'],$params['search_str']);
+						}
+					}else{
+						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
+					}
+					
+				}
+				
+				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
+
+
+				if ($page != "all")
+				{
+					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
+				}
+
+				$query = $this->db->get();
+				
+
+			}
+		}
+		else
+		{			
+				$this->db->limit (5);
+				$query = $this->db->get();
+
+		}
+
+		return $query;
+	}
+
+	function delete_pengumuman_kelas($id)
+	{
+		return $this->db->delete('announce_class',array('id'=>$id));
+	}
+	
+	function update_pengumuman_kelas($id,$col)
+	{
+		$this->db->where('id',$id);
+		return $this->db->update('announce_class',$col);
+	}
+	
+	function add_pengumuman_kelas($col)
+	{
+		return $this->db->insert('announce_class',$col);
+	}
+
+	function get_valid_pengumuman($id)
+	{
+		$this->db->where('until >=','now()',FALSE);
+		$this->db->where('assignment_id',$id);
+		return $this->db->get('announce_class');
+	}
+	
 }

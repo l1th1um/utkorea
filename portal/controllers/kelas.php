@@ -29,7 +29,7 @@ class kelas extends CI_Controller {
 				$data['file'] = $datas;					
 			}				
 			$data['class_settings'] = $class_settings;
-			
+			$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
 			$content['page'] = $this->load->view('kelas/main',$data,TRUE);
 		}else{
 			//check registration or/and get list
@@ -213,7 +213,106 @@ class kelas extends CI_Controller {
 		print_r($this->scribd->getConversionStatus($doc_id));
 	}*/
 	
+	public function pengumuman(){
+		$this->auth->check_auth();
+		
+		$res = $this->tutor_model->get_list_classes_for_tutor($this->session->userdata('id'));
+		$data['list'] = $res;
+		
+		$content['page'] = $this->load->view('kelas/pengumuman',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
 	
+	function data_pengumuman($assignment_id)
+	{
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=20;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='created';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='DESC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		$data->records = count ($this->tutor_model->get_list_JQGRID('pengumuman_kelas',$req_param,"all",false,$assignment_id)->result_array());		
+			$records = $this->tutor_model->get_list_JQGRID('pengumuman_kelas',$req_param,"current",false,$assignment_id)->result_array();
+		
+		
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+	}
+
+	public function data_pengumuman_CRUD(){
+		$response = "";
+		if(isset($_POST['oper'])){
+			$col = array();
+			$this->load->library('form_validation');
+			switch($_POST['oper']){
+				case 'edit':					
+					$this->form_validation->set_rules('content', 'Content', 'required');					
+					$this->form_validation->set_rules('until', 'Until', 'required');	
+					$col = $this->input->post();
+					break;
+				case 'add':
+					$this->form_validation->set_rules('content', 'Content', 'required');					
+					$this->form_validation->set_rules('until', 'Until', 'required');	
+					$this->form_validation->set_rules('assignment_id', 'Assignment ID', 'required');				
+					$col = $this->input->post();
+					break;
+				case 'del':
+					$this->form_validation->set_rules('id', 'ID', 'required|numeric');	
+					$col = $this->input->post();
+					break;
+				default:
+					exit;
+			}
+			if ($this->form_validation->run())
+			{
+					switch($col['oper']){
+						case 'edit':
+							unset($col['oper']);
+							$id = $col['id'];
+							unset($col['id']);
+							$this->tutor_model->update_pengumuman_kelas($id,$col);
+							break;
+						case 'add':
+							unset($col['oper']);
+							unset($col['id']);							
+							
+							$this->tutor_model->add_pengumuman_kelas($col);
+							break;
+						case 'del':
+							$this->tutor_model->delete_pengumuman_kelas($col['id']);
+							break;
+						default:
+							exit;
+					}
+			}else{
+					$response = validation_errors();
+			}
+		}				
+		
+		echo $response;
+		
+	}
 	
 }
 

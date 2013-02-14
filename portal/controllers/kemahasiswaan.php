@@ -183,17 +183,84 @@ class kemahasiswaan extends CI_Controller {
 		}
 	}
 	
-	
-	function mahasiswa_baru() {
+	function mahasiswa_baru(){
 		$this->auth->check_auth();
 		$data = array();
-		$data['list'] = $this->person->new_student_list();					
+		$data['list'] = $this->person->new_student_list();	
+		
 		$content['page'] = $this->load->view('kemahasiswaan/mahasiswa_baru',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
+	function mahasiswa_all() {
+		$this->auth->check_auth();
+		$data = array();
+		//$data['list'] = $this->person->new_student_list();	
+		
+		$bucket = $this->utility_model->get_Table('major');
+		 
+		 $major_arr = array();
+		 foreach($bucket->result_array() as $row){
+			$major_arr[] = $row;
+		 }
+		 $region_arr = array();
+		 $region_arr['K'] = 'Seoul';
+		 $region_arr['A'] = 'Ansan';
+		 $region_arr['G'] = 'Guro';
+		 $region_arr['U'] = 'Ujiongbu';
+		 $region_arr['D'] = 'Daegu';
+		 $region_arr['C'] = 'Cheonan';
+		 $region_arr['J'] = 'Gwangju';
+		 $region_arr['B'] = 'Busan';
+         
+         $data = array('major_arr'=>$major_arr,
+                       'region_arr'=>$region_arr);
+						
+		$content['page'] = $this->load->view('kemahasiswaan/mahasiswa_all',$data,TRUE);
         $this->load->view('dashboard',$content);		
 	}
 	
-	function data_mhs_baru($id) {
-		$this->auth->check_auth();
+	function data_mhs_all() {
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=10;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='name';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='ASC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		
+        $data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
+		$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
+		$newrecords = array();
+		foreach($records as $row){
+		  //$row['entry_period'] = calculate_semester($row['entry_period']);
+		  $newrecords[] = $row;
+		}
+		$records = $newrecords;
+		
+		
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
 	}
 		
 	public function export_data() {
