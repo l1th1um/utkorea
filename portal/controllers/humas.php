@@ -124,8 +124,11 @@ class humas extends CI_Controller {
 			"search_operator" => $this->input->post( "searchOper", TRUE ),
 			"search_str" => $this->input->post( "searchString", TRUE )
 		);
+        
+        $data = new stdClass();
 
 		$data->page = $page;
+        
 		if($type=='student'){
 
 			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		

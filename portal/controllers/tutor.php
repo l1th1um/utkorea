@@ -14,19 +14,19 @@ class tutor extends CI_Controller {
 	{
 		$this->auth->check_auth();
 		
-		
-		$bucket = $this->utility_model->get_Table('major');
+        $bucket = $this->utility_model->get_Table('major');
 		 
-		 $major_arr = array();
-		 foreach($bucket->result_array() as $row){
-			$major_arr[] = $row;
-		 }
-		 $region_arr = array();
-		 $region_arr['Utara'] = 'Utara';
-		 $region_arr['Selatan'] = 'Selatan';
+		$major_arr = array();
+		foreach($bucket->result_array() as $row){
+		  $major_arr[] = $row;
+		}
 		
-		 $content['page'] = $this->load->view('tutor/tutor',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
-         $this->load->view('dashboard',$content);       
+        $region_arr = array();
+		$region_arr['Utara'] = 'Utara';
+		$region_arr['Selatan'] = 'Selatan';
+		
+		$content['page'] = $this->load->view('tutor/tutor',array('major_arr'=>$major_arr,'region_arr'=>$region_arr),TRUE);		 
+        $this->load->view('dashboard',$content);       
 	}
 	
 	public function exportCurrentCRUD(){
@@ -174,5 +174,11 @@ class tutor extends CI_Controller {
 		
 		echo ($i > 0)? '1' : '0';
 	}
+    
+    public function list_grid() 
+    {
+        
+    }
 }
+
 
