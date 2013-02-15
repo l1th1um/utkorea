@@ -33,14 +33,7 @@ class Main extends CI_Controller {
 			
 			$content['page'] = $this->load->view('welcome',$data,TRUE);
         	$this->load->view('dashboard',$content);
-			/*
-            if ($this->session->userdata('role') == 4) {
-            	redirect('sms');
-            } else if ($this->session->userdata('role') == 6) {
-            	redirect('mahasiswa');
-            } else if ($this->session->userdata('role') == 5){
-				redirect('tutor');
-			}*/			
+					
 		} else {
 		    redirect('login','refresh');  
 		}

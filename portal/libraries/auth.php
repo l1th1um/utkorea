@@ -47,11 +47,13 @@
       			$row = $query->row_array();
       			
       			$permission = json_decode($row['permission']);
-      			
-	      		if (!in_array($this->CI->session->userdata('role'),$permission)) {
-      				redirect('permission_error');
+                
+      			$intersect = array_intersect($this->CI->session->userdata('role'),$permission);
+                
+                if (count($intersect) > 0) {
+      				return TRUE;                      
       			} else {
-      				return TRUE;
+      				redirect('permission_error');
       			}
       		}
       
@@ -81,7 +83,7 @@
 			  if (is_numeric($login['username'])) {
 	                $newdata = array(
 	                   'username'  => $login['username'],
-	                   'role'  => 9,
+	                   'role'  => array(9),
 	                   'major'  => $row['major'],
 	                   'logged_in' => TRUE
 	               );              

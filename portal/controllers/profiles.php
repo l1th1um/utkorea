@@ -98,7 +98,9 @@ class profiles extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$data['message'] = validation_errors();				
 			} else {
-				if ($this->session->userdata('role') <= 7) {
+				$role = $this->session->userdata('role');
+                
+		        if ($role[0] <= 8) {
 					$table = 'staff';
 				} else {
 					$table = 'mahasiswa';
@@ -132,7 +134,8 @@ class profiles extends CI_Controller {
 	}
 	
 	function password_check($password) {
-		if ($this->session->userdata('role') <= 7) {
+	    $role = $this->session->userdata('role');
+		if ($role[0] <= 8) {
 			$table = 'staff';
 		} else {
 			$table = 'mahasiswa';

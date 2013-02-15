@@ -431,7 +431,7 @@ function create_unique_slug($string, $table)
 function user_detail($field,$id) {
     $ci =& get_instance();
 	$ci->db->select($field);
-	if ($ci->session->userdata('role') == 9) {
+	if (in_array(9,$ci->session->userdata('role'))) {
 		$ci->db->where('nim',$id);	
     	$query = $ci->db->get('mahasiswa');
 	} else {
@@ -446,7 +446,7 @@ function user_detail($field,$id) {
 
 function user_details($id) {
     $ci =& get_instance();
-	if ($ci->session->userdata('role') == 9) {
+	if (in_array(9,$ci->session->userdata('role')) ) {
 		$ci->db->where('nim',$id);	
     	$query = $ci->db->get('mahasiswa');
 	} else {
