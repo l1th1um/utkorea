@@ -86,10 +86,11 @@
 	                   'logged_in' => TRUE
 	               );              
 			  } else {
+			        $role = explode(',',$row['group_id']);
 			  		$newdata = array(
 	                   'username'  => $login['username'],
 	                   'id'  => $row['staff_id'],
-	                   'role'  => $row['group_id'],
+	                   'role'  => $role,
 	                   'major'  => $row['major_id'],
 	                   'logged_in' => TRUE
 	               );

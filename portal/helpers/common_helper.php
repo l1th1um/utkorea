@@ -24,10 +24,26 @@ function assets_path() {
 
 function menu($role) {
 	$ci =& get_instance();
-	$ci->db->like('permission',$role);
+	//$ci->db->like('permission',$role);
+    
+    $i = 1;
+    $where_param = "(";
+    foreach ($role as $val) {
+        $where_param .= "`permission` LIKE '%".$val."%'";
+        
+        if ($i != count($role)) {
+            $where_param .= " OR  ";
+        }
+        
+        $i++;
+    }
+    
+    $where_param .= ")";
+    $ci->db->WHERE($where_param);
 	$ci->db->WHERE('parent','0');
 	$query = $ci->db->get('permissions');
-	
+	//echo $this->db->last_query();
+    
 	if ($query->num_rows() > 0) {
 		$menu = array();
 		$i = 0;
@@ -35,7 +51,21 @@ function menu($role) {
 			$menu[$i]['page'] = $row->page;
 			$menu[$i]['icons'] = $row->icons;
 			
-			$ci->db->like('permission',$role);
+			$j = 1;
+            $where_param_child = "(";            
+            foreach ($role as $val) {
+                $where_param_child .= "`permission` LIKE '%".$val."%'";
+                
+                if ($j != count($role)) {
+                    $where_param_child .= " OR  ";
+                }
+                
+                $j++;
+            }
+            
+            $where_param_child .= ")";
+            
+            $ci->db->WHERE($where_param_child);    
 			$ci->db->WHERE('parent',$row->id);
 			$query2 = $ci->db->get('permissions');
 			
@@ -168,7 +198,7 @@ function getCountry() {
 function get_role($role) {
 	$ci =& get_instance();
 	$ci->db->select('group');
-	$ci->db->where('usergroup_id',$role);
+	$ci->db->where('usergroup_id',$role[0]);
     $query = $ci->db->get('usergroups');    
         
     if ($query->num_rows() > 0) {

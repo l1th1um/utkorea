@@ -11,8 +11,7 @@ class kemahasiswaan extends CI_Controller {
 	
 	public function index()
     {
-        $this->auth->check_auth();
-        
+        $this->auth->check_auth();        
         $data = array();
         
         foreach (major_list() as $key => $value)
