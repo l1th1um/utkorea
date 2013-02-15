@@ -1,8 +1,12 @@
-<?php if($pengumuman->num_rows()>0){
+<?php
+/* 
+if($pengumuman->num_rows()>0){
 	foreach($pengumuman->result() as $row){
 		echo info_form($row->content);
 	}
-}?>
+ 
+}*/
+?>
 
 <?php if($class_settings){ ?>
 <script type='text/javascript' src='http://www.scribd.com/javascripts/scribd_api.js'></script>
@@ -12,6 +16,7 @@
   	var scribd_doc = scribd.Document.getDoc(doc_id,access_key); 
   
   	scribd_doc.addParam( 'jsapi_version', 2 );  
+    scribd_doc.addParam( 'height', 500 );
   	scribd_doc.write('embedded_presentation');	
   	scribd_doc.addEventListener('docReady',function(){
 	  		$("#embedded_presentation").append('<a target="_blank" href="<?php echo base_url(); ?>kelas/arsip_download/' + doc_id + '/<?php echo $class_settings->id ?>"><button class="blue" style="float:right;margin:4px;">Download</button></a>');
@@ -85,26 +90,110 @@
 </script>
 <?php } ?>
 
-
-<div style="height:500;width:418px;float:right">
-	<article id="video" class="half-block nested clearfix" style="width:360px;padding:6px;text-align:center" >		
-	</article>
-	<article id="chat" class="half-block clearfix" style="width:360px;padding:6px;" >		
-	</article>
-</div>
-
-<article class="half-block" style="width:566px;padding:4px;float:right;">
-	<header>
+<header>
 		<h2><?php echo $class_settings->title; ?></h2>
 		<nav>
 			<ul class="tab-switch">
 				<li><a id="arsip" href="#">Arsip File</a></li>				
 			</ul>
 		</nav>
-	</header>	
-	<div style="width:566px;" id="embedded_presentation"></div>
-</article>
+	</header>
+    
+<div style="height:auto;width:100%;position: inherit;">
+    <div id="video" style="width:48%;float:left"></div>
+    <div id="chat" style="width:48%;;float:left;padding-left:10px"></div>    
+</div>
 <div style="clear:both"></div>
+
+<!--
+<div style="width: 100%;">        
+    <div style="width:20%;float:left;">
+        This if For Material Content
+    </div>
+    <div style="width:70%float:left;padding-left:30px" id="embedded_presentation"></div>
+</div>
+-->
+<!--
+<article class="half-block" style="width:495px;padding:4px;float:right;">
+	<header>
+		<h2>
+            <?php echo $class_settings->title; ?>
+        </h2>
+		<nav>
+			<ul class="tab-switch">
+				<li><a id="arsip" href="#">Arsip File</a></li>				
+			</ul>
+		</nav>
+	</header>	
+	<div style="width:490px;" id="embedded_presentation"></div>
+</article>
+-->
+
+<div style="clear:both"></div>
+
+<div style="height:auto;width:100%;position: inherit;padding-top:10px">
+    <div style="width: 48%;float:left;">
+        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        	<header>
+        		<h2>Materi Kuliah</h2>
+        	</header>
+        	<section>
+        		Content Will Be Here
+        	</section>
+        </article>
+    </div>
+    <div style="width: 48%;float:left;padding-left:10px" >
+        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        	<header>
+        		<h2>Pengumuman</h2>
+        	</header>
+        	<section>
+        		Content Will Be Here
+        	</section>
+        </article>
+    </div>
+</div>
+<div style="clear:both"></div>
+
+<div style="height:auto;width:100%;position: inherit;padding-top:10px">
+    <div style="width: 48%;float:left;">
+        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        	<header>
+        		<h2>Pertanyaan</h2>
+        	</header>
+        	<section>
+        		Content Will Be Here
+        	</section>
+        </article>
+    </div>
+    <div style="width: 48%;float:left;padding-left:10px" >
+        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        	<header>
+        		<h2>Tugas</h2>
+        	</header>
+        	<section>
+        		Content Will Be Here
+        	</section>
+        </article>
+    </div>
+</div>
+<div style="clear:both"></div>
+
+
+<div style="height:auto;width:100%;position: inherit;padding-top:10px">
+    <div style="width: 48%;float:left;">
+        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        	<header>
+        		<h2>Absensi</h2>
+        	</header>
+        	<section>
+        		Content Will Be Here
+        	</section>
+        </article>
+    </div>    
+</div>
+<div style="clear:both"></div>
+
 <?php } ?>
 
 <script type="text/javascript">
