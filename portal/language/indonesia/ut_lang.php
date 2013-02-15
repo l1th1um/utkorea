@@ -121,4 +121,5 @@ Dear %s, \n\n
 Berikut ini kami kirimkan bukti pembayaran untuk %s.\n\n\n
 Salam,\n
 Bendahara UT Korea Selatan";
+$lang['no_access']  = 'Maaf, Anda Tidak Mempunyai Akses';
 ?>

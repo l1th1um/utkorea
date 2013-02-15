@@ -112,38 +112,45 @@ class kelas extends CI_Controller {
 		$this->auth->check_auth();		
 		
 		$classes = $this->tutor_model->get_class_by_tutor($this->session->userdata('id'));
-		
-		foreach($classes->result() as $row){
-			$this->form_validation->set_rules('status'.$row->id,'Status','required|xss_clean');
-			$this->form_validation->set_rules('linkvid'.$row->id,'Status','xss_clean');
-			$this->form_validation->set_rules('radio'.$row->id,'Live Provider','required|xss_clean');
-			$this->form_validation->set_rules('ustreamch'.$row->id,'Ustream Channel','xss_clean');
-			$this->form_validation->set_rules('justinch'.$row->id,'Justin Channel','xss_clean');
-			$this->form_validation->set_rules('bambuserch'.$row->id,'Bambuser Channel','xss_clean');
-			$this->form_validation->set_rules('lsch'.$row->id,'Livestream Channel','xss_clean');
+        $data['is_class'] = true;
+        
+		if ($classes != false) {
+    		foreach($classes->result() as $row){
+    			$this->form_validation->set_rules('status'.$row->id,'Status','required|xss_clean');
+    			$this->form_validation->set_rules('linkvid'.$row->id,'Status','xss_clean');
+    			$this->form_validation->set_rules('radio'.$row->id,'Live Provider','required|xss_clean');
+    			$this->form_validation->set_rules('ustreamch'.$row->id,'Ustream Channel','xss_clean');
+    			$this->form_validation->set_rules('justinch'.$row->id,'Justin Channel','xss_clean');
+    			$this->form_validation->set_rules('bambuserch'.$row->id,'Bambuser Channel','xss_clean');
+    			$this->form_validation->set_rules('lsch'.$row->id,'Livestream Channel','xss_clean');
+    		}
+    		$data['success'] = 0;
+    		
+    		if($this->form_validation->run()){
+    			$datas = array();
+    			foreach($classes->result() as $row){
+    					$datas[] = array(
+    						'status'=>$this->input->post('status'.$row->id),
+    						'linkvid'=>$this->input->post('linkvid'.$row->id),
+    						'chopt'=>$this->input->post('radio'.$row->id),
+    						'ustreamch'=>$this->input->post('ustreamch'.$row->id),
+    						'justinch'=>$this->input->post('justinch'.$row->id),
+    						'bambuserch'=>$this->input->post('bambuserch'.$row->id),
+    						'lsch'=>$this->input->post('lsch'.$row->id),
+    						'id'=>$row->id
+    					);
+    			}
+    			$this->tutor_model->update_batch_assignment($datas,'id');
+    			$data['success'] = 1;
+    			$classes = $this->tutor_model->get_class_by_tutor($this->session->userdata('id'));
+    		}
+            
+            $data['classes'] = $classes;
+		} else {
+		    $data['is_class'] = false;
+		    $data['message'] = $this->lang->line("no_access");
 		}
-		$data['success'] = 0;
 		
-		if($this->form_validation->run()){
-			$datas = array();
-			foreach($classes->result() as $row){
-					$datas[] = array(
-						'status'=>$this->input->post('status'.$row->id),
-						'linkvid'=>$this->input->post('linkvid'.$row->id),
-						'chopt'=>$this->input->post('radio'.$row->id),
-						'ustreamch'=>$this->input->post('ustreamch'.$row->id),
-						'justinch'=>$this->input->post('justinch'.$row->id),
-						'bambuserch'=>$this->input->post('bambuserch'.$row->id),
-						'lsch'=>$this->input->post('lsch'.$row->id),
-						'id'=>$row->id
-					);
-			}
-			$this->tutor_model->update_batch_assignment($datas,'id');
-			$data['success'] = 1;
-			$classes = $this->tutor_model->get_class_by_tutor($this->session->userdata('id'));
-		}
-		
-		$data['classes'] = $classes;
 		$content['page'] = $this->load->view('kelas/pengaturan',$data,TRUE);
         $this->load->view('dashboard',$content);
 	}

@@ -127,7 +127,7 @@ class tutor_model extends CI_Model {
 		$this->db->join('courses b','a.course_id = b.course_id');
 		$this->db->where('a.staff_id',$staff_id);
 		$res = $this->db->get();
-		if($res->num_rows()>0){
+        if($res->num_rows() > 0){
 			return $res;
 		}else{
 			return false;

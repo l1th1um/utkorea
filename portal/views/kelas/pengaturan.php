@@ -1,3 +1,4 @@
+<?php if($is_class){ ?>
 <script>
   $(function() {
     $( "#tabs" ).tabs();
@@ -65,4 +66,7 @@
 <br />
 <button type="submit">Simpan</button>
 </form>
-<?php } ?>
+<?php } 
+} else {
+    echo $message;
+}?>
