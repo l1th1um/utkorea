@@ -325,6 +325,16 @@ class kelas extends CI_Controller {
 		echo $response;
 		
 	}
+
+	public function scribd_docview($doc_id,$access_key,$class_id){
+		$data = array(
+			'doc_id' => $doc_id,
+			'access_key' => $access_key,
+			'class_id' => $class_id
+		);
+		
+		$this->load->view('kelas/scribd_docview',$data);
+	}
 	
     function announcement($id) {
         $this->auth->check_auth();

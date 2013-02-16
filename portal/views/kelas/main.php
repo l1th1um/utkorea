@@ -31,7 +31,7 @@ if($pengumuman->num_rows()>0){
 		<?php if($file){ 
 			$totalc = (count($file)>1)?' '.count($file):'';
 			?>
-			getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
+			//getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
 		<?php }else{
 			echo '$("#embedded_presentation").html("Scribd Service Currently not available");';
 		} ?> 
@@ -61,7 +61,7 @@ if($pengumuman->num_rows()>0){
 		<?php if($file){ 
 			$totalc = (count($file)>1)?' '.count($file):'';
 			?>
-			getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
+			//getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
 		<?php }else{
 			echo '$("#embedded_presentation").html("Scribd Service Currently not available");';
 		} ?> 
@@ -81,7 +81,7 @@ if($pengumuman->num_rows()>0){
 		<?php if($file){ 
 			$totalc = (count($file)>1)?' '.count($file):'';
 			?>
-			getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
+			//getdocscribd(<?php echo $file['result'.$totalc]['doc_id']; ?>, '<?php echo $file['result'.$totalc]['access_key']; ?>' );
 		<?php }else{
 			echo '$("#embedded_presentation").html("Scribd Service Currently not available");';
 		} ?> 
@@ -92,11 +92,11 @@ if($pengumuman->num_rows()>0){
 
 <header>
 		<h2><?php echo $class_settings->title; ?></h2>
-		<nav>
+		<!--<nav>
 			<ul class="tab-switch">
 				<li><a id="arsip" href="#">Arsip File</a></li>				
 			</ul>
-		</nav>
+		</nav>-->
 	</header>
     
 <div style="height:auto;width:100%;position: inherit;">
@@ -133,12 +133,20 @@ if($pengumuman->num_rows()>0){
 
 <div style="height:auto;width:100%;position: inherit;padding-top:10px">
     <div style="width: 48%;float:left;">
-        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+        <article class="quarter-block nested clearrm classli" style="min-height:400px;margin:4px;width:100%;max-height:400px;">
         	<header>
         		<h2>Materi Kuliah</h2>
         	</header>
         	<section>
-        		Content Will Be Here
+        		<table class="datatable">
+				  		<thead>
+				  			<tr>
+				  				<th>Name</th>
+				  				<th>Upload Date</th>
+				  			</tr>
+				  		</thead>
+				  		<tbody></tbody>
+				  </table>
         	</section>
         </article>
     </div>
@@ -217,38 +225,32 @@ if($pengumuman->num_rows()>0){
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#arsip").click(function(){
+		
 			$.ajax({
 				type: "POST",			 
 				url: '<?php echo base_url(); ?>kelas/get_class_archive/<?php echo $class_settings->id; ?>',
 				dataType: "html",
-				success: function(data){
-					$(".datatable tbody").html(data);				
-					$( "#dialog-message" ).dialog({
-				      modal: true,
-				      width: 600
-				    });				
+				success: function(data){					
+					$(".datatable tbody").html(data);	
+					$('.datatable').dataTable( {
+					    "iDisplayLength": 5,
+					    "aLengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]]
+					  });	
+											
 				}	
 			});	
-		});
+		
 		$(".docarsip").live('click',function(){
 			var doc_id = $(this).attr("alt");
 			var access_key = $(this).find(":hidden").val();
-			getdocscribd(doc_id,access_key);
+			//getdocscribd(doc_id,access_key);
+			window.open("<?php echo site_url("kelas/scribd_docview"); ?>/" + doc_id + "/" + access_key + "/<?php echo $class_settings->id; ?>",'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=508,height=538')
 		});
 		
 	});
 </script>
 <div id="dialog-message" title="Arsip File" style="display:none">
-  <table class="datatable">
-  		<thead>
-  			<tr>
-  				<th>Name</th>
-  				<th>Upload Date</th>
-  			</tr>
-  		</thead>
-  		<tbody></tbody>
-  </table>
+  
 </div>
 
 
