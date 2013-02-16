@@ -8,6 +8,7 @@ class kelas extends CI_Controller {
 		//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
 		$this->load->model('tutor_model');
+        $this->load->model('announcement_model','announce');
 		$this->load->library('scribd',array('api_key'=>$this->config->item('scribd_key'),'secret'=>$this->config->item('scribd_secret')));
     }	
 	
@@ -17,6 +18,7 @@ class kelas extends CI_Controller {
 		
 		if($id!=''){			
 			$class_settings = $this->tutor_model->get_class_by_id($id);
+            
 			if($class_settings){				
 				$this->scribd->my_user_id = 'assignment_'.$id;		
 				try{
@@ -27,9 +29,12 @@ class kelas extends CI_Controller {
 				}
 							
 				$data['file'] = $datas;					
-			}				
+			}
+            				
 			$data['class_settings'] = $class_settings;
-			$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
+			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
+            $data['announcement'] = $this->announce->display_announce_class($id);
+            $data['id'] = $id;
 			$content['page'] = $this->load->view('kelas/main',$data,TRUE);
 		}else{
 			//check registration or/and get list
@@ -321,5 +326,49 @@ class kelas extends CI_Controller {
 		
 	}
 	
+    function announcement($id) {
+        $this->auth->check_auth();
+        
+        $data['list'] = $this->announce->display_announce_class($id);
+		$data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/announcement',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    }
+    
+    function create_announcement($id) {
+        $this->auth->check_auth();
+        
+        $data = array();
+		
+		if (isset($_POST['title'])) {
+			$this->_validate_announcements();
+			
+			if ($this->form_validation->run() == FALSE) {
+				$data['message'] = error_form(validation_errors());				
+			} else {
+				if ($this->announce->save_announce_class($_POST,$id)) {
+					$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
+				} else {
+					$data['message'] = 	error_form($this->lang->line('db_error'));
+				}
+			}
+		}
+               
+        $data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/create_announcement',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    }
+    
+    public function _validate_announcements()
+	{
+		$this->form_validation->set_rules('title',$this->lang->line('title'),'trim|required|min_length[4]');
+		$this->form_validation->set_rules('content',$this->lang->line('announcement'),'trim|required|min_length[4]');		
+	}
+    
+    public function display_detail_class() {
+		$id = $this->input->post('id');
+		$data['row'] = $this->announce->display_detail_class($id);
+		
+		echo $this->load->view('announcement/announce_class',$data,TRUE);
+	}    
 }
-

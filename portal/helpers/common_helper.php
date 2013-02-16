@@ -41,6 +41,7 @@ function menu($role) {
     $where_param .= ")";
     $ci->db->WHERE($where_param);
 	$ci->db->WHERE('parent','0');
+    $ci->db->WHERE('menu','1');
 	$query = $ci->db->get('permissions');
 	//echo $this->db->last_query();
     
@@ -67,6 +68,7 @@ function menu($role) {
             
             $ci->db->WHERE($where_param_child);    
 			$ci->db->WHERE('parent',$row->id);
+            $ci->db->WHERE('menu','1');
 			$query2 = $ci->db->get('permissions');
 			
 			if ($query2->num_rows() > 0) {

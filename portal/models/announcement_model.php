@@ -43,4 +43,41 @@ class announcement_model extends CI_Model {
 			return false;
 		}
 	}
+    
+    public function display_announce_class($assignment_id) {
+		$this->db->where('assignment_id',$assignment_id);
+		$this->db->order_by('id','desc');
+		$query = $this->db->get('announce_class');
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+    
+    public function save_announce_class($data,$id) {
+		$insert = populate_form($data, 'announce_class');
+		$this->db->set('created', 'now()', FALSE);
+        $this->db->set('assignment_id',$id);
+		
+		$query = $this->db->insert('announce_class',$insert);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+    
+    public function display_detail_class($id) {
+		$this->db->where('id',$id);		
+        $query = $this->db->get('announce_class');
+		
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		} else {
+			return false;
+		}
+	}
 }
