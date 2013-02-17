@@ -55,7 +55,7 @@ class kelas extends CI_Controller {
 			$class_settings = $this->tutor_model->get_class_by_id($id);
             
 			if($class_settings){				
-				$this->scribd->my_user_id = 'assignment_'.$id;		
+				$this->scribd->my_user_id = 'asg_'.$id;		
 				try{
 					$datas = $this->scribd->getList(array('api_key'=>$this->config->item('scribd_key')));	
 				}catch(exception $e){
@@ -120,7 +120,7 @@ class kelas extends CI_Controller {
 	}
 
 	public function get_class_archive($id){
-		$this->scribd->my_user_id = 'assignment_'.$id;		
+		$this->scribd->my_user_id = 'asg_'.$id;		
 		$data = $this->scribd->getList(array('api_key'=>$this->config->item('scribd_key')));
 		if($data){
 			$res = '';
@@ -221,9 +221,9 @@ class kelas extends CI_Controller {
 	public function do_upload($id_assignment){
 		
 		if(isset($_FILES['upload'])){
-			$this->scribd->my_user_id = 'assignment_'.$id_assignment;
+			$this->scribd->my_user_id = 'asg_'.$id_assignment;
 			$doc_type = null;
-			$access = null;
+			$access = "public";
 			$rev_id = null;
 			$res = $this->scribd->upload($_FILES['upload']['tmp_name'], $doc_type, $access, $rev_id);
 			$this->scribd->changeSettings($res['doc_id'],array('download_formats'=>'original'),$_FILES['upload']['name']);
@@ -232,14 +232,14 @@ class kelas extends CI_Controller {
 	}
 	
 	public function arsip_download($doc_id,$assignment_id){
-		$this->scribd->my_user_id = 'assignment_'.$assignment_id;
+		$this->scribd->my_user_id = 'asg_'.$assignment_id;
 		//print_r($this->scribd->getDownloadLink($doc_id));
 		$res = $this->scribd->getDownloadLink($doc_id);
 		redirect($res['download_link'],'refresh');
 	}
 	
 	public function arsip_delete($doc_id,$assignment_id){
-		$this->scribd->my_user_id = 'assignment_'.$assignment_id;
+		$this->scribd->my_user_id = 'asg_'.$assignment_id;
 		$res = $this->scribd->delete($doc_id);
 	}
 	
@@ -430,7 +430,7 @@ class kelas extends CI_Controller {
     } 
     */
     function question($id) {
-        $this->auth->check_auth();
+        //$this->auth->check_auth();
         
         $data['list'] = $this->announce->list_question($id);
 		$data['id'] = $id;

@@ -157,7 +157,7 @@ class tutor_model extends CI_Model {
 	}
 	
 	function get_list_classes_for_student($nim){
-		$this->db->select('*,b.id as asgnmtid');
+		$this->db->select('*,b.assignment_uid as asgnmtid');
 		$this->db->from('class a');
 		$this->db->join('assignment b','a.id_assignment = b.id');
 		$this->db->join('settings d','b.time_period = d.time_period');

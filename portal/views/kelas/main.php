@@ -10,7 +10,7 @@ if($pengumuman->num_rows()>0){
 
 <?php if($class_settings){ ?>
 <script type='text/javascript' src='http://www.scribd.com/javascripts/scribd_api.js'></script>
-
+<script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
 <script type="text/javascript">
   function getdocscribd(doc_id,access_key){
   	var scribd_doc = scribd.Document.getDoc(doc_id,access_key); 
@@ -137,16 +137,27 @@ if($pengumuman->num_rows()>0){
         	<header>
         		<h2>Materi Kuliah</h2>
         	</header>
-        	<section>
-        		<table class="datatable">
-				  		<thead>
-				  			<tr>
-				  				<th>Name</th>
-				  				<th>Upload Date</th>
-				  			</tr>
-				  		</thead>
-				  		<tbody></tbody>
-				  </table>
+        	<section>			
+        		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
+        		<div>
+	        		<label for="upload">Upload File untuk Kelas ini</label>	
+					<span id="uploadagent"></span><br />
+					<span style="font-size:8pt;">Format : .doc .docx .ppt .pptx .pdf</span>
+				</div>
+				<hr />
+				<?php } ?>
+        			
+				<table class="datatable">
+			  		<thead>
+			  			<tr>
+			  				<th>Name</th>
+			  				<th>Upload Date</th>
+			  			</tr>
+			  		</thead>
+			  		<tbody></tbody>
+			  	</table>
+			  	
+			  				  	
         	</section>
         </article>
     </div>
@@ -240,6 +251,7 @@ if($pengumuman->num_rows()>0){
         	</section>
         </article>
     </div>
+    <?php if(is_numeric($this->session->userdata('username'))){ ?>
     <div style="width: 48%;float:left;padding-left:10px" >
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
@@ -250,6 +262,7 @@ if($pengumuman->num_rows()>0){
         	</section>
         </article>
     </div>
+    <?php } ?>
 </div>
 <div style="clear:both"></div>
 
@@ -259,21 +272,35 @@ if($pengumuman->num_rows()>0){
 <?php } ?>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		
+	$(document).ready(function(){	
+		var curid = <?php echo $class_settings->id; ?>;	
+		function loadList(id,isnew){
+			isnew = (typeof isnew === "undefined") ? false : isnew;
+			var dt = $(".datatable").dataTable();
 			$.ajax({
-				type: "POST",			 
-				url: '<?php echo base_url(); ?>kelas/get_class_archive/<?php echo $class_settings->id; ?>',
-				dataType: "html",
-				success: function(data){					
-					$(".datatable tbody").html(data);	
-					$('.datatable').dataTable( {
-					    "iDisplayLength": 5,
-					    "aLengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]]
-					  });	
-											
-				}	
-			});	
+					type: "POST",			 
+					url: '<?php echo base_url(); ?>kelas/get_class_archive/' + + id,
+					dataType: "html",
+					beforeSend: function(){					
+						$(".datatable tbody").html("<tr><td></td><td><span class='loader blue' title='Processing. Please Wait'></span></td></tr>");
+					},
+					success: function(data){	
+						dt.fnDestroy();											
+						$(".datatable tbody").html(data);
+						$(".datatable").dataTable( {
+							"iDisplayLength": 5,
+					    	"aLengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]],
+					        "aaSorting": [[ 1, "desc" ]]
+					    });											
+					    if(isnew){
+					    	$(".datatable tbody tr").first().attr('style','background:yellow').animate({
+	          						backgroundColor: "#f2f2f2",										
+							}, 2500);
+					    }										
+					}	
+			});
+		}		
+			
 		
 		$(".docarsip").live('click',function(){
 			var doc_id = $(this).attr("alt");
@@ -281,12 +308,34 @@ if($pengumuman->num_rows()>0){
 			//getdocscribd(doc_id,access_key);
 			window.open("<?php echo site_url("kelas/scribd_docview"); ?>/" + doc_id + "/" + access_key + "/<?php echo $class_settings->id; ?>",'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=508,height=538')
 		});
+		loadList(curid);
 		
+		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
+		$('.fileupload').remove();
+		$("#uploadagent").html('<?php echo form_upload(array('style'=>'margin-left:14px','name'=>'upload','class'=>'fileupload')); ?>');
+		$('.fileupload').attr('data-url','<?php echo base_url(); ?>kelas/do_upload/' + curid);
+		$('.fileupload').fileupload({
+						dataType: 'json',
+						maxFileSize: 5000,
+						acceptFileTypes: /(\.|\/)(pdf|doc?x|ppt?x|txt)$/i,
+						progress: function () {				
+							$(".datatable tbody").html("<tr><td></td><td><span class='loader blue' title='Processing. Please Wait'></span></td></tr>");
+						},
+						error: function (e, data) {
+							alert(data);
+						},
+						done: function (e, data) {							
+							loadList(data.result.id,true);							
+						}
+		});
+		<?php } ?>
 	});
 </script>
-<div id="dialog-message" title="Arsip File" style="display:none">
+<!--<div id="dialog-message" title="Arsip File" style="display:none">
   
-</div>
+</div>-->
+
+
 
 
 
@@ -357,3 +406,4 @@ if($pengumuman->num_rows()>0){
 	
 </script>
 <link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
+
