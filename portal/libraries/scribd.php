@@ -199,14 +199,23 @@ class scribd {
 		$post_params['api_sig'] = $this->generate_sig($params, $secret);
 		$request_url = $this->url;
        
-		$ch = curl_init();
+		/*$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $request_url );       
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_params );
-		$xml = curl_exec( $ch );
+		$xml = curl_exec( $ch );*/
+		//echo $request_url;
+		//print_r($post_params);
+		$filereq = $request_url;
+		foreach($post_params as $key=>$val){
+			$filereq .= '&'.$key.'='.$val;
+		}
+		//echo $filereq;
+		$xml = file_get_contents($filereq);
+		//echo $xml;
 		$result = simplexml_load_string($xml); 
-		curl_close($ch);
+		//curl_close($ch);
 
 			if($result['stat'] == 'fail'){
 		
