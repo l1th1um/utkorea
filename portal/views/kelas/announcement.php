@@ -22,7 +22,13 @@
 	<thead>
 		<tr>
 			<th>Tanggal</th>
-			<th>Judul</th>				
+			<th>Judul</th>
+            <?php
+                if (in_array(8,$this->session->userdata('role'))) {
+                    echo "<th style='width:30px;text-align:center'>&nbsp;</th>
+                        <th style='width:30px;text-align:center'>&nbsp;</th>";
+                }
+            ?>
 		</tr>
 	</thead>
 	<tbody>
@@ -32,6 +38,22 @@
 	<tr>
 		<td width="150px"><?php echo convertHumanDate($row->created,false)?></td>
 		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
+        <?php
+            if (in_array(8,$this->session->userdata('role'))) {
+                $edit_icon = array(
+                          'src' => admin_tpl_path().'img/icons/icon_edit.png',
+                          'style' => 'border:none;background:none'                          
+                );
+                
+                $del_icon = array(
+                          'src' => admin_tpl_path().'img/icons/icon_error.png',
+                          'style' => 'border:none;background:none'                          
+                );
+
+                echo "<td>".img($edit_icon)."</td>
+                <td>".img($del_icon)."</td>";
+            }
+        ?>
 	</tr>
 	<?php
 		} 

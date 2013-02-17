@@ -56,21 +56,7 @@ class announcement_model extends CI_Model {
 		} else {
 			return false;
 		}
-	}
-    
-    public function save_announce_class($data,$id) {
-		$insert = populate_form($data, 'announce_class');
-		$this->db->set('created', 'now()', FALSE);
-        $this->db->set('assignment_id',$id);
-		
-		$query = $this->db->insert('announce_class',$insert);
-		
-		if ($this->db->affected_rows() > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	}    
     
     public function list_question($id,$limit=null) {
         $this->db->where('assignment_id',$id);

@@ -36,7 +36,8 @@ class tutor_model extends CI_Model {
 	function tutor_by_major($major) {
 		$this->db->select('staff_id,name,');
 		$this->db->where('major_id',$major);
-		
+		$this->db->order_by('name');
+        
 		$query = $this->db->get('staff');
 		
 		if ($query->num_rows() > 0) {
@@ -52,9 +53,14 @@ class tutor_model extends CI_Model {
 	
 	function save_assignment($staff_id, $course_id,$region) 
 	{
-		$where = array('course_id'=>$course_id,'time_period'=>setting_val('time_period'),'region'=>$region);
+		$where = array('course_id'=>$course_id,
+                       'time_period'=>setting_val('time_period'),
+                       'region'=>$region);
+        $this->db->set('assignment_uid', 'uuid()', FALSE);
+        
 		$query = $this->db->get_where('assignment',$where);	
 		
+        
 		$data = array('staff_id'=>$staff_id);
 		
 		if ($query->num_rows() > 0) {
@@ -167,7 +173,7 @@ class tutor_model extends CI_Model {
 	}
 
 	function get_list_classes_for_tutor($staff_id){
-		$this->db->select('*,b.id as asgnmtid');		
+		$this->db->select('*,b.assignment_uid as asgnmtid');		
 		$this->db->from('assignment b');
 		$this->db->join('settings d','b.time_period = d.time_period');
 		$this->db->join('courses c','b.course_id = c.course_id');

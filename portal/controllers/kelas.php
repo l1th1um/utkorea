@@ -12,14 +12,46 @@ class kelas extends CI_Controller {
         $this->load->model('announcement_model','announce');
 		$this->load->library('scribd',array('api_key'=>$this->config->item('scribd_key'),'secret'=>$this->config->item('scribd_secret')));
         $this->load->helper('html');
+        
+        
 
     }	
 	
-	public function index($id=''){
+    public function index($id=''){
 		
-		$this->auth->check_auth();	
+	   $this->auth->check_auth();	
 		
-		if($id!=''){			
+	   //check registration or/and get list
+        if(is_numeric($this->session->userdata('username'))){
+            $res = $this->tutor_model->get_list_classes_for_student($this->session->userdata('username'));
+            
+            if(!$res)
+            {
+		         $data = $this->register_class();	
+			     $content['page'] = $this->load->view('kelas/register',$data,TRUE);				
+            }
+            else
+            {
+                $data['list'] = $res;	
+                $content['page'] = $this->load->view('kelas/list',$data,TRUE);				
+            }
+		}
+        else
+        {
+            $res = $this->tutor_model->get_list_classes_for_tutor($this->session->userdata('id'));
+		    $data['list'] = $res;				
+            $content['page'] = $this->load->view('kelas/list',$data,TRUE);
+        }				
+						
+		
+        $this->load->view('dashboard',$content);
+	}
+    
+    public function course($uid)
+    {
+        if($uid!=''){
+            $id = $this->class_model->id_to_uuid($uid);
+            
 			$class_settings = $this->tutor_model->get_class_by_id($id);
             
 			if($class_settings){				
@@ -39,29 +71,13 @@ class kelas extends CI_Controller {
             $data['announcement'] = $this->announce->display_announce_class($id,5);
             $data['question'] = $this->announce->list_question($id,5);
             $data['task'] = false;
-            $data['id'] = $id;
+            $data['id'] = $uid;
 			$content['page'] = $this->load->view('kelas/main',$data,TRUE);
-		}else{
-			//check registration or/and get list
-			if(is_numeric($this->session->userdata('username'))){
-				$res = $this->tutor_model->get_list_classes_for_student($this->session->userdata('username'));
-				if(!$res){
-					$data = $this->register_class();	
-					$content['page'] = $this->load->view('kelas/register',$data,TRUE);				
-				}else{
-					$data['list'] = $res;	
-					$content['page'] = $this->load->view('kelas/list',$data,TRUE);				
-				}
-			}else{
-				$res = $this->tutor_model->get_list_classes_for_tutor($this->session->userdata('id'));
-				$data['list'] = $res;				
-				$content['page'] = $this->load->view('kelas/list',$data,TRUE);
-			}				
-		}				
-		
+		}
+        
         $this->load->view('dashboard',$content);
-	}
-
+    }
+    
 	public function absnilai($assignment_id=''){
 		$this->auth->check_auth();	
 		$data['success'] = 0;
@@ -368,7 +384,10 @@ class kelas extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$data['message'] = error_form(validation_errors());				
 			} else {
-				if ($this->announce->save_announce_class($_POST,$id)) {
+			     $post_data = $_POST;
+                 $post_data['staff_id'] = $this->session->userdata('id');
+                 
+				if ($this->class_model->save_announce_class($post_data,$id)) {
 				    $this->session->set_flashdata('message',$this->lang->line('announcement')." ".$this->lang->line('saved'));
 					//$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
                     redirect('kelas/announcement/'.$id);

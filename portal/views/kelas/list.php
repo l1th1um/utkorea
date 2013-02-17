@@ -11,7 +11,7 @@
 	if($list){
 		foreach($list->result() as $row){
 			?>
-			<a href="<?php echo base_url(); ?>kelas/index/<?php echo $row->asgnmtid; ?>">
+			<a href="<?php echo base_url(); ?>kelas/course/<?php echo $row->asgnmtid; ?>">
 			<article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;">
 				<header><h2><?php echo $row->code; ?></h2></header>
 				<section>

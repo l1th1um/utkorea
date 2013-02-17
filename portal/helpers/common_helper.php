@@ -857,7 +857,7 @@ function assignment_to_courses($id)
 {
     $ci =& get_instance();
 	$ci->db->select('course_id');
-    $ci->db->where('id',$id);
+    $ci->db->where('assignment_uid',$id);
 	$query = $ci->db->get('assignment');    
         
     if ($query->num_rows() > 0) 
