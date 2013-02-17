@@ -91,6 +91,7 @@ class kelas extends CI_Controller {
 				for($i=1;$i<=3;$i++){
 					$this->form_validation->set_rules('tugas_'.$row->id_assignment.'_'.$row->nim.'_'.$i,'Tugas '.$row->nim.'_'.$i,'xss_clean');	
 				}				
+				$this->form_validation->set_rules('tugas_'.$row->id_assignment.'_'.$row->nim.'_partisipasi','Partisipasi '.$row->nim,'xss_clean');	
 			}
 			if($this->form_validation->run()){				
 				foreach($res->result() as $row){
@@ -106,7 +107,8 @@ class kelas extends CI_Controller {
 						'absensi' => $abs,
 						'tugas1' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_1'),
 						'tugas2' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_2'),
-						'tugas3' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_3')
+						'tugas3' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_3'),
+						'partisipasi' => $this->input->post('tugas_'.$row->id_assignment.'_'.$row->nim.'_partisipasi')
 					);
 					$this->tutor_model->update_absnilai($update);
 				}				

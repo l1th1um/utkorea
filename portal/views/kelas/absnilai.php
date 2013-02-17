@@ -10,7 +10,7 @@
 <i style="font-style:italic;font-size:9pt;color:#666666;">Data ini dapat diubah sewaktu - waktu untuk menyesuaikan kegiatan belajar-mengajar</i><br />
 <br /><br />
 <form method="POST" >
-<?php if($list){ ?>
+<?php if(isset($list)){ ?>
 <div id="tabs">
 	<?php
 		$tabs = '<ul>';
@@ -32,6 +32,7 @@
 									<td rowspan="2" style="vertical-align:middle;">(NIM) Student</td>
 									<td colspan="8" style="text-align:center">Pertemuan</td>
 									<td colspan="3" style="text-align:center">Tugas</td>
+									<td rowspan="2" style="vertical-align:middle;text-align:center">Partisipasi</td>
 								</tr>
 								<tr>';
 				for($i=1;$i<=8;$i++){
@@ -56,6 +57,7 @@
 			$divs .= '<td style="text-align:center"><input value="'.$row->tugas1.'" type="text" name="tugas_'.$row->id_assignment.'_'.$row->nim.'_1" size="1" /></td>';
 			$divs .= '<td style="text-align:center"><input value="'.$row->tugas2.'" type="text" name="tugas_'.$row->id_assignment.'_'.$row->nim.'_2" size="1" /></td>';
 			$divs .= '<td style="text-align:center"><input value="'.$row->tugas3.'" type="text" name="tugas_'.$row->id_assignment.'_'.$row->nim.'_3" size="1" /></td>';
+			$divs .= '<td style="text-align:center"><input value="'.$row->partisipasi.'" type="text" name="tugas_'.$row->id_assignment.'_'.$row->nim.'_partisipasi" size="1" /></td>';
 							
 			$divs .= '</tr>';
 			$first = false;
@@ -75,4 +77,6 @@
 <br />
 <button type="submit">Simpan</button>
 </form>
+<?php }else{ ?>
+	<center>Belum ada murid terdaftar dalam kelas</center>
 <?php } ?>
