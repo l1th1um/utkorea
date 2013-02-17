@@ -44,6 +44,7 @@ $route['login'] = "main/login";
 $route['logout'] = "main/logout";
 $route['permission_error'] = "main/permission_error";
 $route['tutor/list'] = "tutor/index";
+$route['attach/(:any)'] = 'main/attach/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

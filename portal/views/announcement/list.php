@@ -31,7 +31,7 @@
 		var contact = {
 			message: null,
 			init: function () {
-				$('#ann_link').click(function (e) {
+				$('a#ann_link').click(function (e) {
 					e.preventDefault();
 					var ann_id = $(this).attr("alt");
 					// load the contact form using ajax

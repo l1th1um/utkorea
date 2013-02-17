@@ -8,8 +8,11 @@ class kelas extends CI_Controller {
 		//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
 		$this->load->model('tutor_model');
+        $this->load->model('class_model');
         $this->load->model('announcement_model','announce');
 		$this->load->library('scribd',array('api_key'=>$this->config->item('scribd_key'),'secret'=>$this->config->item('scribd_secret')));
+        $this->load->helper('html');
+
     }	
 	
 	public function index($id=''){
@@ -33,7 +36,9 @@ class kelas extends CI_Controller {
             				
 			$data['class_settings'] = $class_settings;
 			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
-            $data['announcement'] = $this->announce->display_announce_class($id);
+            $data['announcement'] = $this->announce->display_announce_class($id,5);
+            $data['question'] = $this->announce->list_question($id,5);
+            $data['task'] = false;
             $data['id'] = $id;
 			$content['page'] = $this->load->view('kelas/main',$data,TRUE);
 		}else{
@@ -62,7 +67,8 @@ class kelas extends CI_Controller {
 		$data['success'] = 0;
 		
 		$res = $this->tutor_model->get_tutor_student($this->session->userdata('id'));
-		if($res){
+        
+        if($res){
 			foreach($res->result() as $row){
 				$this->form_validation->set_rules('abs_'.$row->id_assignment.'_'.$row->nim,'Absensi '.$row->nim,'xss_clean');
 				for($i=1;$i<=3;$i++){
@@ -89,6 +95,7 @@ class kelas extends CI_Controller {
 				}				
 				$res = $this->tutor_model->get_tutor_student($this->session->userdata('id'));				
 			}
+            
 			$data['list'] = $res;
 		}		
 		
@@ -341,6 +348,11 @@ class kelas extends CI_Controller {
         
         $data['list'] = $this->announce->display_announce_class($id);
 		$data['id'] = $id;
+        
+        if ($this->session->flashdata('message') != '') {
+            $data['message'] = success_form($this->session->flashdata('message'));
+        } 
+        
 		$content['page'] = $this->load->view('kelas/announcement',$data,TRUE);        
         $this->load->view('dashboard',$content);
     }
@@ -357,7 +369,9 @@ class kelas extends CI_Controller {
 				$data['message'] = error_form(validation_errors());				
 			} else {
 				if ($this->announce->save_announce_class($_POST,$id)) {
-					$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
+				    $this->session->set_flashdata('message',$this->lang->line('announcement')." ".$this->lang->line('saved'));
+					//$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
+                    redirect('kelas/announcement/'.$id);
 				} else {
 					$data['message'] = 	error_form($this->lang->line('db_error'));
 				}
@@ -375,10 +389,140 @@ class kelas extends CI_Controller {
 		$this->form_validation->set_rules('content',$this->lang->line('announcement'),'trim|required|min_length[4]');		
 	}
     
-    public function display_detail_class() {
+    public function show_announce_class() {
 		$id = $this->input->post('id');
-		$data['row'] = $this->announce->display_detail_class($id);
+        $row = $this->class_model->announce_class_detail($id);
+        $attach = $this->class_model->get_attachment($row->attach_uid);
+        $data['row'] = $row;
+        
+        $ext = $path_parts = pathinfo($attach->filename);
+        
+        $data['icon'] = $ext['extension'];
+        $data['attach'] = $attach;
 		
-		echo $this->load->view('announcement/announce_class',$data,TRUE);
-	}    
+		echo $this->load->view('kelas/announce_class',$data,TRUE);
+	}
+    /*
+    function list_question($id,$limit=null) {
+        $data['list'] = $this->announce->list_question($id,$limit);
+		$data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/announcement',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    } 
+    */
+    function question($id) {
+        $this->auth->check_auth();
+        
+        $data['list'] = $this->announce->list_question($id);
+		$data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/question',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    } 
+    
+     function create_question($id) {
+        $this->auth->check_auth();
+        
+        $data = array();
+		
+		if (isset($_POST['title'])) {
+			$this->_validate_announcements();
+			
+			if ($this->form_validation->run() == FALSE) {
+				$data['message'] = error_form(validation_errors());				
+			} else {
+				if ($this->announce->save_question($_POST,$id)) {
+					$data['message'] = success_form($this->lang->line('question')." ".$this->lang->line('saved'));
+				} else {
+					$data['message'] = 	error_form($this->lang->line('db_error'));
+				}
+			}
+		}
+               
+        $data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/create_question',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    }
+    
+     public function display_detail_question() {
+		$id = $this->input->post('id');
+		$data['row'] = $this->announce->display_detail_question($id);
+		
+		echo $this->load->view('kelas/question_detail',$data,TRUE);
+	}
+    
+     function task($id) {
+        $this->auth->check_auth();
+        
+        $data['list'] = $this->announce->list_task($id);
+		$data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/task',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    }   
+    
+    function create_task($id) {
+        $this->auth->check_auth();
+        
+        $data = array();
+		
+		if (isset($_POST['title'])) {
+			$this->_validate_announcements();
+			
+			if ($this->form_validation->run() == FALSE) {
+				$data['message'] = error_form(validation_errors());				
+			} else {
+				if ($this->announce->save_question($_POST,$id)) {
+					$data['message'] = success_form($this->lang->line('question')." ".$this->lang->line('saved'));
+				} else {
+					$data['message'] = 	error_form($this->lang->line('db_error'));
+				}
+			}
+		}
+               
+        $data['id'] = $id;
+		$content['page'] = $this->load->view('kelas/create_task',$data,TRUE);        
+        $this->load->view('dashboard',$content);
+    }
+    
+    public function do_upload_kelas($field_name,$folder)
+	{
+		//$newname = $addfilename;
+        
+        $config['upload_path'] = 'assets/uploads/'.$folder;
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|pptx';
+		$config['max_size'] = '10000';
+		$config['max_width'] = '10240';
+		$config['max_height'] = '76800';
+        //$config['file_name']	= $addfilename;
+		$config['encrypt_name'] = TRUE;
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload($field_name))
+		{
+			echo $this->upload->display_errors('<p>', '</p>');
+		}
+		else
+		{
+			$data = $this->upload->data();
+
+            $attach = array('original_file'=>$data['orig_name'],
+                            'filename'=>$data['file_name'],
+                            'subfolder' => $folder);
+            
+            $save_attach  = $this->class_model->save_attachment($attach);
+            
+            if ($save_attach == false ) 
+            {
+                echo "0";
+            } 
+            else 
+            {
+                $info = new stdClass();
+                $info->name = $data['orig_name'];
+                $info->id = $save_attach;
+                
+                echo json_encode(array($info));                                
+            }
+		}
+	}
 }

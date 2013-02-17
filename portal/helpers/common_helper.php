@@ -583,33 +583,41 @@ function create_breadcrumb(){
 	
 	$link = "<ul id='breadcrumbs'> \n
 				 <li><a href='".base_url()."' title='Back to Homepage'>Back to Home</a></li> \n";
-				 
+    
 	if (!empty($url)) {
-		if (! empty($func)) {
-			$url .= "/".$func;
-		}
-		
-		$where = array("url" => $url);
-		$query = $ci->db->get_where('permissions',$where);
-		
-		if ($query->num_rows() > 0 ) {
-			$row = $query->row();
-			$current = $row->page; 
-			$query2 = $ci->db->get_where('permissions',array('id'=>$row->parent));
-			
-			$row2 = $query2->row();
-			//$current = $row->page;
-			
-			$link .= "<li><a href='#'>".$row2->page."</a></li> \n		
-					<li>".$row->page."</li> \n";
-		
-		}
-			
+	   if ($url == 'kelas')
+        {
+            $assignment_id = $ci->uri->segment(3);
+            $link .= "<li><a href='".base_url()."kelas'>Kelas</a></li> \n";
+            $link .= "<li><a href='".base_url()."kelas/index/".$assignment_id."'>".assignment_to_courses($assignment_id)."</a></li> \n";
+        }
+        else 
+        {
+            if (! empty($func)) {
+    			$url .= "/".$func;
+    		}
+    		
+            $where = array("url" => $url);
+    		$query = $ci->db->get_where('permissions',$where);
+    		
+    		if ($query->num_rows() > 0 ) {
+    			$row = $query->row();
+    			$current = $row->page; 
+    			$query2 = $ci->db->get_where('permissions',array('id'=>$row->parent));
+    			
+    			$row2 = $query2->row();
+    			//$current = $row->page;
+    			
+    			$link .= "<li><a href='#'>".$row2->page."</a></li> \n		
+    					<li>".$row->page."</li> \n";
+    		
+    		}    
+        }		 
 	} 
 	
 	$link .= "</ul>";
 	
-	return $link;
+    return $link;
 }
 
 function remove_zero($val) {
@@ -820,7 +828,7 @@ function check_user_agent()
 }
 
 function numberToRoman($num) 
- {
+{
      $n = intval($num);
      $result = '';
  
@@ -843,4 +851,37 @@ function numberToRoman($num)
  
      // The Roman numeral should be built, return it
      return $result;
- }
+}
+
+function assignment_to_courses($id)
+{
+    $ci =& get_instance();
+	$ci->db->select('course_id');
+    $ci->db->where('id',$id);
+	$query = $ci->db->get('assignment');    
+        
+    if ($query->num_rows() > 0) 
+    {
+    	$row = $query->row(); 
+    	
+        $ci->db->select('title');
+        $ci->db->where('course_id',$row->course_id);
+        
+        $query2 = $ci->db->get('courses');
+        
+        if ($query2->num_rows() > 0) 
+        {
+            $row2 = $query2->row();
+            return $row2->title;
+        }
+        else 
+        {
+            return false;
+        }
+        
+    }
+    else 
+    {
+        return false;
+    }   
+}

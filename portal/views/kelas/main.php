@@ -133,7 +133,7 @@ if($pengumuman->num_rows()>0){
 
 <div style="height:auto;width:100%;position: inherit;padding-top:10px">
     <div style="width: 48%;float:left;">
-        <article class="quarter-block nested clearrm classli" style="min-height:400px;margin:4px;width:100%;max-height:400px;">
+        <article class="quarter-block nested clearrm classli" style="min-height:408px;margin:4px;width:100%;max-height:408px;">
         	<header>
         		<h2>Materi Kuliah</h2>
         	</header>
@@ -151,33 +151,62 @@ if($pengumuman->num_rows()>0){
         </article>
     </div>
     <div style="width: 48%;float:left;padding-left:10px" >
+        <div style="width: 100%;">
+            <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+            	<header>
+            		<span><h2>Pengumuman</h2></span>
+                    <span style="float:right;text-align: right;">
+                        <?php
+                            echo anchor(base_url()."kelas/announcement/".$id,"Selengkapnya+");
+                        ?>
+                    </span>
+            	</header>
+            	<section>
+            		<?php
+                        if ($announcement == false) 
+                        {
+                            echo $this->lang->line('no_announcement');
+                        } 
+                        else
+                        {
+                            echo "<ol>";
+                            foreach ($announcement as $val) {
+                                echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";                                
+                            }
+                            echo "</ol>";
+                        }
+                    ?>
+            	</section>
+            </article>
+        </div>
+        <div style="width: 100%;">
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
-        		<span><h2>Pengumuman</h2></span>
+        		<h2>Pertanyaan</h2>
                 <span style="float:right;text-align: right;">
                     <?php
-                        echo anchor(base_url()."kelas/announcement/".$id,"Selengkapnya+");
+                        echo anchor(base_url()."kelas/question/".$id,"Selengkapnya+");
                     ?>
                 </span>
         	</header>
         	<section>
-        		<?php
-                    if ($announcement == false) 
-                    {
-                        echo $this->lang->line('no_announcement');
-                    } 
-                    else
-                    {
-                        echo "<ol>";
-                        foreach ($announcement as $val) {
-                            echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";
-                            //echo $val->title."</li>";
-                        }
-                        echo "</ol>";
+            <?php
+                if ($question == false) 
+                {
+                    echo $this->lang->line('no_question');
+                } 
+                else
+                {
+                    echo "<ol>";
+                    foreach ($question as $val) {
+                        echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";                                
                     }
-                ?>
+                    echo "</ol>";
+                }
+            ?>
         	</section>
         </article>
+    </div>
     </div>
 </div>
 <div style="clear:both"></div>
@@ -186,29 +215,32 @@ if($pengumuman->num_rows()>0){
     <div style="width: 48%;float:left;">
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
-        		<h2>Pertanyaan</h2>
+        		<h2>Tugas</h2>
+                <span style="float:right;text-align: right;">
+                    <?php
+                        echo anchor(base_url()."kelas/task/".$id,"Selengkapnya+");
+                    ?>
+                </span>
         	</header>
         	<section>
-        		Content Will Be Here
+        	<?php
+                if ($task == false) 
+                {
+                    echo $this->lang->line('no_task');
+                } 
+                else
+                {
+                    echo "<ol>";
+                    foreach ($question as $val) {
+                        echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";                                
+                    }
+                    echo "</ol>";
+                }
+            ?>
         	</section>
         </article>
     </div>
     <div style="width: 48%;float:left;padding-left:10px" >
-        <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
-        	<header>
-        		<h2>Tugas</h2>
-        	</header>
-        	<section>
-        		Content Will Be Here
-        	</section>
-        </article>
-    </div>
-</div>
-<div style="clear:both"></div>
-
-
-<div style="height:auto;width:100%;position: inherit;padding-top:10px">
-    <div style="width: 48%;float:left;">
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Absensi</h2>
@@ -217,8 +249,11 @@ if($pengumuman->num_rows()>0){
         		Content Will Be Here
         	</section>
         </article>
-    </div>    
+    </div>
 </div>
+<div style="clear:both"></div>
+
+
 <div style="clear:both"></div>
 
 <?php } ?>

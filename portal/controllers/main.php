@@ -70,7 +70,28 @@ class Main extends CI_Controller {
 		$this->load->view('permission_error');
 	}	
 	
+    public function attach($uid)
+    {
+        $this->load->model('class_model');
+        $this->load->helper('file');
+        
+        $data = $this->class_model->get_attachment($uid);
+        
+        if ($data <> false)
+        {
+            $file = $data->filename;        
+            $mime = get_mime_by_extension($file);
+            
+            $absolute_path = $this->config->item('absolute_path')."assets/uploads/".$data->subfolder."/";
+            
+            header('Content-type: '.$mime);
+            header('Content-Disposition: attachment; filename="'.$data->original_file.'"');
+            readfile($absolute_path.$file);    
+        }
+        else
+        {
+            echo $uid;
+        }
+        
+    }
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */

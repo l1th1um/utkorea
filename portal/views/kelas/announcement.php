@@ -1,10 +1,12 @@
 <div style="float: right;padding-bottom: 10px;">
     <?php
-        echo anchor('kelas/create_announcement/'.$id,'<button class="green">Buat Pengumuman</button>');
+        if (in_array(8,$this->session->userdata('role')))
+            echo anchor('kelas/create_announcement/'.$id,'<button class="green">Buat Pengumuman</button>');
     ?>
     
 </div>
 <div style="clear: both;"></div>
+<?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>
 <h3><?php $this->lang->line('announcement')?></h3>
 <?php
     if ($list == false) {
@@ -40,15 +42,15 @@
 
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript'>
-		jQuery(function ($) {
+		$(function () {
 		var contact = {
 			message: null,
 			init: function () {
-				$('#ann_link').click(function (e) {
-					e.preventDefault();
+				$('a#ann_link').click(function (e) {
+				    e.preventDefault();
 					var ann_id = $(this).attr("alt");
 					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/display_detail_class",{id : ann_id}, function(data){
+					$.post("<?php echo base_url()?>kelas/show_announce_class",{id : ann_id}, function(data){
 						// create a modal dialog with the data
 						$(data).modal({						
 							onShow: contact.show
@@ -93,8 +95,7 @@
 					.html($('<div class="contact-error"></div>').append(contact.message))
 					.fadeIn(200);
 			}
-		};
-	
+		};	
 		contact.init();
 	
 	});
