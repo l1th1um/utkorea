@@ -10,8 +10,17 @@
     <tr>
 		<td><label>Attachment</label></td>
 		<td>
-            <?php echo img(base_url()."assets/core/images/fileicons/".$icon.".png"); ?>
-            <?php echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;");?>
+            <?php
+            if ($icon <> false) 
+            {
+                echo img(base_url()."assets/core/images/fileicons/".$icon.".png");
+                echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;"); 
+            }
+            else
+            {
+                echo "-";
+            }
+            ?>            
         </td>
 	</tr>
 	<tr>

@@ -21,8 +21,8 @@ class class_model extends CI_Model {
         
 	}
     
-    public function get_attachment($uid) {
-	   $query = $this->db->get_where('attachment',array('uuid' => $uid));
+    public function get_attachment($id) {
+	   $query = $this->db->get_where('attachment',array('announcement_id' => $id));
 		
 		if ($query->num_rows() > 0) {
 			return $query->row();			
@@ -31,8 +31,19 @@ class class_model extends CI_Model {
 		}
 	}
     
-    public function announce_class_detail($id) {
-		$this->db->where('id',$id);		
+    public function get_attachment_uid($id) {
+	   $query = $this->db->get_where('attachment',array('uuid' => $id));
+		
+		if ($query->num_rows() > 0) {
+			return $query->row();			
+		} else {
+			return FALSE;
+		}
+	}
+    
+    public function announce_class_detail($assignment_id,$id) {
+		$this->db->where('assignment_id',$assignment_id);
+        $this->db->where('id',$id);
         $query = $this->db->get('announce_class');
 		
 		if ($query->num_rows() > 0) {
@@ -54,16 +65,33 @@ class class_model extends CI_Model {
         }
     }
     
-    public function save_announce_class($data,$id) {
+    public function save_announce_class($data,$id,$update) {
 		$insert = populate_form($data, 'announce_class');
-		$this->db->set('created', 'now()', FALSE);
-        $this->db->set('assignment_id',$id);        
+        
+        if ($update == false) 
+        {
+            $this->db->set('created', 'now()', FALSE);
+            $this->db->set('assignment_id',$id);        
+    		
+    		$query = $this->db->insert('announce_class',$insert);    
+        }
+        else
+        {
+            $where = array('assignment_id' =>$id,'id'=>$update);
+            $this->db->where($where);
+            $query = $this->db->update('announce_class',$insert);
+        }
 		
-		$query = $this->db->insert('announce_class',$insert);
 		
 		if ($this->db->affected_rows() > 0) 
         {
-			return true;
+			if (! empty($data['attach_uid'])) {
+			     $data_announcement = array('announcement_id' => $this->db->insert_id());
+                 $this->db->where('uuid', $data['attach_uid']);
+			     $this->db->update('attachment',$data_announcement);
+			}
+            
+            return true;
 		} 
         else 
         {
@@ -85,9 +113,27 @@ class class_model extends CI_Model {
 		}
 	}
     
-    public function del_announcement($id)
+    public function del_announcement($id,$staff_id)
     {
-        $query = $this->db->delete('announce_class', array('id' => $id));
+        $where = array('id' => $id,
+                        'staff_id' => $staff_id);
+                        
+        $query = $this->db->delete('announce_class', $where);
+        if ($this->db->affected_rows() > 0) 
+        {
+			return true;
+		} 
+        else 
+        {
+			return false;
+		}
+    }
+    
+    public function del_attachment($id)
+    {
+        $where = array('uuid' => $id);
+                        
+        $query = $this->db->delete('attachment', $where);
         if ($this->db->affected_rows() > 0) 
         {
 			return true;

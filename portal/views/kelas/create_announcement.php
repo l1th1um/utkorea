@@ -44,6 +44,15 @@
 	}
 </script>
 
+<?php
+    $title = '';
+    $content = '';
+    
+    if ($detail <> false) {
+        $title = $detail->title;
+        $content = $detail->content;
+    } 
+?>
 
 <?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>
     <?php
@@ -53,11 +62,11 @@
         <table>
             <tr>
                 <td width="120px"><label><?php echo $this->lang->line('title');?></label></td>
-                <td><?php echo form_input('title','','style="width:500px"')?></td>                
+                <td><?php echo form_input('title',$title,'style="width:500px"')?></td>                
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td><?php echo form_textarea('content','',"style='width:98%;height:300px;' class='tinymce' ")?></td>                
+                <td><?php echo form_textarea('content',$content,"style='width:98%;height:300px;' class='tinymce' ")?></td>                
             </tr>
             <tr>
                 <td>Upload File</td>
@@ -67,6 +76,27 @@
     				<input type="hidden" name="attach_uid" /> 
     				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx)
                     <p style="padding-top: 5px;" id="file_pengumuman_cont"></p>
+                    <?php
+                        if ($icon <> false) {
+                            $mime_icon = array(
+                                        'src' => base_url().'assets/core/images/fileicons/'.$icon.'.png',
+                                        'style' => 'border:none;background:none'  
+                            );
+                            
+                            $del_icon = array(
+                                      'src' => admin_tpl_path().'img/icons/icon_error_small.png',
+                                      'style' => 'border:none;background:none;cursor:pointer',
+                                      'class' => 'del_attachment',
+                                      'id' => $attach->uuid
+                            );
+                            
+                            echo "<span class='attach_cont' />";
+                            echo img($mime_icon);
+                            echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;");
+                            echo img($del_icon);
+                            echo "</span>";
+                        } 
+                    ?>
                 </td>                
             </tr>            
             <tr>
@@ -109,5 +139,20 @@
 				
 			}
 		});	
+        
+         $('.del_attachment').click(function(){
+            ann_id = $(this).attr("id"); 
+            var r = confirm("Hapus File? ");
+            
+            if (r == true)
+            {
+                $.post("<?php echo base_url()?>kelas/del_attachment",{id : ann_id}, function(data){
+	               if (data == "1") {
+	                   alert('File Telah Dihapus');
+                       $('.attach_cont').remove();
+	               }
+				});    
+            }
+       }); 
 	})
 </script>

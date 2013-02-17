@@ -376,7 +376,7 @@ class kelas extends CI_Controller {
         $this->load->view('dashboard',$content);
     }
     
-    function create_announcement($id) {
+    function create_announcement($assignment_id,$announce_id=null) {
         $this->auth->check_auth();
         
         $data = array();
@@ -389,18 +389,37 @@ class kelas extends CI_Controller {
 			} else {
 			     $post_data = $_POST;
                  $post_data['staff_id'] = $this->session->userdata('id');
+                 $update = false;
                  
-				if ($this->class_model->save_announce_class($post_data,$id)) {
+                 if ($announce_id <> NULL) {
+                    $update = $announce_id;
+                 }
+                 
+				 if ($this->class_model->save_announce_class($post_data,$assignment_id,$update)) {
 				    $this->session->set_flashdata('message',$this->lang->line('announcement')." ".$this->lang->line('saved'));
 					//$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
-                    redirect('kelas/announcement/'.$id);
+                    redirect('kelas/announcement/'.$assignment_id);
 				} else {
 					$data['message'] = 	error_form($this->lang->line('db_error'));
 				}
 			}
 		}
+        
+        $data['detail'] = false;
+        $data['icon'] = false;
+        
+        if ($announce_id <> NULL) {
+            $data['detail'] = $this->class_model->announce_class_detail($assignment_id,$announce_id);
+            $attach = $this->class_model->get_attachment($announce_id);
+                        
+            if ($attach <> false) {
+                $ext = pathinfo($attach->filename);        
+                $data['icon'] = $ext['extension'];
+                $data['attach'] = $attach;    
+            }
+        }
                
-        $data['id'] = $id;
+        $data['id'] = $assignment_id;
 		$content['page'] = $this->load->view('kelas/create_announcement',$data,TRUE);        
         $this->load->view('dashboard',$content);
     }
@@ -412,16 +431,21 @@ class kelas extends CI_Controller {
 	}
     
     public function show_announce_class() {
-		$id = $this->input->post('id');
-        $row = $this->class_model->announce_class_detail($id);
-        $attach = $this->class_model->get_attachment($row->attach_uid);
+		$assignment_id = $this->input->post('assignment_id');
+        $id = $this->input->post('id');
+        $row = $this->class_model->announce_class_detail($assignment_id, $id);
+        
+        $attach = $this->class_model->get_attachment($row->id);
         $data['row'] = $row;
         
-        $ext = $path_parts = pathinfo($attach->filename);
+        $data['icon'] = false;
         
-        $data['icon'] = $ext['extension'];
-        $data['attach'] = $attach;
-		
+        if ($attach <> false) {
+            $ext = pathinfo($attach->filename);        
+            $data['icon'] = $ext['extension'];
+            $data['attach'] = $attach;    
+        }
+        
 		echo $this->load->view('kelas/announce_class',$data,TRUE);
 	}
     /*
@@ -550,7 +574,26 @@ class kelas extends CI_Controller {
     
     public function del_announcement()
     {
-        if ($this->class_model->del_announcement($this->input->post('id'))) 
+        if ($this->class_model->del_announcement($this->input->post('id'),$this->session->userdata('id'))) 
+        {
+            echo "1";
+        }
+        else
+        {
+            echo "0";
+        } 
+        
+    }
+    
+    public function edit_announcement($uid,$id)
+    {
+        $this->create_announcement($uid,$id);
+    }
+    
+    
+    public function del_attachment()
+    {
+        if ($this->class_model->del_attachment($this->input->post('id'))) 
         {
             echo "1";
         }

@@ -75,7 +75,7 @@ class Main extends CI_Controller {
         $this->load->model('class_model');
         $this->load->helper('file');
         
-        $data = $this->class_model->get_attachment($uid);
+        $data = $this->class_model->get_attachment_uid($uid);
         
         if ($data <> false)
         {
