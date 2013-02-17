@@ -589,7 +589,7 @@ function create_breadcrumb(){
         {
             $assignment_id = $ci->uri->segment(3);
             $link .= "<li><a href='".base_url()."kelas'>Kelas</a></li> \n";
-            $link .= "<li><a href='".base_url()."kelas/index/".$assignment_id."'>".assignment_to_courses($assignment_id)."</a></li> \n";
+            $link .= "<li><a href='".base_url()."kelas/course/".$assignment_id."'>".assignment_to_courses($assignment_id)."</a></li> \n";
         }
         else 
         {

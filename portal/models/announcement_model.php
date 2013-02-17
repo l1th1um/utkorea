@@ -44,20 +44,6 @@ class announcement_model extends CI_Model {
 		}
 	}
     
-    public function display_announce_class($assignment_id,$limit=null) {
-		$this->db->where('assignment_id',$assignment_id);
-		$this->db->order_by('id','desc');
-        if (!empty($limit))
-            $this->db->limit($limit);
-		$query = $this->db->get('announce_class');
-		
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		} else {
-			return false;
-		}
-	}    
-    
     public function list_question($id,$limit=null) {
         $this->db->where('assignment_id',$id);
 		$this->db->order_by('id','desc');

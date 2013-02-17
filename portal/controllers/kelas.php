@@ -56,10 +56,9 @@ class kelas extends CI_Controller {
             
 			if($class_settings){				
 				$this->scribd->my_user_id = 'assignment_'.$id;		
-				try{
+				try {
 					$datas = $this->scribd->getList(array('api_key'=>$this->config->item('scribd_key')));	
-				}catch(exception $e){
-					//$datas = $e->getMessage();
+				}catch(exception $e){					
 					$datas = false;
 				}
 							
@@ -68,7 +67,7 @@ class kelas extends CI_Controller {
             				
 			$data['class_settings'] = $class_settings;
 			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
-            $data['announcement'] = $this->announce->display_announce_class($id,5);
+            $data['announcement'] = $this->class_model->list_announce_class($uid,5);
             $data['question'] = $this->announce->list_question($id,5);
             $data['task'] = false;
             $data['id'] = $uid;
@@ -362,7 +361,7 @@ class kelas extends CI_Controller {
     function announcement($id) {
         $this->auth->check_auth();
         
-        $data['list'] = $this->announce->display_announce_class($id);
+        $data['list'] = $this->class_model->list_announce_class($id);
 		$data['id'] = $id;
         
         if ($this->session->flashdata('message') != '') {
@@ -544,4 +543,17 @@ class kelas extends CI_Controller {
             }
 		}
 	}
+    
+    public function del_announcement()
+    {
+        if ($this->class_model->del_announcement($this->input->post('id'))) 
+        {
+            echo "1";
+        }
+        else
+        {
+            echo "0";
+        } 
+        
+    }
 }

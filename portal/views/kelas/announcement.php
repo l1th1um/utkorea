@@ -47,7 +47,9 @@
                 
                 $del_icon = array(
                           'src' => admin_tpl_path().'img/icons/icon_error.png',
-                          'style' => 'border:none;background:none'                          
+                          'style' => 'border:none;background:none;cursor:pointer',
+                          'class' => 'del_announcement',
+                          'id' => $row->id
                 );
 
                 echo "<td>".img($edit_icon)."</td>
@@ -122,6 +124,24 @@
 	
 	});
 	
+    
+    $(document).ready(function(){
+       $('.del_announcement').click(function(){
+            ann_id = $(this).attr("id"); 
+            var r = confirm("Hapus Pengumuman? ");
+            
+            if (r==true)
+            {
+                $.post("<?php echo base_url()?>kelas/del_announcement",{id : ann_id}, function(data){
+	               if (data == "1") {
+	                   location.reload(true);
+	               }
+				});    
+            }
+       }); 
+    });
+    
+    
 </script>
 <link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
 <?php
