@@ -70,4 +70,31 @@ class class_model extends CI_Model {
 			return false;
 		}
 	}
+    
+    public function list_announce_class($assignment_id,$limit=null) {
+		$this->db->where('assignment_id',$assignment_id);
+		$this->db->order_by('id','desc');
+        if (!empty($limit))
+            $this->db->limit($limit);
+		$query = $this->db->get('announce_class');
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+    
+    public function del_announcement($id)
+    {
+        $query = $this->db->delete('announce_class', array('id' => $id));
+        if ($this->db->affected_rows() > 0) 
+        {
+			return true;
+		} 
+        else 
+        {
+			return false;
+		}
+    }
 }

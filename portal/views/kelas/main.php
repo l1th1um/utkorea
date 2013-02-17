@@ -1,13 +1,3 @@
-<?php
-/* 
-if($pengumuman->num_rows()>0){
-	foreach($pengumuman->result() as $row){
-		echo info_form($row->content);
-	}
- 
-}*/
-?>
-
 <?php if($class_settings){ ?>
 <script type='text/javascript' src='http://www.scribd.com/javascripts/scribd_api.js'></script>
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
@@ -163,7 +153,7 @@ if($pengumuman->num_rows()>0){
     </div>
     <div style="width: 48%;float:left;padding-left:10px" >
         <div style="width: 100%;">
-            <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
+            <article class="quarter-block nested clearrm classli" style="min-height:408px;max-height:408px;margin:4px;width:100%">
             	<header>
             		<span><h2>Pengumuman</h2></span>
                     <span style="float:right;text-align: right;">
@@ -180,11 +170,19 @@ if($pengumuman->num_rows()>0){
                         } 
                         else
                         {
-                            echo "<ol>";
+                    ?>
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Judul</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    <?php
                             foreach ($announcement as $val) {
-                                echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";                                
+                                echo "<tr><td>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</td></tr>";                                
                             }
-                            echo "</ol>";
+                            echo "</tbody></table>";
                         }
                     ?>
             	</section>
@@ -255,10 +253,11 @@ if($pengumuman->num_rows()>0){
     <div style="width: 48%;float:left;padding-left:10px" >
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
-        		<h2>Absensi</h2>
+        		<h2>Lainnya</h2>
         	</header>
         	<section>
-        		Content Will Be Here
+        		<?php echo anchor(base_url(),"Absensi")."<br />"; ?>
+                <?php echo anchor(base_url(),"Nilai"); ?>
         	</section>
         </article>
     </div>
@@ -272,11 +271,13 @@ if($pengumuman->num_rows()>0){
 <?php } ?>
 
 <script type="text/javascript">
+
 	$(document).ready(function(){	
 		var curid = <?php echo $class_settings->id; ?>;	
 		function loadList(id,isnew){
 			isnew = (typeof isnew === "undefined") ? false : isnew;
 			var dt = $(".datatable").dataTable();
+
 			$.ajax({
 					type: "POST",			 
 					url: '<?php echo base_url(); ?>kelas/get_class_archive/' + + id,
