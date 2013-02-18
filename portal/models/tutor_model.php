@@ -293,4 +293,10 @@ class tutor_model extends CI_Model {
 		return $this->db->get('announce_class');
 	}
 	
+	function get_active_tutor(){
+		$this->db->from('staff');
+		$this->db->join('major','staff.major_id = major.major_id');
+		$this->db->where('staff.status','Aktif');
+		return $this->db->get();
+	}
 }

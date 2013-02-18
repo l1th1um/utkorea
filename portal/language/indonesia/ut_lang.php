@@ -126,4 +126,20 @@ $lang['question'] = 'Pertanyaan';
 $lang['no_question'] = 'Tidak Ada Pertanyaan';
 $lang['task'] = 'Tugas';
 $lang['no_task'] = 'Tidak Ada Tugas';
+$lang['mail_portal_info_tutor'] = "
+Hi %s, \n\n
+Untuk memperlancar proses akademik, Universitas Terbuka Korea Selatan telah mempunyai portal akademik, 
+dan seluruh proses akademik akan dilakukan di portal akademik.\n\n
+
+Tutor Universitas Terbuka Korea Selatan dapat melakukan login di portal akademik Korea Selatan, 
+dengan mengunjungi http://portal.utkorea.org. \n\n
+
+Berikut Detail Account anda : \n
+Username : %s \n
+Password : %s \n
+
+
+Salam,\n
+Divisi IT Universitas Terbuka Korea Selatan\n
+";
 ?>

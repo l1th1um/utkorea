@@ -371,6 +371,50 @@ class pendaftaran extends CI_Controller {
 		}			
 	}
 
+	public function mail_all_tutor() {
+		$config = Array(
+		  'mail_type' => 'html',
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,	      
+	      'smtp_user' => 'utkorsel@gmail.com',
+	      'smtp_pass' => 'UTkorea^&2012'
+	       
+	    );
+	     
+	    $this->load->library('email', $config);    
+	    $this->email->set_newline("\r\n");
+		
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		
+		$this->email->subject('Account Portal Akademik Universitas Terbuka Korea Selatan');
+		//$list = $this->person->get_list_mahasiswa();
+		$this->load->model('tutor_model');
+		$list = $this->tutor_model->get_active_tutor();
+		
+		$i = 0;
+		
+		foreach ($list->result() as $row) {
+			$name = $row->name;
+			$username = $row->username;
+			$password = $row->username;
+			$email = $row->email;
+			
+			$message = $this->lang->line('mail_portal_info_tutor');			
+			$message = sprintf($message,$name,$username,$password);
+			
+			$this->email->to($email);
+			
+			$this->email->message($message);
+			
+			if($this->email->send() == FALSE) {
+				echo $nim." - ".$name." - ".$email."<br />";	
+			}
+			
+			$i++;	
+		}			
+	}
+
 	public function _check_email($email){
 		
 		if($this->person->check_email($email)){

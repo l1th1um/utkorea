@@ -1,28 +1,10 @@
 
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		$( ".check" ).button();
-		$("#ann_click").click(function(e){
-			e.preventDefault();
-			
-			$("#ann_click_res").dialog({
-				modal:true,
-				position: { my: "center top", at: "center top", of: "body" },
-				resizable: false,
-				width:600,
-				height:650
-			});
-		});
-	});
-</script>
 
 <h1>Kelas Tersedia :</h1> 
 <i style="font-style:italic;font-size:9pt;color:#666666;">Pengaturan ini hanya dapat dilakukan sekali pada tiap awal semester, harap perhatikan kelas yang akan anda ambil</i><br />
-<a id="ann_click" href="#">Klik disini untuk petunjuk</a>
-<div id="ann_click_res" style="width:550px;display:none">
-	<img src="<?php echo template_path('core').'images/regsiterclasscmp.jpg'; ?>" width="550" />
-</div>
+<a href="https://docs.google.com/file/d/1i48wvaX2KaHFpZr__0up0hgdyrKv9bHTPARn-tytS2AZv619ldKJ3oPQFpWC/edit?usp=sharing">Klik disini untuk petunjuk</a>
+
 <div style="clear:both;margin-bottom:8px;"></div>
 <form method="POST" >
 <?php

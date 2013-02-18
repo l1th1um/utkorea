@@ -31,6 +31,7 @@ class scribd {
 		$params['doc_type'] = $doc_type;
 		$params['access'] = $access;
 		$params['file'] = "@".$file;
+		$params['filetmp'] = $file;
 
 		$result = $this->postRequest($method, $params);
 		return $result;
@@ -199,23 +200,60 @@ class scribd {
 		$post_params['api_sig'] = $this->generate_sig($params, $secret);
 		$request_url = $this->url;
        
-		/*$ch = curl_init();
+		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $request_url );       
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_params );
-		$xml = curl_exec( $ch );*/
-		//echo $request_url;
-		//print_r($post_params);
-		$filereq = $request_url;
-		foreach($post_params as $key=>$val){
-			$filereq .= '&'.$key.'='.$val;
-		}
-		//echo $filereq;
-		$xml = file_get_contents($filereq);
-		//echo $xml;
+		$xml = curl_exec( $ch );
+		
+		/*if($post_params['method']=='docs.upload'){
+			define('MULTIPART_BOUNDARY', '--------------------------'.microtime(true));
+			$header = 'Content-Type: multipart/form-data; boundary='.MULTIPART_BOUNDARY;
+			
+			$file_contents = file_get_contents($post_params['file']);
+			
+			$content =  "--".MULTIPART_BOUNDARY."\r\n".
+            "Content-Disposition: form-data; name=\"upload\"; filename=\"".basename($post_params['filetmp'])."\"\r\n".           
+            $file_contents."\r\n";
+
+			// add some POST fields to the request too: $_POST['foo'] = 'bar'
+			foreach($post_params as $key=>$val){
+				if($key!='file'&&$key!='filetmp'){
+					$content .= "--".MULTIPART_BOUNDARY."\r\n".
+					            "Content-Disposition: form-data; name=\"".$key."\"\r\n\r\n".
+					            $val."\r\n";
+				}
+			}
+			
+			// signal end of request (note the trailing "--")
+			$content .= "--".MULTIPART_BOUNDARY."--\r\n";
+			echo $content;
+			$context = stream_context_create(array(
+			    'http' => array(
+			          'method' => 'POST',
+			          'header' => $header,
+			          'content' => $content,
+			    ),
+			));
+			
+			$xml = file_get_contents($request_url, false, $context);
+			
+		}else{
+			//echo $request_url;
+			//print_r($post_params);
+			$filereq = $request_url;
+			foreach($post_params as $key=>$val){
+				$filereq .= '&'.$key.'='.$val;
+			}
+			//echo $filereq;
+			$xml = file_get_contents($filereq);
+			//echo $xml;
+		}*/
+		
+		
 		$result = simplexml_load_string($xml); 
-		//curl_close($ch);
+		curl_close($ch);
 
 			if($result['stat'] == 'fail'){
 		
