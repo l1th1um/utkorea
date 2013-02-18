@@ -95,31 +95,6 @@
 </div>
 <div style="clear:both"></div>
 
-<!--
-<div style="width: 100%;">        
-    <div style="width:20%;float:left;">
-        This if For Material Content
-    </div>
-    <div style="width:70%float:left;padding-left:30px" id="embedded_presentation"></div>
-</div>
--->
-<!--
-<article class="half-block" style="width:495px;padding:4px;float:right;">
-	<header>
-		<h2>
-            <?php echo $class_settings->title; ?>
-        </h2>
-		<nav>
-			<ul class="tab-switch">
-				<li><a id="arsip" href="#">Arsip File</a></li>				
-			</ul>
-		</nav>
-	</header>	
-	<div style="width:490px;" id="embedded_presentation"></div>
-</article>
--->
-
-<div style="clear:both"></div>
 
 <div style="height:auto;width:100%;position: inherit;padding-top:10px">
     <div style="width: 48%;float:left;">
@@ -187,8 +162,13 @@
                     ?>
             	</section>
             </article>
-        </div>
-        <div style="width: 100%;">
+        </div>   
+    </div>
+</div>
+<div style="clear:both"></div>
+
+<div style="height:auto;width:100%;position: inherit;padding-top:10px">
+    <div style="width: 48%;float:left;">
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Pertanyaan</h2>
@@ -216,12 +196,8 @@
         	</section>
         </article>
     </div>
-    </div>
-</div>
-<div style="clear:both"></div>
-
-<div style="height:auto;width:100%;position: inherit;padding-top:10px">
-    <div style="width: 48%;float:left;">
+    
+    <div style="width: 48%;float:left;padding-left:10px;">
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Tugas</h2>
@@ -332,78 +308,69 @@
 		<?php } ?>
 	});
 </script>
-<!--<div id="dialog-message" title="Arsip File" style="display:none">
-  
-</div>-->
-
-
-
-
-
-
 
 <!-- Some Reference for Block -->
-
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript'>
-		jQuery(function ($) {
-		var contact = {
-			message: null,
-			init: function () {
-				$('#ann_link').click(function (e) {
-					e.preventDefault();
-					var ann_id = $(this).attr("alt");
-					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/display_detail_class",{id : ann_id}, function(data){
-						// create a modal dialog with the data
-						$(data).modal({						
-							onShow: contact.show
-							//onClose: contact.close
-						});
+jQuery(function ($) {
+var contact = {
+	message: null,
+	init: function () {
+		$('a#ann_link').click(function (e) {		    
+			e.preventDefault();
+			var uid = "<?php echo $id?>"; 
+			var ann_id = $(this).attr("alt");
+			// load the contact form using ajax
+			$.post("<?php echo base_url()?>kelas/show_announce_class",{assignment_id:uid, id : ann_id}, function(data){			
+				// create a modal dialog with the data
+				$(data).modal({						
+					onShow: contact.show
+					//onClose: contact.close
+				});
+			});
+		});
+	},	
+	show: function (dialog) {
+		$("table thead tr").css({"background-color":"#CAE8EA","color":"#4F6B72"});	
+		$("table tbody tr:odd").css({"background-color":"#FFFFFF","color":"#4F6B72"});	
+		$("table tbody tr:even").css({"background-color":"##F5FAFA","color":"#797268"});	
+		
+		$('.edu_id').click(function (e) {
+			var edu_id = $(this).attr("id");
+			
+			$('input[name=last_education_major]').val(edu_id);
+			$.modal.close();
+		});
+	},
+	close: function (dialog) {
+		$('#contact-container .contact-message').fadeOut();
+		$('#contact-container .contact-title').html('Goodbye...');
+		$('#contact-container form').fadeOut(200);
+		$('#contact-container .contact-content').animate({
+			height: 40
+		}, function () {
+			dialog.data.fadeOut(200, function () {
+				dialog.container.fadeOut(200, function () {
+					dialog.overlay.fadeOut(200, function () {
+						$.modal.close();
 					});
 				});
-			},	
-			show: function (dialog) {
-				$("table thead tr").css({"background-color":"#CAE8EA","color":"#4F6B72"});	
-				$("table tbody tr:odd").css({"background-color":"#FFFFFF","color":"#4F6B72"});	
-				$("table tbody tr:even").css({"background-color":"##F5FAFA","color":"#797268"});	
-				
-				$('.edu_id').click(function (e) {
-					var edu_id = $(this).attr("id");
-					
-					$('input[name=last_education_major]').val(edu_id);
-					$.modal.close();
-				});
-			},
-			close: function (dialog) {
-				$('#contact-container .contact-message').fadeOut();
-				$('#contact-container .contact-title').html('Goodbye...');
-				$('#contact-container form').fadeOut(200);
-				$('#contact-container .contact-content').animate({
-					height: 40
-				}, function () {
-					dialog.data.fadeOut(200, function () {
-						dialog.container.fadeOut(200, function () {
-							dialog.overlay.fadeOut(200, function () {
-								$.modal.close();
-							});
-						});
-					});
-				});
-			},
-			error: function (xhr) {
-				alert(xhr.statusText);
-			},
-			showError: function () {
-				$('#contact-container .contact-message')
-					.html($('<div class="contact-error"></div>').append(contact.message))
-					.fadeIn(200);
-			}
-		};
-	
-		contact.init();
-	
-	});
+			});
+		});
+	},
+	error: function (xhr) {
+		alert(xhr.statusText);
+	},
+	showError: function () {
+		$('#contact-container .contact-message')
+			.html($('<div class="contact-error"></div>').append(contact.message))
+			.fadeIn(200);
+	}
+};
+
+contact.init();
+
+});
 	
 </script>
 <link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>

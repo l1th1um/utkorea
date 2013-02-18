@@ -42,7 +42,7 @@
             if (in_array(8,$this->session->userdata('role'))) {
                 $edit_icon = array(
                           'src' => admin_tpl_path().'img/icons/icon_edit.png',
-                          'style' => 'border:none;background:none'                          
+                          'style' => 'border:none;background:none'  
                 );
                 
                 $del_icon = array(
@@ -52,7 +52,7 @@
                           'id' => $row->id
                 );
 
-                echo "<td>".img($edit_icon)."</td>
+                echo "<td>".anchor(base_url()."kelas/edit_announcement/".$id."/".$row->id,img($edit_icon))."</td>
                 <td>".img($del_icon)."</td>";
             }
         ?>
@@ -72,9 +72,10 @@
 			init: function () {
 				$('a#ann_link').click(function (e) {
 				    e.preventDefault();
+                    var uid = "<?php echo $id?>"; 
 					var ann_id = $(this).attr("alt");
 					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/show_announce_class",{id : ann_id}, function(data){
+					$.post("<?php echo base_url()?>kelas/show_announce_class",{assignment_id:uid, id : ann_id}, function(data){
 						// create a modal dialog with the data
 						$(data).modal({						
 							onShow: contact.show
@@ -130,7 +131,7 @@
             ann_id = $(this).attr("id"); 
             var r = confirm("Hapus Pengumuman? ");
             
-            if (r==true)
+            if (r == true)
             {
                 $.post("<?php echo base_url()?>kelas/del_announcement",{id : ann_id}, function(data){
 	               if (data == "1") {
