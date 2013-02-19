@@ -12,12 +12,12 @@
 		foreach($list->result() as $row){
 			?>
 			<a href="<?php echo base_url(); ?>kelas/course/<?php echo $row->asgnmtid; ?>">
-			<article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;">
+			<article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:300px;margin:4px;">
 				<header><h2><?php echo $row->code; ?></h2></header>
 				<section>
 					<p><b style="font-weight:bold;"><?php echo $row->title; ?></b><br />
 					   Tutor : <?php echo $row->name; ?><br />
-					   Lokasi : <?php echo ($row->region)?'Utara':'Selatan'; ?>
+					   Lokasi : <?php echo $row->region; ?>
 					</p>
 				</section>
 			</article>

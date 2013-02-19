@@ -36,11 +36,7 @@ $(document).ready(function(){
 								$(".datatable tbody").html("<tr><td></td><td><span class='loader blue' title='Processing. Please Wait'></span></td></tr>");
 							},
 							success: function(data){	
-								window.opener.location.href = window.opener.location.href;
-  								if (window.opener.progressWindow)		
- 								{
-    								window.opener.progressWindow.close()
-  								}
+								opener.location.reload();  								
   								window.close();																
 							}	
 					});

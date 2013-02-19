@@ -228,9 +228,14 @@ class kelas extends CI_Controller {
 			$doc_type = null;
 			$access = "public";
 			$rev_id = null;
-			$res = $this->scribd->upload($_FILES['upload']['tmp_name'], $doc_type, $access, $rev_id);
+			
+			
+			
+			$res = $this->scribd->upload($_FILES['upload']['tmp_name'], $doc_type, $access, $rev_id,file_get_contents($_FILES['upload']['tmp_name']),$_FILES['upload']['name']);
 			$this->scribd->changeSettings($res['doc_id'],array('download_formats'=>'original'),$_FILES['upload']['name']);
 			echo json_encode(array('doc_id'=>$res['doc_id'],'access_key'=>$res['access_key'],'id'=>$id_assignment));
+			
+			
 		}		
 	}
 	

@@ -196,6 +196,8 @@ class tutor_model extends CI_Model {
 		$this->db->join('mahasiswa m','m.nim = a.id_student');
 		
 		$this->db->where('b.staff_id',$staff_id);
+		
+		$this->db->order_by('a.id_assignment','asc');
 		$res = $this->db->get();
 		if($res->num_rows()>0){
 			return $res;

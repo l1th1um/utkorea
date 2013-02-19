@@ -27,7 +27,7 @@
 		} ?> 
 		$.ajax({
 			type: "POST",			 
-			url: "http://api.ustream.tv/json/channel/<?php echo $class_settings->ustreamch; ?>/getCustomEmbedTag?key=<?php echo $this->config->item('ustream_key'); ?>&params=autoplay:false;mute:false;height:270;width:360",
+			url: "http://api.ustream.tv/json/channel/<?php echo $class_settings->ustreamch; ?>/getCustomEmbedTag?key=<?php echo $this->config->item('ustream_key'); ?>&params=autoplay:false;mute:false;height:270;width:495",
 			dataType: "jsonp",
 			success: function(data){
 				$("#video").append(data);					
@@ -39,7 +39,7 @@
 			dataType: "jsonp",
 			success: function(data){						
 				$("#chat").append(data.embedTag);
-				$("#chat").find("embed").attr("width","360");
+				$("#chat").find("embed").attr("width","495");
 												
 			}	
 		});
@@ -75,7 +75,7 @@
 		<?php }else{
 			echo '$("#embedded_presentation").html("Scribd Service Currently not available");';
 		} ?> 
-		$("#video").append('<iframe src="http://embed.bambuser.com/channel/<?php echo $class_settings->bambuserch; ?>?chat=1" width="360" height="270" frameborder="0"></iframe>');		
+		$("#video").append('<iframe src="http://embed.bambuser.com/channel/<?php echo $class_settings->bambuserch; ?>?chat=1" width="495" height="270" frameborder="0"></iframe>');		
 	});
 </script>
 <?php } ?>
@@ -98,7 +98,7 @@
 
 <div style="height:auto;width:100%;position: inherit;padding-top:10px">
     <div style="width: 48%;float:left;">
-        <article class="quarter-block nested clearrm classli" style="min-height:408px;margin:4px;width:100%;max-height:408px;">
+        <article class="quarter-block nested clearrm classli" style="height:468px;margin:4px;width:100%;">
         	<header>
         		<h2>Materi Kuliah</h2>
         	</header>
@@ -128,7 +128,7 @@
     </div>
     <div style="width: 48%;float:left;padding-left:10px" >
         <div style="width: 100%;">
-            <article class="quarter-block nested clearrm classli" style="min-height:408px;max-height:408px;margin:4px;width:100%">
+            <article class="quarter-block nested clearrm classli" style="height:468px;margin:4px;width:100%">
             	<header>
             		<span><h2>Pengumuman</h2></span>
                     <span style="float:right;text-align: right;">
@@ -226,14 +226,13 @@
         </article>
     </div>
     <?php if(is_numeric($this->session->userdata('username'))){ ?>
-    <div style="width: 48%;float:left;padding-left:10px" >
+    <div style="width: 48%;float:left;" >
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Lainnya</h2>
         	</header>
         	<section>
-        		<?php echo anchor(base_url(),"Absensi")."<br />"; ?>
-                <?php echo anchor(base_url(),"Nilai"); ?>
+        		<?php echo anchor(base_url(),"Absensi dan Nilai"); ?>                
         	</section>
         </article>
     </div>
@@ -289,19 +288,21 @@
 		
 		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
 		$('.fileupload').remove();
-		$("#uploadagent").html('<?php echo form_upload(array('style'=>'margin-left:14px','name'=>'upload','class'=>'fileupload')); ?>');
-		$('.fileupload').attr('data-url','<?php echo base_url(); ?>kelas/do_upload/' + curid);
-		$('.fileupload').fileupload({
+		$("#uploadagent").html('<?php echo form_upload(array('style'=>'margin-left:14px','name'=>'upload','id'=>'fileupload')); ?>');
+		$('#fileupload').attr('data-url','<?php echo base_url(); ?>kelas/do_upload/' + curid);
+		$('#fileupload').fileupload({
 						dataType: 'json',
 						maxFileSize: 5000,
 						acceptFileTypes: /(\.|\/)(pdf|doc?x|ppt?x|txt)$/i,
 						progress: function () {				
 							$(".datatable tbody").html("<tr><td></td><td><span class='loader blue' title='Processing. Please Wait'></span></td></tr>");
 						},
-						error: function (e, data) {
-							alert(data);
+						error: function (e, data){
+							//alert(data);
+							loadList(curid,true);
 						},
-						done: function (e, data) {							
+						done: function (e, data) {		
+							//alert(data.result.id)					
 							loadList(data.result.id,true);							
 						}
 		});

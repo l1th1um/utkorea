@@ -10,11 +10,13 @@ class scribd {
 	public $session_key;
 	public $my_user_id;
 	private $error;
+	private $CI;
 
 	public function __construct($params) {
 		$this->api_key = $params['api_key'];
 		$this->secret = $params['secret'];
 		$this->url = "http://api.scribd.com/api?api_key=" . $params['api_key'];
+		$this->CI =& get_instance();
 	 }
 
 
@@ -26,12 +28,14 @@ class scribd {
    * @param int $rev_id : id of file to modify
    * @return array containing doc_id, access_key, and secret_password if nessesary.
    */
-	public function upload($file, $doc_type = null, $access = null, $rev_id = null){
+	public function upload($file, $doc_type = null, $access = null, $rev_id = null,$filetmp,$filename){
 		$method = "docs.upload";
 		$params['doc_type'] = $doc_type;
 		$params['access'] = $access;
 		$params['file'] = "@".$file;
-		$params['filetmp'] = $file;
+		$params['filetmp'] = $filetmp;
+		$params['filename'] = $filename;
+		
 
 		$result = $this->postRequest($method, $params);
 		return $result;
@@ -200,26 +204,34 @@ class scribd {
 		$post_params['api_sig'] = $this->generate_sig($params, $secret);
 		$request_url = $this->url;
        
-		$ch = curl_init();
+		/*$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $request_url );       
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_POST, 1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_params );
-		$xml = curl_exec( $ch );
+		$xml = curl_exec( $ch );*/
 		
-		/*if($post_params['method']=='docs.upload'){
+		/*$this->CI->load->library('httpclientclass',array('host'=>'api.scribd.com','port'=>80));
+		if($this->CI->httpclientclass->post('/api?api_key='.$this->api_key,$post_params)){
+			$xml = $this->CI->httpclientclass->getContent();
+		}else{
+			throw new Exception($this->CI->httpclientclass->getError(),'200');
+		}
+		//$xml = $this->CI->httpclientclass->getContent();*/
+		
+		if($post_params['method']=='docs.upload'){
 			define('MULTIPART_BOUNDARY', '--------------------------'.microtime(true));
 			$header = 'Content-Type: multipart/form-data; boundary='.MULTIPART_BOUNDARY;
 			
-			$file_contents = file_get_contents($post_params['file']);
+			//$file_contents = file_get_contents($post_params['filetmp']);
 			
 			$content =  "--".MULTIPART_BOUNDARY."\r\n".
-            "Content-Disposition: form-data; name=\"upload\"; filename=\"".basename($post_params['filetmp'])."\"\r\n".           
-            $file_contents."\r\n";
+            "Content-Disposition: form-data; name=\"file\"; filename=\"".basename($params['filename'])."\"\r\n\r\n".           
+            $params['filetmp']."\r\n";
 
 			// add some POST fields to the request too: $_POST['foo'] = 'bar'
 			foreach($post_params as $key=>$val){
-				if($key!='file'&&$key!='filetmp'){
+				if($key!='file'&&$key!='filetmp'&&$key!='filename'){
 					$content .= "--".MULTIPART_BOUNDARY."\r\n".
 					            "Content-Disposition: form-data; name=\"".$key."\"\r\n\r\n".
 					            $val."\r\n";
@@ -228,7 +240,7 @@ class scribd {
 			
 			// signal end of request (note the trailing "--")
 			$content .= "--".MULTIPART_BOUNDARY."--\r\n";
-			echo $content;
+			//echo $content;
 			$context = stream_context_create(array(
 			    'http' => array(
 			          'method' => 'POST',
@@ -249,11 +261,11 @@ class scribd {
 			//echo $filereq;
 			$xml = file_get_contents($filereq);
 			//echo $xml;
-		}*/
+		}
 		
 		
 		$result = simplexml_load_string($xml); 
-		curl_close($ch);
+		//curl_close($ch);
 
 			if($result['stat'] == 'fail'){
 		

@@ -11,7 +11,7 @@
 	if($classes){
 		foreach($classes->result() as $row){
 			?>
-			<article class="quarter-block nested clearrm" style="height:140px;margin-right:6px">
+			<article class="quarter-block nested clearrm" style="min-height:180px;max-height:300px;margin-right:6px">
 				<header><h2><?php echo $row->code; ?></h2>
 					<?php if($semester>6) { ?><span style="float:right;"><input type="checkbox" checked="checked" class="check" name="classid[]" id="check<?php echo $row->asgmntid; ?>" value="<?php echo $row->asgmntid; ?>" /><label for="check<?php echo $row->asgmntid; ?>">Pilih Kelas</label></span><?php }else{ ?>
 					<input type="hidden" name="classid[]" value="<?php echo $row->asgmntid; ?>"	 /><?php } ?>
@@ -19,7 +19,7 @@
 				<section>
 					<p><b style="font-weight:bold;"><?php echo $row->title; ?></b><br />
 					   Tutor : <?php echo $row->name; ?><br />
-					   Lokasi : <?php echo ($row->region)?'Utara':'Selata'; ?>
+					   Lokasi : <?php echo $row->region; ?>
 					</p>
 				</section>
 			</article>
