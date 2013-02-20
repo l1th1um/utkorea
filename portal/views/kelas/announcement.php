@@ -2,8 +2,7 @@
     <?php
         if (in_array(8,$this->session->userdata('role')))
             echo anchor('kelas/create_announcement/'.$id,'<button class="green">Buat Pengumuman</button>');
-    ?>
-    
+    ?>    
 </div>
 <div style="clear: both;"></div>
 <?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>

@@ -1,10 +1,11 @@
 <div style="float: right;padding-bottom: 10px;">
     <?php
-        echo anchor('kelas/create_question/'.$id,'<button class="green">Buat Pertanyaan</button>');
-    ?>
-    
+        if (in_array(9,$this->session->userdata('role')))
+            echo anchor('kelas/create_question/'.$id,'<button class="green">Buat Pertanyaan</button>');
+    ?>    
 </div>
 <div style="clear: both;"></div>
+<?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>
 <?php
     if ($list == false) {
         echo $this->lang->line('no_question');
@@ -19,7 +20,8 @@
 	<thead>
 		<tr>
 			<th>Tanggal</th>
-			<th>Judul</th>				
+			<th>Judul</th>
+            <th>Dari</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,8 +29,9 @@
 		foreach ($list as $row) {
 	?>
 	<tr>
-		<td width="150px"><?php echo convertHumanDate($row->created,false)?></td>
+		<td style="width: 150px;"><?php echo convertHumanDate($row->created,false)?></td>
 		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
+        <td style="width: 250px;"><?php echo user_detail('name',$row->user_id);?></td>
 	</tr>
 	<?php
 		} 
@@ -46,8 +49,9 @@
 				$('a#ann_link').click(function (e) {
 					e.preventDefault();
 					var ann_id = $(this).attr("alt");
+                    var uid = "<?php echo $id?>";
 					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/display_detail_question",{id : ann_id}, function(data){
+					$.post("<?php echo base_url()?>kelas/display_detail_question",{assignment_id:uid, id : ann_id}, function(data){
 						// create a modal dialog with the data
 						$(data).modal({						
 							onShow: contact.show
@@ -97,6 +101,7 @@
 		contact.init();
 	
 	});
+
 	
 </script>
 <link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>

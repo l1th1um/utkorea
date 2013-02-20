@@ -49,7 +49,9 @@ class kelas extends CI_Controller {
     
     public function course($uid)
     {
-        if($uid!=''){
+        if(! empty($uid)){
+            $this->session->set_userdata('course',$uid);
+            
             $id = $this->class_model->id_to_uuid($uid);
             
 			$class_settings = $this->tutor_model->get_class_by_id($id);
@@ -70,7 +72,7 @@ class kelas extends CI_Controller {
 			$data['class_settings'] = $class_settings;
 			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
             $data['announcement'] = $this->class_model->list_announce_class($uid,5);
-            $data['question'] = $this->announce->list_question($id,5);
+            $data['question'] = $this->class_model->list_question($uid,5);
             $data['task'] = false;
             $data['id'] = $uid;
 			$content['page'] = $this->load->view('kelas/main',$data,TRUE);
@@ -401,8 +403,7 @@ class kelas extends CI_Controller {
                  }
                  
 				 if ($this->class_model->save_announce_class($post_data,$assignment_id,$update)) {
-				    $this->session->set_flashdata('message',$this->lang->line('announcement')." ".$this->lang->line('saved'));
-					//$data['message'] = success_form($this->lang->line('announcement')." ".$this->lang->line('saved'));
+				    $this->session->set_flashdata('message',$this->lang->line('announcement')." ".$this->lang->line('saved'));					
                     redirect('kelas/announcement/'.$assignment_id);
 				} else {
 					$data['message'] = 	error_form($this->lang->line('db_error'));
@@ -453,24 +454,19 @@ class kelas extends CI_Controller {
         
 		echo $this->load->view('kelas/announce_class',$data,TRUE);
 	}
-    /*
-    function list_question($id,$limit=null) {
-        $data['list'] = $this->announce->list_question($id,$limit);
-		$data['id'] = $id;
-		$content['page'] = $this->load->view('kelas/announcement',$data,TRUE);        
-        $this->load->view('dashboard',$content);
-    } 
-    */
+    
     function question($id) {
         //$this->auth->check_auth();
-        
-        $data['list'] = $this->announce->list_question($id);
+        $data['list'] = $this->class_model->list_question($id);
 		$data['id'] = $id;
+        if ($this->session->flashdata('message') != '') {
+            $data['message'] = success_form($this->session->flashdata('message'));
+        }
 		$content['page'] = $this->load->view('kelas/question',$data,TRUE);        
         $this->load->view('dashboard',$content);
     } 
     
-     function create_question($id) {
+     function create_question($assignment_id,$announce_id=null) {
         $this->auth->check_auth();
         
         $data = array();
@@ -481,22 +477,27 @@ class kelas extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$data['message'] = error_form(validation_errors());				
 			} else {
-				if ($this->announce->save_question($_POST,$id)) {
-					$data['message'] = success_form($this->lang->line('question')." ".$this->lang->line('saved'));
+				if ($this->class_model->save_question($_POST,$assignment_id)) {
+				    $this->session->set_flashdata('message',$this->lang->line('question')." ".$this->lang->line('saved'));					
+                    redirect('kelas/question/'.$assignment_id);
+					//$data['message'] = success_form($this->lang->line('question')." ".$this->lang->line('saved'));
 				} else {
 					$data['message'] = 	error_form($this->lang->line('db_error'));
 				}
 			}
 		}
                
-        $data['id'] = $id;
+        $data['id'] = $assignment_id;
 		$content['page'] = $this->load->view('kelas/create_question',$data,TRUE);        
         $this->load->view('dashboard',$content);
     }
     
      public function display_detail_question() {
-		$id = $this->input->post('id');
-		$data['row'] = $this->announce->display_detail_question($id);
+		$assignment_id = $this->input->post('assignment_id');
+        $id = $this->input->post('id');
+        $data['question_id'] = $id;
+		$data['row'] = $this->class_model->display_detail_question($assignment_id,$id);
+        $data['response'] = $this->class_model->display_question_response($id);
 		
 		echo $this->load->view('kelas/question_detail',$data,TRUE);
 	}
@@ -606,6 +607,22 @@ class kelas extends CI_Controller {
         {
             echo "0";
         } 
+        
+    }
+    
+    public function question_response()
+    {
+        $response = $this->input->post('response');
+        $id = $this->input->post('id');
+        
+        if ($this->class_model->save_question_response($response,$id)) 
+        {
+            echo "1";
+        }
+        else
+        {
+            echo "0";
+        }
         
     }
 }
