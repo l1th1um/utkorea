@@ -1,8 +1,4 @@
-<style>
-	.classli:hover{
-		border:1px solid red;
-	}	
-</style>
+
 
 <?php echo success_form("Anda telah terdaftar dalam kelas. Silahkan pilih kelas yang tersedia dari daftar berikut"); ?>
 <div style="clear:both;margin-bottom:8px;"></div>

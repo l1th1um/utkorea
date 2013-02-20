@@ -1099,3 +1099,10 @@ img.avatar {
 .image_container {padding-left: 59px;width:200px;padding-top:5px}
 
 .ajax_loader{width:31px;height:31px;background:url(../images/ajax-loader.gif);margin:6px auto;}
+
+.classli{
+	background:url(../images/list-bg.png) no-repeat center #e6e6e6;
+}
+.classli:hover{
+		border:1px solid red;
+	}
