@@ -96,39 +96,10 @@
 <div style="clear:both"></div>
 
 
-<div style="height:auto;width:100%;position: inherit;padding-top:10px">
-    <div style="width: 48%;float:left;">
-        <article class="quarter-block nested clearrm classli" style="height:468px;margin:4px;width:100%;">
-        	<header>
-        		<h2>Materi Kuliah</h2>
-        	</header>
-        	<section>			
-        		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
-        		<div>
-	        		<label for="upload">Upload File untuk Kelas ini</label>	
-					<span id="uploadagent"></span><br />
-					<span style="font-size:8pt;">Format : .doc .docx .ppt .pptx .pdf</span>
-				</div>
-				<hr />
-				<?php } ?>
-        			
-				<table class="datatable">
-			  		<thead>
-			  			<tr>
-			  				<th>Name</th>
-			  				<th>Upload Date</th>
-			  			</tr>
-			  		</thead>
-			  		<tbody></tbody>
-			  	</table>
-			  	
-			  				  	
-        	</section>
-        </article>
-    </div>
-    <div style="width: 48%;float:left;padding-left:10px" >
+<div style="height:auto;width:100%;position: inherit;padding-top:10px">    
+    <div style="width: 48%;float:left;" >
         <div style="width: 100%;">
-            <article class="quarter-block nested clearrm classli" style="height:468px;margin:4px;width:100%">
+            <article class="quarter-block nested clearrm classli" style="margin:4px;width:100%;height:350px">
             	<header>
             		<span><h2>Pengumuman</h2></span>
                     <span style="float:right;text-align: right;">
@@ -162,13 +133,7 @@
                     ?>
             	</section>
             </article>
-        </div>   
-    </div>
-</div>
-<div style="clear:both"></div>
-
-<div style="height:auto;width:100%;position: inherit;padding-top:10px">
-    <div style="width: 48%;float:left;">
+        </div>    
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Pertanyaan</h2>
@@ -194,10 +159,7 @@
                 }
             ?>
         	</section>
-        </article>
-    </div>
-    
-    <div style="width: 48%;float:left;padding-left:10px;">
+        </article>    
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Tugas</h2>
@@ -224,9 +186,9 @@
             ?>
         	</section>
         </article>
-    </div>
+   
     <?php if(is_numeric($this->session->userdata('username'))){ ?>
-    <div style="width: 48%;float:left;" >
+   
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
         	<header>
         		<h2>Lainnya</h2>
@@ -235,13 +197,41 @@
         		<?php echo anchor(base_url(),"Absensi dan Nilai"); ?>                
         	</section>
         </article>
-    </div>
+   
     <?php } ?>
+    </div>
+    <div style="width: 48%;float:left;margin-left:10px">
+        <article class="quarter-block nested clearrm classli" style="margin:4px;width:100%;">
+        	<header>
+        		<h2>Materi Kuliah</h2>
+        	</header>
+        	<section>			
+        		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
+        		<div>
+	        		<label for="upload">Upload File untuk Kelas ini</label>	
+					<span id="uploadagent"></span><br />
+					<span style="font-size:8pt;">Format : .doc .docx .ppt .pptx .pdf</span>
+				</div>
+				<hr />
+				<?php } ?>
+        			
+				<table class="datatable">
+			  		<thead>
+			  			<tr>
+			  				<th>Name</th>
+			  				<th>Upload Date</th>
+			  			</tr>
+			  		</thead>
+			  		<tbody></tbody>
+			  	</table>
+			  	
+			  				  	
+        	</section>
+        </article>
+    </div>
 </div>
 <div style="clear:both"></div>
 
-
-<div style="clear:both"></div>
 
 <?php } ?>
 
