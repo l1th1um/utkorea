@@ -505,13 +505,13 @@ class kelas extends CI_Controller {
      function task($id) {
         $this->auth->check_auth();
         
-        $data['list'] = $this->announce->list_task($id);
+        $data['list'] = $this->class_model->list_task($id);
 		$data['id'] = $id;
 		$content['page'] = $this->load->view('kelas/task',$data,TRUE);        
         $this->load->view('dashboard',$content);
     }   
     
-    function create_task($id) {
+    function create_task($assignment_id,$announce_id=null) {
         $this->auth->check_auth();
         
         $data = array();
@@ -522,15 +522,16 @@ class kelas extends CI_Controller {
 			if ($this->form_validation->run() == FALSE) {
 				$data['message'] = error_form(validation_errors());				
 			} else {
-				if ($this->announce->save_question($_POST,$id)) {
-					$data['message'] = success_form($this->lang->line('question')." ".$this->lang->line('saved'));
+				if ($this->class_model->save_task($_POST,$assignment_id)) {
+					$this->session->set_flashdata('message',$this->lang->line('task')." ".$this->lang->line('saved'));					
+                    redirect('kelas/task/'.$assignment_id);
 				} else {
 					$data['message'] = 	error_form($this->lang->line('db_error'));
 				}
 			}
 		}
                
-        $data['id'] = $id;
+        $data['id'] = $assignment_id;
 		$content['page'] = $this->load->view('kelas/create_task',$data,TRUE);        
         $this->load->view('dashboard',$content);
     }
@@ -540,7 +541,7 @@ class kelas extends CI_Controller {
 		//$newname = $addfilename;
         
         $config['upload_path'] = 'assets/uploads/'.$folder;
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|pptx';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar';
 		$config['max_size'] = '10000';
 		$config['max_width'] = '10240';
 		$config['max_height'] = '76800';
@@ -556,10 +557,20 @@ class kelas extends CI_Controller {
 		else
 		{
 			$data = $this->upload->data();
-
+            
+            if ($folder == 'pengumuman')
+            {
+                $category = 1;
+            }
+            else if ($folder == 'tugas')
+            {
+                $category = 2;
+            }
+            
             $attach = array('original_file'=>$data['orig_name'],
                             'filename'=>$data['file_name'],
-                            'subfolder' => $folder);
+                            'subfolder' => $folder,
+                            'category' => $category);
             
             $save_attach  = $this->class_model->save_attachment($attach);
             

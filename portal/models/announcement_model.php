@@ -43,18 +43,4 @@ class announcement_model extends CI_Model {
 			return false;
 		}
 	}
-    
-    public function list_task($id,$limit=null) {
-        $this->db->where('assignment_id',$id);
-		$this->db->order_by('id','desc');
-        if (!empty($limit))
-            $this->db->limit($limit);
-		$query = $this->db->get('task');
-		
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		} else {
-			return false;
-		}       
-    }
 }

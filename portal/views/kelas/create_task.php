@@ -22,7 +22,8 @@
 			relative_urls : false,
 			file_browser_callback : MadFileBrowser
 		});
-		
+	   
+       $("input[name=deadline_date]").datepicker();	
 		
 	});
 	
@@ -54,14 +55,45 @@
                 <td><?php echo form_input('title',set_value('title'),'style="width:500px"')?></td>                
             </tr>
             <tr>
+                <td width="120px"><label><?php echo $this->lang->line('deadline');?></label></td>
+                <td><?php echo form_input('deadline_date',set_value('deadline_date'))?></td>                
+            </tr>
+            <tr>
                 <td>&nbsp;</td>
                 <td><?php echo form_textarea('content','',"style='width:98%;height:300px;' class='tinymce' ")?></td>                
             </tr>            
             <tr>
                 <td>Upload</td>
                 <td>
-                    <input type='file'/>
-                </td>                
+                    <input name="file_tugas" class="fileupload" type="file" 
+                    data-url="<?php echo base_url()?>kelas/do_upload_kelas/file_tugas/tugas" />
+    				<input type="hidden" name="attach_uid" /> 
+    				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar)
+                    <p style="padding-top: 5px;" id="file_tugas_cont"></p>
+                    <?php
+                        /*
+                        if ($icon <> false) {
+                            $mime_icon = array(
+                                        'src' => base_url().'assets/core/images/fileicons/'.$icon.'.png',
+                                        'style' => 'border:none;background:none'  
+                            );
+                            
+                            $del_icon = array(
+                                      'src' => admin_tpl_path().'img/icons/icon_error_small.png',
+                                      'style' => 'border:none;background:none;cursor:pointer',
+                                      'class' => 'del_attachment',
+                                      'id' => $attach->uuid
+                            );
+                            
+                            echo "<span class='attach_cont' />";
+                            echo img($mime_icon);
+                            echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;");
+                            echo img($del_icon);
+                            echo "</span>";
+                        } 
+                        */
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td colspan="3"><button type="submit"><?php echo $this->lang->line('submit');?></button></td>
@@ -70,3 +102,53 @@
 	</fieldset>	
 	
 	</form>
+<script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
+<script type="text/javascript" >
+	$(document).ready(function(){
+		$('.fileupload').fileupload({
+			dataType: 'json',
+			maxFileSize: 10000,
+			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+			progress: function () {
+				var loader = $(this).attr('name') +'_loader';
+				$(this).after(" <img src='<?php echo template_path('triveo')?>images/loading.gif' class='"+ loader +"' /> ");
+			},
+			error: function (e, data) {
+				alert("Error");
+			},
+			done: function (e, data) {
+                if (data == '0') 
+                {
+                    alert("Error");
+                }
+                else
+                {
+                    var cont = $(this).attr('name') +'_cont';
+    				var loader = $(this).attr('name') +'_loader';
+    				$('.'+ loader).hide();
+    				$.each(data.result, function (index, file) {
+    				    $('#' + cont).text(file.name);
+    					$("input[name=attach_uid]").val(file.id);
+    				});    
+                }
+				
+			}
+		});	
+        
+         $('.del_attachment').click(function(){
+            ann_id = $(this).attr("id"); 
+            var r = confirm("Hapus File? ");
+            
+            if (r == true)
+            {
+                $.post("<?php echo base_url()?>kelas/del_attachment",{id : ann_id}, function(data){
+	               if (data == "1") {
+	                   alert('File Telah Dihapus');
+                       $('.attach_cont').remove();
+	               }
+				});    
+            }
+       }); 
+	})
+</script>
+    
