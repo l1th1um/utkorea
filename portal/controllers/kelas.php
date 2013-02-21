@@ -156,6 +156,7 @@ class kelas extends CI_Controller {
     			$this->form_validation->set_rules('justinch'.$row->id,'Justin Channel','xss_clean');
     			$this->form_validation->set_rules('bambuserch'.$row->id,'Bambuser Channel','xss_clean');
     			$this->form_validation->set_rules('lsch'.$row->id,'Livestream Channel','xss_clean');
+    			$this->form_validation->set_rules('chatango'.$row->id,'Chatango Group','xss_clean|trim');
     		}
     		$data['success'] = 0;
     		
@@ -170,6 +171,7 @@ class kelas extends CI_Controller {
     						'justinch'=>$this->input->post('justinch'.$row->id),
     						'bambuserch'=>$this->input->post('bambuserch'.$row->id),
     						'lsch'=>$this->input->post('lsch'.$row->id),
+    						'chatango'=>$this->input->post('chatango'.$row->id),
     						'id'=>$row->id
     					);
     			}
@@ -625,4 +627,34 @@ class kelas extends CI_Controller {
         }
         
     }
+	
+	public function mymark($uid){
+		 if(! empty($uid)){
+            $this->session->set_userdata('course',$uid);
+            
+            $id = $this->class_model->id_to_uuid($uid);
+            
+			$res = $this->class_model->get_my_class($this->session->userdata('username'),$id);
+			
+			if($res){
+				$data['absensi'] = array();
+				if($res->absensi!=''){
+					$data['absensi'] = explode(',',$res->absensi);
+				}
+				$data['tugas1'] = $res->tugas1;
+				$data['tugas2'] = $res->tugas2;
+				$data['tugas3'] = $res->tugas3;
+				$data['partisipasi'] = $res->partisipasi;	
+				$data['classname'] = $res->title;
+				$data['classcode'] = $res->code;
+			}
+			
+            $data['id'] = $uid;
+			$content['page'] = $this->load->view('kelas/mymark',$data,TRUE);
+		}
+        
+        $this->load->view('dashboard',$content);
+	}
+	
+	
 }

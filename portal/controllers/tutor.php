@@ -175,10 +175,48 @@ class tutor extends CI_Controller {
 		echo ($i > 0)? '1' : '0';
 	}
     
-    public function list_grid() 
-    {
-        
-    }
+    public function transport(){
+		 $this->auth->check_auth();
+		 
+		 $this->load->library('form_validation');
+		 $this->form_validation->set_rules('tanggalttm', 'Tanggal TTM', 'required');
+		 $this->form_validation->set_rules('total', 'Total Pengeluaran', 'required|numeric');
+		 $this->form_validation->set_rules('deskripsi', 'Deskripsi Perjalanan', 'required');
+		 $this->form_validation->set_rules('waktudibayar', 'Waktu Dibayar', 'required');
+		 
+		 $this->load->model('finance_model');
+		 $data['success'] = 0;
+		 
+		 if($this->form_validation->run()){
+		 	$data = array();
+		 	$data = $this->input->post();
+			$data['staff_id'] = $this->session->userdata('id');
+			$this->finance_model->save_transport($data);
+			
+			$data['success'] = 1;
+		 }
+					
+		 
+		 $data['transport'] = $this->finance_model->get_my_transport($this->session->userdata('id'));
+		  
+		 $content['page'] = $this->load->view('tutor/transport',$data,TRUE);
+		 $this->load->view('dashboard',$content);
+	}
+	
+	function get_tutor($id,$output="json"){
+		$res = $this->tutor_model->get_tutor($id);
+		if($res){
+			switch ($output){
+				case "json":
+						echo json_encode($res);
+						break;
+				case "html":												
+						$this->load->view('tutor/person_table_view',array('data'=>$res));
+						break;
+			}
+			
+		}
+	}
 }
 
 

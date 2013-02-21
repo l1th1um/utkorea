@@ -1,3 +1,4 @@
+<a href="javascript: history.go(-1)">Kembali ke kelas</a>
 <div style="float: right;padding-bottom: 10px;">
     <?php
         if (in_array(9,$this->session->userdata('role')))

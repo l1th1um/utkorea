@@ -211,4 +211,20 @@ class class_model extends CI_Model {
 			return false;
 		}       
     }
+	
+	public function get_my_class($nim,$id){
+		$this->db->where('id_student',$nim);
+		$this->db->where('id_assignment',$id);
+		$this->db->from('class');
+		$this->db->join('assignment','assignment.id = class.id_assignment');
+		$this->db->join('courses','assignment.course_id = courses.course_id');
+		
+		$query = $this->db->get();
+		if($query->num_rows()>0){
+			return $query->row();
+		}else{
+			return false;
+		}
+		
+	}
 }

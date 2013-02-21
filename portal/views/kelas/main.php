@@ -33,6 +33,7 @@
 				$("#video").append(data);					
 			}	
 		});	
+		<?php if($class_settings->chatango==''){ ?>
 		$.ajax({
 			type: "POST",			 
 			url: "http://api.ustream.tv/json/channel/<?php echo $class_settings->ustreamch; ?>/getValueOf/chat?key=<?php echo $this->config->item('ustream_key'); ?>",
@@ -43,6 +44,7 @@
 												
 			}	
 		});
+		<?php } ?>
 	});
 </script>
 <?php }else if($class_settings->chopt=='justin'){ ?>
@@ -80,6 +82,7 @@
 </script>
 <?php } ?>
 
+<?php } ?>
 <header>
 		<h2><?php echo $class_settings->title; ?></h2>
 		<!--<nav>
@@ -91,7 +94,38 @@
     
 <div style="height:auto;width:100%;position: inherit;">
     <div id="video" style="width:48%;float:left"></div>
-    <div id="chat" style="width:48%;;float:left;padding-left:10px"></div>    
+    <div id="chat" style="width:48%;;float:left;padding-left:10px">
+    	<?php if($class_settings->chatango!=''){ ?>
+			<script id="sid0010000022419121432">
+				$(document).ready(function(){
+				function async_load(){
+					s.id="cid0010000022419121432";
+					s.src='http://st.chatango.com/js/gz/emb.js';
+					s.style.cssText="width:495px;height:270px;";
+					s.async=true;
+					s.text='{"handle":"<?php echo $class_settings->chatango; ?>","styles":{"b":60,"f":50,"l":"999999","q":"999999","r":100,"s":1}}';
+					var ss = document.getElementsByTagName('script');
+					for (var i=0, l=ss.length; i < l; i++){
+						if (ss[i].id=='sid0010000022419121432'){
+							ss[i].id +='_';
+							ss[i].parentNode.insertBefore(s, ss[i]);
+							break;
+						}
+					}
+				}
+				var s=document.createElement('script');
+				if (s.async==undefined){
+					if (window.addEventListener) {
+						addEventListener('load',async_load,false);
+					}else if (window.attachEvent) {
+						attachEvent('onload',async_load);
+					}
+				}else {
+					async_load();
+				}
+			});
+		</script>
+    </div>    
 </div>
 <div style="clear:both"></div>
 
@@ -205,7 +239,7 @@
         		<h2>Lainnya</h2>
         	</header>
         	<section>
-        		<?php echo anchor(base_url(),"Absensi dan Nilai"); ?>                
+        		<?php echo anchor(base_url('kelas/mymark/'.$id),"Absensi dan Nilai"); ?>                
         	</section>
         </article>
    

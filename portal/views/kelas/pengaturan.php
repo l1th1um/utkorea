@@ -47,6 +47,10 @@
 	</div>
 	<div style="clear:both"></div>
 	<hr />
+	<h1>Chatango (Optional)</h1>
+	<a target="_blank" href="http://www.chatango.com"><img title="JUSTIN TV" src="'.template_path('core').'/images/chatango.png" style="border:none" /></a><br />
+	Group Name: <input type="text" name="chatango'.$row->id.'" size="13" value="'.$row->chatango.'" />
+	<hr />
 	<h1>Status</h1>
 	<input';
 	if($row->status){$divs.=' checked="checked" ';}

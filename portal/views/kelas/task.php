@@ -1,3 +1,4 @@
+<a href="javascript: history.go(-1)">Kembali ke kelas</a>
 <div style="float: right;padding-bottom: 10px;">
     <?php
         echo anchor('kelas/create_task/'.$id,'<button class="green">Buat Tugas</button>');

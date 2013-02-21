@@ -39,7 +39,16 @@
 		
 		<!-- User Info -->
 		<section id="user-info">
-			<img src="<?php echo admin_tpl_path()?>img/sample_user.png" alt="Sample User Avatar">
+			<?php if(is_numeric($this->session->userdata('username'))){
+				$photo = user_detail('photo_image',$this->session->userdata('username'));				
+			}else{
+				$photo = user_detail('photo',$this->session->userdata('username'));
+			}
+			if(!isset($photo)) { ?>
+			<img src="http://localhost/utkorea/assets/chromatron/img/sample_user.png" alt="User Avatar" class='avatar' />
+			<?php }else{ ?>
+			<img src="<?php echo base_url('assets/uploads/').'/'.$photo; ?>" alt="Profile Picture" title="Profile Picture" width="90px" style="float:left;margin-right:8px;" />
+			<?php } ?>					
 			<div>
 				<a href="#" title="Account Settings and Profile Page">
 					<?php echo user_detail('name',$this->session->userdata('username'))?>

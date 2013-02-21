@@ -301,4 +301,16 @@ class tutor_model extends CI_Model {
 		$this->db->where('staff.status','Aktif');
 		return $this->db->get();
 	}
+	
+	function get_tutor($id){
+		$this->db->from('staff');
+		$this->db->where('staff_id',$id);
+		$res = $this->db->get();
+		
+		if($res->num_rows()>0){
+			return $res->row_array();
+		}else{
+			return false;
+		}
+	}
 }

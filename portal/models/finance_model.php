@@ -277,6 +277,84 @@ class finance_model extends CI_Model {
 
 		return $query;
 	}
+
+	public function get_my_transport($id){
+		$this->db->from('transport');
+		$this->db->where('staff_id',$id);
+		$this->db->order_by('created','DESC');
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}
+	}
+	
+	public function save_transport($data){
+		return $this->db->insert('transport',$data);
+	}
+
+	function get_transport_list($params = "" , $page = "all",$is_export=false)
+	{	
+	
+		$this->db->select('*');
+		$this->db->from('transport');
+		$this->db->join('staff','transport.staff_id = staff.staff_id');		
+		
+		if (!empty($params))		{			
+			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
+			{
+				$ops = array (
+							"eq" => "=",
+							"ne" => "<>",
+							"lt" => "<",
+							"le" => "<=",
+							"gt" => ">",
+							"ge" => ">="
+				);										
+				
+				if(!empty($params['search_field'])){
+					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
+						if($params['search_operator']=='cn'){
+							$this->db->like($params['search_field'],$params['search_str']);
+						}else{
+							$this->db->not_like($params['search_field'],$params['search_str']);
+						}
+					}else{
+						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
+					}
+					
+				}
+				
+				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
+
+
+				if ($page != "all")
+				{
+					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
+				}
+
+				$query = $this->db->get();
+				
+
+			}
+		}
+		else
+		{			
+				$this->db->limit (25);
+				$query = $this->db->get();
+
+		}
+
+		return $query;
+	}
+
+	function update_transport($id,$data){
+		$this->db->where("id",$id);
+		$this->db->update('transport',$data);
+		
+		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
+	}
 	
 }
 ?>
