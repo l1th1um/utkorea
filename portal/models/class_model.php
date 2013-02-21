@@ -211,6 +211,7 @@ class class_model extends CI_Model {
 			return false;
 		}       
     }
+
 	
 	public function get_my_class($nim,$id){
 		$this->db->where('id_student',$nim);
@@ -226,5 +227,35 @@ class class_model extends CI_Model {
 			return false;
 		}
 		
+	}
+    
+    public function list_task($id,$limit=null) {
+        $this->db->where('assignment_id',$id);
+		$this->db->order_by('id','desc');
+        if (!empty($limit))
+            $this->db->limit($limit);
+		$query = $this->db->get('task');
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}       
+    }
+    
+    public function save_task($data,$id) {
+		$insert = populate_form($data, 'question');
+		$this->db->set('created', 'now()', FALSE);
+        $this->db->set('deadline',convertToMysqlDate($data['deadline_date']));
+        $this->db->set('assignment_id',$id);
+		
+		$query = $this->db->insert('task',$insert);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

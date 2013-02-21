@@ -74,7 +74,7 @@
                     <input name="file_pengumuman" class="fileupload" type="file" 
                     data-url="<?php echo base_url()?>kelas/do_upload_kelas/file_pengumuman/pengumuman" />
     				<input type="hidden" name="attach_uid" /> 
-    				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx)
+    				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar)
                     <p style="padding-top: 5px;" id="file_pengumuman_cont"></p>
                     <?php
                         if ($icon <> false) {

@@ -147,4 +147,6 @@ Password : %s \n
 Salam,\n
 Divisi IT Universitas Terbuka Korea Selatan\n
 ";
+
+$lang['deadline'] = 'Tenggat Waktu';
 ?>
