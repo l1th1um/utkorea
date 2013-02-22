@@ -1,11 +1,13 @@
 <a href="javascript: history.go(-1)">Kembali ke kelas</a>
 <div style="float: right;padding-bottom: 10px;">
     <?php
-        echo anchor('kelas/create_task/'.$id,'<button class="green">Buat Tugas</button>');
-    ?>
-    
+        if (in_array(8,$this->session->userdata('role')))
+            echo anchor('kelas/create_task/'.$id,'<button class="green">Buat Tugas</button>');
+    ?>    
 </div>
 <div style="clear: both;"></div>
+<?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>
+<h3><?php $this->lang->line('task')?></h3>
 <?php
     if ($list == false) {
         echo $this->lang->line('no_task');
@@ -20,7 +22,10 @@
 	<thead>
 		<tr>
 			<th>Tanggal</th>
-			<th>Judul</th>				
+			<th>Judul</th>
+            <th style='width:100px;'>Terkumpul</th>
+            <th style='width:30px;text-align:center'>&nbsp;</th>
+            <th style='width:30px;text-align:center'>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,6 +35,23 @@
 	<tr>
 		<td width="150px"><?php echo convertHumanDate($row->created,false)?></td>
 		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
+        <td><?php echo $row->submitted_student."/".$total_student ?></td>
+        <?php
+            $edit_icon = array(
+                        'src' => admin_tpl_path().'img/icons/icon_edit.png',
+                        'style' => 'border:none;background:none'  
+            );
+                
+            $del_icon = array(
+                          'src' => admin_tpl_path().'img/icons/icon_error.png',
+                          'style' => 'border:none;background:none;cursor:pointer',
+                          'class' => 'del_task',
+                          'id' => $row->id
+            );
+
+            echo "<td>".anchor(base_url()."kelas/edit_task/".$id."/".$row->id,img($edit_icon))."</td>
+                <td>".img($del_icon)."</td>";            
+        ?>
 	</tr>
 	<?php
 		} 
@@ -40,15 +62,16 @@
 
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript'>
-		jQuery(function ($) {
+		$(function () {
 		var contact = {
 			message: null,
 			init: function () {
-				$('a#ann_link').click(function (e) {
-					e.preventDefault();
+				$('a#ann_link_ignore').click(function (e) {
+				    e.preventDefault();
+                    var uid = "<?php echo $id?>"; 
 					var ann_id = $(this).attr("alt");
 					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/display_detail_question",{id : ann_id}, function(data){
+					$.post("<?php echo base_url()?>kelas/show_announce_class",{assignment_id:uid, id : ann_id}, function(data){
 						// create a modal dialog with the data
 						$(data).modal({						
 							onShow: contact.show
@@ -93,12 +116,29 @@
 					.html($('<div class="contact-error"></div>').append(contact.message))
 					.fadeIn(200);
 			}
-		};
-	
+		};	
 		contact.init();
 	
 	});
 	
+    
+    $(document).ready(function(){
+       $('.del_task').click(function(){
+            ann_id = $(this).attr("id"); 
+            var r = confirm("Hapus Tugas? ");
+            
+            if (r == true)
+            {
+                $.post("<?php echo base_url()?>kelas/del_task",{id : ann_id}, function(data){
+	               if (data == "1") {
+	                   location.reload(true);
+	               }
+				});    
+            }
+       }); 
+    });
+    
+    
 </script>
 <link href="<?php echo template_path('core'); ?>css/core.css" rel="stylesheet" type="text/css"  media='screen'/>
 <?php

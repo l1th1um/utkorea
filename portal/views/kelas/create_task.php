@@ -23,7 +23,7 @@
 			file_browser_callback : MadFileBrowser
 		});
 	   
-       $("input[name=deadline_date]").datepicker();	
+       $("input[name=deadline_date]").datepicker({dateFormat:'dd/mm/yy'});	
 		
 	});
 	
@@ -44,7 +44,18 @@
 	  return false;
 	}
 </script>
-
+<?php
+    $title = '';
+    $content = '';
+    $deadline_date = '';
+    
+    if ($detail <> false) {
+        $title = $detail->title;
+        $content = $detail->content;
+        $deadline_date = convertDate($detail->deadline);
+        
+    } 
+?>
 
 <?php if (isset($message)) echo "<h3>".$message."</h3>";  else $message= '';?>
 	<form method="post" action="<?php echo current_url();?>" id="frmSms">
@@ -52,15 +63,15 @@
         <table>
             <tr>
                 <td width="120px"><label><?php echo $this->lang->line('title');?></label></td>
-                <td><?php echo form_input('title',set_value('title'),'style="width:500px"')?></td>                
+                <td><?php echo form_input('title',$title,'style="width:500px"')?></td>                
             </tr>
             <tr>
                 <td width="120px"><label><?php echo $this->lang->line('deadline');?></label></td>
-                <td><?php echo form_input('deadline_date',set_value('deadline_date'))?></td>                
+                <td><?php echo form_input('deadline_date',$deadline_date)?></td>                
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td><?php echo form_textarea('content','',"style='width:98%;height:300px;' class='tinymce' ")?></td>                
+                <td><?php echo form_textarea('content',$content,"style='width:98%;height:300px;' class='tinymce' ")?></td>                
             </tr>            
             <tr>
                 <td>Upload</td>
@@ -71,7 +82,6 @@
     				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar)
                     <p style="padding-top: 5px;" id="file_tugas_cont"></p>
                     <?php
-                        /*
                         if ($icon <> false) {
                             $mime_icon = array(
                                         'src' => base_url().'assets/core/images/fileicons/'.$icon.'.png',
@@ -90,8 +100,7 @@
                             echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;");
                             echo img($del_icon);
                             echo "</span>";
-                        } 
-                        */
+                        }
                     ?>
                 </td>
             </tr>
