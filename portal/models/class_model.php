@@ -273,11 +273,12 @@ class class_model extends CI_Model {
         FROM utkor_task t
         LEFT JOIN utkor_task_student s ON t.id = s.task_id
         */
-        $this->db->SELECT('t.*,COUNT(s.nim) as submitted_student');
+        $this->db->SELECT('t.id,t.title,t.content,t.created,t.assignment_id,t.path,COUNT(s.nim) as submitted_student');
         $this->db->from('task t');
         $this->db->join('task_student s', 't.id = s.task_id', 'left');
         $this->db->where('assignment_id',$id);
-		$this->db->order_by('id','desc');
+		$this->db->order_by('t.id','desc');
+		$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','t.path','s.nim'));
         if (!empty($limit))
             $this->db->limit($limit);
 		$query = $this->db->get();

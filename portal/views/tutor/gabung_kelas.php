@@ -33,8 +33,8 @@
 		<?php if($list){
 			foreach($list->result() as $row){
 				echo '<tr>';
-					echo '<td><b>'.$row->from_title.' ( '.(($row->from_region)?'Utara':'Selatan').' )</b></td>';
-					echo '<td><b>'.$row->to_title.' ( '.(($row->to_region)?'Utara':'Selatan').' )</b></td>';
+					echo '<td><b>'.$row->from_title.' ( '.(($row->from_region==1)?'Utara':'Selatan').' )</b></td>';
+					echo '<td><b>'.$row->to_title.' ( '.(($row->to_region==1)?'Utara':'Selatan').' )</b></td>';
 					echo '<td>';
 					if($row->is_active){
 						echo '<img title="Click to unlink" src="'.template_path('core').'/images/link.png" />';
