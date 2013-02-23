@@ -9,12 +9,21 @@
 <form method="POST" >
 <?php
 	if($classes){
+		$tergabung = false;	
 		foreach($classes->result() as $row){
+			$thisid = $row->asgmntid;
+			foreach($gb as $row2){
+				if($row2['from_assignment']==$thisid){					
+					$tergabung = true;
+					$thisid = $row2['to_assignment'];
+					break;
+				}
+			}					
 			?>
 			<article class="quarter-block nested clearrm" style="min-height:180px;max-height:300px;margin-right:6px">
 				<header><h2><?php echo $row->code; ?></h2>
 					<?php if($semester>6) { ?><span style="float:right;"><input type="checkbox" checked="checked" class="check" name="classid[]" id="check<?php echo $row->asgmntid; ?>" value="<?php echo $row->asgmntid; ?>" /><label for="check<?php echo $row->asgmntid; ?>">Pilih Kelas</label></span><?php }else{ ?>
-					<input type="hidden" name="classid[]" value="<?php echo $row->asgmntid; ?>"	 /><?php } ?>
+					<input type="hidden" name="classid[]" value="<?php echo $thisid; ?>"	 /><?php } ?>
 				</header>
 				<section>
 					<p><b style="font-weight:bold;"><?php echo $row->title; ?></b><br />

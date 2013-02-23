@@ -258,4 +258,35 @@ class class_model extends CI_Model {
 		}
 
 	}
+
+	public function get_list_gabung_kelas($linkonly = false){
+		$this->db->from('gabung_kelas a');
+		$this->db->join('assignment b','b.id = a.from_assignment');
+		$this->db->join('assignment c','c.id = a.to_assignment');
+		$this->db->join('courses d','d.course_id = b.course_id');
+		$this->db->join('courses e','e.course_id = c.course_id');
+		
+		$this->db->select('a.from_assignment,a.to_assignment,d.title as from_title,e.title as to_title,b.region as from_region,c.region as to_region,is_active');
+		$this->db->where('is_active !=',2);
+		
+		if($linkonly){
+			$this->db->where('is_active',1);
+		}
+		
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
+		}else{
+			return false;
+		}
+	}
+	
+	public function add_gabung_kelas($col){
+		$this->db->insert('gabung_kelas',$col);
+		
+		$this->db->where('id_assignment', $col['from_assignment']);
+		$this->db->update('class', array('id_assignment'=>$col['to_assignment'])); 	
+	}
+	
+	
 }

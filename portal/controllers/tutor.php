@@ -217,6 +217,29 @@ class tutor extends CI_Controller {
 			
 		}
 	}
+
+	function gabung_kelas(){
+		$this->auth->check_auth();	
+		$this->load->model('class_model');
+		
+		$data['asgnmt_list'] = $this->tutor_model->get_assignment(setting_val('time_period'));
+		
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('from_assignment', 'From Assignment', 'required');
+		$this->form_validation->set_rules('to_assignment', 'To Assignment', 'required');
+		
+		if($this->form_validation->run()){
+				$col = $this->input->post();
+				$this->class_model->add_gabung_kelas($col);
+								
+		}
+		
+		
+		$data['list'] = $this->class_model->get_list_gabung_kelas();
+		
+		$content['page'] = $this->load->view('tutor/gabung_kelas',$data,TRUE);
+		$this->load->view('dashboard',$content);
+	}
 }
 
 

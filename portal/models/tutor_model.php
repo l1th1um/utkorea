@@ -157,7 +157,7 @@ class tutor_model extends CI_Model {
 	}
 	
 	function get_list_classes_for_student($nim){
-		$this->db->select('*,b.assignment_uid as asgnmtid');
+		$this->db->select('*,b.assignment_uid as asgnmtid,b.id as realid');
 		$this->db->from('class a');
 		$this->db->join('assignment b','a.id_assignment = b.id');
 		$this->db->join('settings d','b.time_period = d.time_period');
@@ -173,7 +173,7 @@ class tutor_model extends CI_Model {
 	}
 
 	function get_list_classes_for_tutor($staff_id){
-		$this->db->select('*,b.assignment_uid as asgnmtid');		
+		$this->db->select('*,b.assignment_uid as asgnmtid,b.id as realid');		
 		$this->db->from('assignment b');
 		$this->db->join('settings d','b.time_period = d.time_period');
 		$this->db->join('courses c','b.course_id = c.course_id');
@@ -309,6 +309,19 @@ class tutor_model extends CI_Model {
 		
 		if($res->num_rows()>0){
 			return $res->row_array();
+		}else{
+			return false;
+		}
+	}
+	
+	function get_assignment($time_period){
+		$this->db->from('assignment a');
+		$this->db->join('courses b','a.course_id = b.course_id');
+		$this->db->where('a.time_period',$time_period);
+		
+		$res = $this->db->get();
+		if($res->num_rows()>0){
+			return $res;
 		}else{
 			return false;
 		}

@@ -20,14 +20,19 @@ class kelas extends CI_Controller {
     public function index($id=''){
 		
 	   $this->auth->check_auth();	
-		
+	   
+	    $data['gb'] = array();
+		$gb = $this->class_model->get_list_gabung_kelas(true);
+		if($gb){
+			$data['gb'] = $gb->result_array();			
+		}
 	   //check registration or/and get list
         if(is_numeric($this->session->userdata('username'))){
             $res = $this->tutor_model->get_list_classes_for_student($this->session->userdata('username'));
             
             if(!$res)
             {
-		         $data = $this->register_class();	
+		         $data = array_merge($data,$this->register_class());				 
 			     $content['page'] = $this->load->view('kelas/register',$data,TRUE);				
             }
             else
@@ -202,7 +207,7 @@ class kelas extends CI_Controller {
 							 'user_agent' => check_user_agent());
 							 
 		 	insert_logs($logs_data);
-			$this->index();			
+			redirect(site_url('kelas'),'redirect');			
 		}
 			
 		$student = $this->person->get_mahasiswa_by_id($this->session->userdata('username'));

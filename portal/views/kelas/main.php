@@ -82,7 +82,7 @@
 </script>
 <?php } ?>
 
-<?php } ?>
+
 <header>
 		<h2><?php echo $class_settings->title; ?></h2>
 		<!--<nav>
@@ -123,8 +123,9 @@
 				}else {
 					async_load();
 				}
-			});
-		</script>
+				});
+			</script>
+		<?php } ?>
     </div>    
 </div>
 <div style="clear:both"></div>
