@@ -199,11 +199,13 @@
                             foreach ($question as $val) {
                                 echo "<tr><td>".anchor('javascript://ajax',$val->title,'id="question_link" alt="'.$val->id.'" ')."</td>";
                                 echo "<td>".user_detail('name',$val->user_id)."</td></tr>";                                
-                            }                         
-                        }
-                    ?>
+                            }
+                 ?>
                     </tbody>
                 </table>
+                 <?php                        
+                        }
+                 ?>                    
         	</section>
         </article>    
         <article class="quarter-block nested clearrm classli" style="min-height:180px;max-height:200px;margin:4px;width:100%">
@@ -223,13 +225,24 @@
                 } 
                 else
                 {
-                    echo "<ol>";
-                    foreach ($question as $val) {
-                        echo "<li>".anchor('javascript://ajax',$val->title,'id="ann_link" alt="'.$val->id.'" ')."</li>";                                
-                    }
-                    echo "</ol>";
-                }
-            ?>
+           ?>
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                            foreach ($task as $val) {
+                                echo "<tr><td>".anchor('javascript://ajax',$val->title,'id="question_link" alt="'.$val->id.'" ')."</td></tr>";                                
+                            }
+                 ?>
+                    </tbody>
+                </table>
+                 <?php                        
+                        }
+                 ?>    
         	</section>
         </article>
    

@@ -21,8 +21,10 @@ class class_model extends CI_Model {
         
 	}
     
-    public function get_attachment($id) {
-	   $query = $this->db->get_where('attachment',array('announcement_id' => $id));
+    public function get_attachment($reference_id, $category_id) {
+        $where = array('reference_id' => $reference_id,
+                       'category_id' =>  $category_id);
+	   $query = $this->db->get_where('attachment', $where);
 		
 		if ($query->num_rows() > 0) {
 			return $query->row();			
@@ -75,7 +77,8 @@ class class_model extends CI_Model {
         	return $row->id;	
         }
     }
-    
+
+        
     public function save_announce_class($data,$id,$update) {
 		$insert = populate_form($data, 'announce_class');
         
@@ -92,22 +95,35 @@ class class_model extends CI_Model {
             $this->db->where($where);
             $query = $this->db->update('announce_class',$insert);
         }
+        
+        $affected = $this->db->affected_rows();
 		
-		
-		if ($this->db->affected_rows() > 0) 
+		if ($update == false)
         {
-			if (! empty($data['attach_uid'])) {
-			     $data_announcement = array('announcement_id' => $this->db->insert_id());
-                 $this->db->where('uuid', $data['attach_uid']);
-			     $this->db->update('attachment',$data_announcement);
+            if ( $affected  > 0 ) 
+            {
+                $data_announcement = array('reference_id' => $this->db->insert_id());
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_announcement);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (! empty($data['attach_uid'])) {
+                $data_announcement = array('reference_id' => $update);
+                
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_announcement);
 			}
             
             return true;
-		} 
-        else 
-        {
-			return false;
-		}
+        }
+        		
 	}
     
     public function save_question($data,$id) {
@@ -153,35 +169,57 @@ class class_model extends CI_Model {
 		}       
     }
     
-    public function del_announcement($id,$staff_id)
+    public function del_announcement($assignment_id,$id)
     {
-        $where = array('id' => $id,
-                        'staff_id' => $staff_id);
+        
+        if ($this->is_my_assignment($assignment_id)) {
+            $where = array('id' => $id);
                         
-        $query = $this->db->delete('announce_class', $where);
-        if ($this->db->affected_rows() > 0) 
+            $query = $this->db->delete('announce_class', $where);
+            if ($this->db->affected_rows() > 0) 
+            {
+    			return true;
+    		} 
+            else 
+            {
+    			return false;
+    		}    
+        } 
+        else
         {
-			return true;
-		} 
-        else 
-        {
-			return false;
-		}
+            return false;
+        }
+        
     }
     
-    public function del_attachment($id)
+    public function del_attachment($assignment_id,$id)
     {
-        $where = array('uuid' => $id);
-                        
-        $query = $this->db->delete('attachment', $where);
-        if ($this->db->affected_rows() > 0) 
+        if ($this->is_my_assignment($assignment_id)) {
+            $where = array('uuid' => $id);
+            $get_file  = $this->db->get_where('attachment', $where);
+            
+            if ($get_file->num_rows() > 0) {
+                $row  = $get_file->row();
+                
+                $query = $this->db->delete('attachment', $where);
+                if ($this->db->affected_rows() > 0) 
+                {
+        			$path = $this->config->item('absolute_path')."assets/uploads/".$row->subfolder."/".$row->filename;
+                    unlink($path);
+                    return true;
+        		} 
+                else 
+                {
+        			return false;
+        		}
+            } 
+                                        
+            
+       } 
+        else
         {
-			return true;
-		} 
-        else 
-        {
-			return false;
-		}
+            return false;
+        }
     }
     
     public function save_question_response($response,$id) 
@@ -230,11 +268,19 @@ class class_model extends CI_Model {
 	}
     
     public function list_task($id,$limit=null) {
+        /*
+        SELECT t.*,COUNT(s.nim) as submitted_student
+        FROM utkor_task t
+        LEFT JOIN utkor_task_student s ON t.id = s.task_id
+        */
+        $this->db->SELECT('t.*,COUNT(s.nim) as submitted_student');
+        $this->db->from('task t');
+        $this->db->join('task_student s', 't.id = s.task_id', 'left');
         $this->db->where('assignment_id',$id);
 		$this->db->order_by('id','desc');
         if (!empty($limit))
             $this->db->limit($limit);
-		$query = $this->db->get('task');
+		$query = $this->db->get();
 		
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -243,21 +289,109 @@ class class_model extends CI_Model {
 		}       
     }
     
-    public function save_task($data,$id) {
-		$insert = populate_form($data, 'question');
-		$this->db->set('created', 'now()', FALSE);
+    public function save_task($data,$id,$update) {
+        $insert = populate_form($data, 'question');
         $this->db->set('deadline',convertToMysqlDate($data['deadline_date']));
-        $this->db->set('assignment_id',$id);
-		
-		$query = $this->db->insert('task',$insert);
-		
-		if ($this->db->affected_rows() > 0) {
+        
+        if ($update == false) 
+        {
+            $this->db->set('created', 'now()', FALSE);
+            $this->db->set('assignment_id',$id);        
+    		
+    		$query = $this->db->insert('task',$insert);    
+        }
+        else
+        {
+            $where = array('assignment_id' =>$id,'id'=>$update);
+            $this->db->where($where);
+            $query = $this->db->update('task',$insert);
+        }
+        
+        $affected = $this->db->affected_rows();
+        
+        if ($update == false)
+        {
+            if ( $affected  > 0 ) 
+            {
+                $data_announcement = array('reference_id' => $this->db->insert_id());
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_announcement);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (! empty($data['attach_uid'])) {
+                $data_announcement = array('reference_id' => $update);
+                
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_announcement);
+			}
+            
+            return true;
+        }
+        
+	}
+    
+    public function del_task($assignment_id,$id)
+    {
+        if ($this->is_my_assignment($assignment_id)) 
+        {
+            $where = array('id' => $id);
+                            
+            $query = $this->db->delete('task', $where);
+            if ($this->db->affected_rows() > 0) 
+            {
+    			return true;
+    		} 
+            else 
+            {
+    			return false;
+    		}
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public function is_my_assignment($assignment_id, $staff_id = "")
+    {
+        if (empty ($staff_id))
+        {
+            $staff_id = $this->session->userdata('id');
+        }
+        $where = array ('assignment_uid' => $assignment_id,
+                        'staff_id' => $staff_id);
+                        
+        $query = $this->db->get_where('assignment',$where);
+        
+        if ($query->num_rows() > 0) 
+        {
 			return true;
+		} 
+        else 
+        {
+			return false;
+		}
+        
+    }
+    
+    public function task_detail($assignment_id,$id) {
+		$this->db->where('id',$id);
+        $query = $this->db->get('task');
+		
+		if ($query->num_rows() > 0) {
+			return $query->row();
 		} else {
 			return false;
 		}
-
 	}
+
 
 	public function get_list_gabung_kelas($linkonly = false){
 		$this->db->from('gabung_kelas a');
@@ -289,4 +423,39 @@ class class_model extends CI_Model {
 	}
 	
 	
+
+    
+    public function student_per_class($assignment_uid) 
+    {
+        $query = $this->db->get_where('assignment',array('assignment_uid' => $assignment_uid));
+        
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            
+            $this->db->select("count(*) as total_student");
+            $this->db->where("id_assignment",$row->id);
+            
+            $query2 = $this->db->get('class');
+            
+            if ($query2->num_rows() > 0)
+            {
+                $row2 = $query2->row();
+                return $row2->total_student;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public function submitted_task($task_id) {
+        /*
+        SELECT t.*,COUNT(s.nim) as submitted_student
+        FROM utkor_task t
+        LEFT JOIN utkor_task_student s ON t.id = s.task_id
+        */
+    }
+
 }
