@@ -356,5 +356,17 @@ class finance_model extends CI_Model {
 		if ($this->db->affected_rows() > 0) return TRUE; else return FALSE;
 	}
 	
+	function get_last_transport($staff_id){
+		$this->db->where('staff_id',$staff_id);
+		$this->db->order_by('created','desc');
+		$this->db->limit(1);
+		$res = $this->db->get('transport');
+		if($res->num_rows()>0){
+			return $res->row();
+		}else{
+			return false;
+		}
+	}
+	
 }
 ?>

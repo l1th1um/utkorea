@@ -240,6 +240,18 @@ class tutor extends CI_Controller {
 		$content['page'] = $this->load->view('tutor/gabung_kelas',$data,TRUE);
 		$this->load->view('dashboard',$content);
 	}
+	
+	function verify_transport(){
+		$this->form_validation->set_rules('id','id','trim|required');
+		if($this->form_validation->run())
+		{
+			$this->load->model('finance_model','finance');		
+			$this->finance->update_transport($this->input->post('id'),array('is_verified'=>2,'verified_by'=>$this->session->userdata('id'),'verified_time'=>date("Y-m-d H:i:s")));
+			echo "";
+		}else{
+			echo validation_errors();
+		}
+	}
 }
 
 

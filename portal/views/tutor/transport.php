@@ -9,6 +9,11 @@
 		<fieldset>
 			<table>
 				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="simprev" name="simprev" value="1" />&nbsp;Sama dengan laporan sebelumnya
+					</td>
+				</tr>
+				<tr>
 					<td  width="150px"><label>Tanggal TTM</label></td>
 					<td>
 						<input type="text" name="tanggalttm" />
@@ -55,7 +60,7 @@
 				<td><?php echo substr($row->tanggalttm,0,10); ?></td>
 				<td><?php echo $row->total; ?></td>
 				<td><?php echo ($row->waktudibayar=='m')?'Per Minggu':'Akhir Semester'; ?></td>
-				<td><?php echo ($row->is_verified)?'<span style="color:green;">Lunas</span>':'<span style="color:orange;">Pending</span>'; ?></td>
+				<td><?php echo ($row->is_verified==1)?'<span style="color:green;">Lunas</span>':'<span style="color:orange;">Pending</span>'; ?></td>
 			</tr>
 	<?php }
 	}else{ echo '<tr><td colspan="4"><center>Belum ada data reimburse transport</center></td></tr>';}?>
@@ -71,6 +76,36 @@ $(document).ready(function(){
 		$( "#accordion" ).accordion({
 	      collapsible: true,
 	      active: false
+	    });
+	    $("#simprev").change(function(){
+	    	if(this.checked) {
+        		$.ajax({
+					  type: "POST",					 
+					  url: "<?php echo site_url("bendahara/get_last_transport"); ?>",						  
+					  dataType: "json",					  
+					  success: function(data){
+					  		if(data.message!=''){
+					  			alert(data.message);					  			
+					  		}
+							if(data.tanggalttm!=null){
+								$("#frmTransport input[name=tanggalttm]").val(data.tanggalttm.substr(0,10));
+							}
+							if(data.deskripsi!=null){
+								$("#frmTransport textarea[name=deskripsi]").val(data.deskripsi);
+							}
+							if(data.total!=null){
+								$("#frmTransport input[name=total]").val(data.total);
+							}
+							if(data.waktudibayar!=null){
+								$("#frmTransport input[value=" + data.waktudibayar + "]").attr("checked","checked");
+							}
+					  }
+					});
+    		}else{
+    			$('#frmTransport').each(function(){
+				        this.reset();
+				});
+    		}
 	    });
 });
 </script>

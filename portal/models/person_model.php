@@ -108,7 +108,7 @@ class person_model extends CI_Model {
 	}
 	
 
-	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false,$major="",$entry_period="",$region="")
+	function get_list_JQGRID($type,$params = "" , $page = "all",$is_export=false,$major="",$entry_period="",$region="",$active_only = false)
 	{	
 		if($type=='staff'){
 			$this->db->select("staff_id,name,phone,email,affiliation");
@@ -144,7 +144,9 @@ class person_model extends CI_Model {
 		        $this->db->where("region",$region);
 		    }
             
-            $this->db->where('status','1');
+			if($active_only){
+            	$this->db->where('status','1');
+            }
             
             $this->db->order_by('name');
             

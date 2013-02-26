@@ -22,7 +22,7 @@
 						{name:'total',index:'total',width:35,align:'center'},						
 						{name:'deskripsi',width:90,align:'center',index:'deskripsi'},
 						{name:'waktudibayar',index:'waktudibayar',align:'center',stype:'select',searchoptions:{value:{"m":'per Minggu',"s":'Akhir Semester'}},edittype:'select',editoptions:{value:{"m":'per Minggu',"s":'Akhir Semester'}},formatter:'select'},						
-						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Belum dibayar','1':'Sudah dibayar'}},formatter:check_verified},                        						
+						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Belum diverifikasi','1':'Sudah diverifikasi','2':'Sudah dibayar'}},formatter:check_verified},                        						
 					],
 					mtype : "POST",							
 					sortname: 'id',
@@ -38,10 +38,20 @@
 		});
 
 		function check_verified(cellValue, options, rowObject){
-			if(cellValue==1){
-				return '<button class="blue small" style="width:140px">Sudah dibayar</button>';
+			if(cellValue==1){				
+					return '<button class="blue small" style="width:140px">Sudah dibayar</button>';				
+			}else if(cellValue==2){
+				<?php if(!in_array(5,$this->session->userdata('role'))){ ?>
+					return '<button class="unverified green small" style="width:140px">Sudah diverifikasi<input type="hidden" value="' + rowObject.id  + '" /></button>';
+				<?php }else{ ?>
+					return '<button class="green small" style="width:140px">Sudah diverifikasi</button>';
+				<?php } ?>
 			}else{
-				return '<button class="unverified" class="red small" style="width:140px">Belum dibayar<input type="hidden" value="' + rowObject.id  + '" /></button>';
+				<?php if(in_array(5,$this->session->userdata('role'))){ ?>
+					return '<button class="unverified red small" style="width:140px">Belum diverifikasi<input type="hidden" value="' + rowObject.id  + '" /></button>';
+				<?php }else{ ?>
+					return '<button class="red small" style="width:140px">Belum diverifikasi</button>';
+				<?php } ?>
 			}
 		}
         
@@ -87,7 +97,11 @@
                 "Yes": function() {
                     $.ajax({
 					  type: "POST",
-					  url: "<?php echo site_url("bendahara/verify_transport"); ?>",
+					  <?php if(in_array(5,$this->session->userdata('role'))){ ?>
+					  url: "<?php echo site_url("tutor/verify_transport"); ?>",
+					  <?php }else{ ?>
+					  url: "<?php echo site_url("bendahara/verify_transport"); ?>",	
+					  <?php } ?>
 					  dataType: "html",
 					  data: {id:data},
 					  success: function(data){

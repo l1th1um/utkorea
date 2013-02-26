@@ -377,4 +377,19 @@ class bendahara extends CI_Controller {
 		}
 	}
 		
+	function get_last_transport(){		
+			$res = $this->finance->get_last_transport($this->session->userdata('id'));			
+			if($res){
+				echo json_encode(array(
+					'tanggalttm' => $res->tanggalttm,
+					'total' => $res->total,
+					'deskripsi' => $res->deskripsi,
+					'waktudibayar' => $res->waktudibayar,
+					'message'=>''
+				));
+			}else{
+				echo json_encode(array('message'=>'Tidak ada data sebelumnya'));
+			}
+		
+	}	
 }

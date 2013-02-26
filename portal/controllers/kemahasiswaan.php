@@ -455,8 +455,8 @@ class kemahasiswaan extends CI_Controller {
 
 		$data->page = $page;
 		
-        $data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all",false,$major,$entry_period,$region)->result_array());		
-		$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current",false,$major,$entry_period,$region)->result_array();
+        $data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all",false,$major,$entry_period,$region,false)->result_array());		
+		$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current",false,$major,$entry_period,$region,false)->result_array();
 		$newrecords = array();
 		foreach($records as $row){
 		  //$row['entry_period'] = calculate_semester($row['entry_period']);
