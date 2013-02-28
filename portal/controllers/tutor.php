@@ -194,7 +194,9 @@ class tutor extends CI_Controller {
 			$this->finance_model->save_transport($data);
 			
 			$data['success'] = 1;
-		 }
+		 }else{
+			$data['error'] = validation_errors();
+		}
 					
 		 
 		 $data['transport'] = $this->finance_model->get_my_transport($this->session->userdata('id'));
