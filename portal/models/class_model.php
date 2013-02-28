@@ -279,6 +279,7 @@ class class_model extends CI_Model {
         $this->db->join('task_student s', 't.id = s.task_id', 'left');
         $this->db->where('assignment_id',$id);
 		$this->db->order_by('t.id','desc');
+        $this->db->group_by('t.id');
 		//$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','s.nim'));
         if (!empty($limit))
             $this->db->limit($limit);
@@ -299,6 +300,7 @@ class class_model extends CI_Model {
         $this->db->join('task_student s', 't.id = s.task_id', 'left');
         $this->db->where('assignment_id',$id);
 		$this->db->order_by('t.id','desc');
+        $this->db->group_by('t.id');
 		//$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','s.nim'));
         if (!empty($limit))
             $this->db->limit($limit);

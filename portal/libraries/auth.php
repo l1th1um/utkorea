@@ -75,7 +75,7 @@
 		      $query = $this->CI->db->get('staff');		      
 	      }
 		  
-		  $remarks = "Username = '".$login['username']."', Password '".$login['password']."'";
+		  $remarks = "Username = '".$login['username']."' ";
 	
 	      if ($query->num_rows() >= 1) {
 	      		$row = $query->row_array();
