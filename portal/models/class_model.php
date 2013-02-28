@@ -273,12 +273,13 @@ class class_model extends CI_Model {
         FROM utkor_task t
         LEFT JOIN utkor_task_student s ON t.id = s.task_id
         */
-        $this->db->SELECT('t.id,t.title,t.content,t.created,t.assignment_id,COUNT(s.nim) as submitted_student');
+        //$this->db->SELECT('t.id,t.title,t.content,t.created,t.deadline,t.assignment_id,COUNT(s.nim) as submitted_student');
+        $this->db->SELECT('t.*,COUNT(s.nim) as submitted_student');
         $this->db->from('task t');
         $this->db->join('task_student s', 't.id = s.task_id', 'left');
         $this->db->where('assignment_id',$id);
 		$this->db->order_by('t.id','desc');
-		$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','s.nim'));
+		//$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','s.nim'));
         if (!empty($limit))
             $this->db->limit($limit);
 		$query = $this->db->get();
@@ -290,7 +291,27 @@ class class_model extends CI_Model {
 		}       
     }
     
-    public function save_task($data,$id,$update) {
+    
+    public function list_task_by_student($nim,$id,$limit=null) {
+        //$this->db->SELECT('t.id,t.title,t.content,t.created,t.deadline,t.assignment_id,COUNT(s.nim) as submitted_student');
+        $this->db->SELECT('t.*, IF (s.nim = "'.$nim.'",1,0) as submitted',FALSE);
+        $this->db->from('task t');
+        $this->db->join('task_student s', 't.id = s.task_id', 'left');
+        $this->db->where('assignment_id',$id);
+		$this->db->order_by('t.id','desc');
+		//$this->db->group_by(array('t.id','t.title','t.content','t.created','t.assignment_id','s.nim'));
+        if (!empty($limit))
+            $this->db->limit($limit);
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}       
+    }
+    
+    public function save_task($data,$id) {
         $insert = populate_form($data, 'question');
         $this->db->set('deadline',convertToMysqlDate($data['deadline_date']));
         
@@ -451,12 +472,72 @@ class class_model extends CI_Model {
         }
     }
     
-    public function submitted_task($task_id) {
-        /*
-        SELECT t.*,COUNT(s.nim) as submitted_student
-        FROM utkor_task t
-        LEFT JOIN utkor_task_student s ON t.id = s.task_id
-        */
+    public function submitted_task($data) {
+        $insert = populate_form($data, 'task_student');
+        
+        $update = false;
+        
+        $where_task = array('task_id' =>$data['task_id'],'nim'=>$data['nim']);
+        $query = $this->db->get_where('task_student',$where_task);
+        
+        if ($query->num_rows() > 0)
+        {
+            $row_student = $query->row();
+            $update = $row_student->id;
+        }
+        
+        if ($update == false) 
+        {
+            $this->db->set('created', 'now()', FALSE);
+    		$query = $this->db->insert('task_student',$insert);    
+        }
+        else
+        {
+            $where = array('id' =>$update,'nim'=>$data['nim']);
+            $this->db->where($where);
+            $query = $this->db->update('task_student',$insert);
+        }
+        
+        $affected = $this->db->affected_rows();
+        
+        if ($update == false)
+        {
+            if ( $affected  > 0 ) 
+            {
+                $data_task = array('reference_id' => $this->db->insert_id());
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_task);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (! empty($data['attach_uid'])) {
+                $data_task = array('reference_id' => $update);
+                
+                $this->db->where('uuid', $data['attach_uid']);
+			    $this->db->update('attachment',$data_task);
+			}
+            
+            return true;
+        }
+        
     }
+    
+    public function task_response($where) {
+		$this->db->where($where);
+        $query = $this->db->get('task_student');
+		
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		} else {
+			return false;
+		}
+	}
+    
 
 }

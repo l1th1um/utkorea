@@ -23,7 +23,7 @@
 			file_browser_callback : MadFileBrowser
 		});
 	   
-       $("input[name=deadline_date]").datepicker({dateFormat:'dd/mm/yy'});	
+       $("input[name=deadline_date]").datepicker({dateFormat:'dd/mm/yy',defaultDate: '+7d'});	
 		
 	});
 	
