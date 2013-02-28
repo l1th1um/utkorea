@@ -514,21 +514,30 @@ class kelas extends CI_Controller {
      function task($id) {
         $this->auth->check_auth();
         
-        $data['list'] = $this->class_model->list_task($id);
+        
 		$data['id'] = $id;
         
-        if ($this->session->flashdata('message') != '') {
+        if ($this->session->flashdata('message') != '') 
+        {
             $data['message'] = success_form($this->session->flashdata('message'));
         }
         
-        if (in_array(8,$this->session->userdata('role'))) {
+        if (in_array(8,$this->session->userdata('role'))) 
+        {
+           $data['list'] = $this->class_model->list_task($id);
            $data['total_student'] = $this->class_model->student_per_class($id);
 		   $content['page'] = $this->load->view('kelas/task',$data,TRUE);
         }        
+        else if (in_array(9,$this->session->userdata('role')))
+        {
+            $data['list'] = $this->class_model->list_task_by_student($this->session->userdata('username'),$id);            
+            $content['page'] = $this->load->view('kelas/task_student',$data,TRUE);
+        }
+        
         $this->load->view('dashboard',$content);
     }   
     
-    function create_task($assignment_id,$announce_id=null) {
+    function create_task($assignment_id,$task_id=null) {
         $this->auth->check_auth();
         
         $data = array();
@@ -556,9 +565,9 @@ class kelas extends CI_Controller {
         $data['detail'] = false;
         $data['icon'] = false;
         
-         if ($announce_id <> NULL) {
-            $data['detail'] = $this->class_model->task_detail($assignment_id,$announce_id);
-            $attach = $this->class_model->get_attachment($announce_id,2);
+         if ($task_id <> NULL) {
+            $data['detail'] = $this->class_model->task_detail($assignment_id,$task_id);
+            $attach = $this->class_model->get_attachment($task_id,2);
             
             if ($attach <> false) {
                 $ext = pathinfo($attach->filename);        
@@ -601,6 +610,10 @@ class kelas extends CI_Controller {
             else if ($folder == 'tugas')
             {
                 $category = 2;
+            }
+            else if ($folder == 'tugas_mahasiswa')
+            {
+                $category = 4;
             }
             
             $attach = array('original_file'=>$data['orig_name'],
@@ -730,6 +743,71 @@ class kelas extends CI_Controller {
         {
             echo "0";
         } 
+        
+    }
+    
+    public function show_task() 
+    {
+		//Task
+        $assignment_id = $this->input->post('assignment_id');
+        $id = $this->input->post('id');
+        $row = $this->class_model->task_detail($assignment_id, $id);        
+        $attach = $this->class_model->get_attachment($row->id,2);        
+        $data['row'] = $row;        
+        $data['icon'] = false;        
+        if ($attach <> false) {
+            $ext = pathinfo($attach->filename);        
+            $data['icon'] = $ext['extension'];
+            $data['attach'] = $attach;    
+        }
+        
+		//Student Response
+        $where_task = array('task_id' => $id,
+                            'nim' => $this->session->userdata('username'));
+        $row_student = $this->class_model->task_response($where_task);
+        $attach_student = $this->class_model->get_attachment($row_student->id,4);
+        $data['row_student'] = $row_student;        
+        $data['icon_student'] = false;        
+        if ($attach_student <> false) {
+            $ext_student = pathinfo($attach_student->filename);        
+            $data['icon_student'] = $ext_student['extension'];
+            $data['attach_student'] = $attach_student;    
+        }
+        
+        
+        
+        echo $this->load->view('kelas/detail_task_student',$data,TRUE);
+	}
+    
+    public function task_submit()
+    {
+        $content = $this->input->post('content');
+        
+        if (! empty($content)) 
+        {
+            $id = $this->input->post('id');
+            $data = array ('task_id' => $id,
+                           'nim' => $this->session->userdata('username'),
+                           'content' => $content,
+                           'attach_uid' => $this->input->post('attach_uid')
+                        );
+            
+            
+            if ($this->class_model->submitted_task($data)) 
+            {
+                echo "1";
+            }
+            else
+            {
+                echo "0";
+            }    
+        } 
+        else
+        {
+            echo "-1";
+        }
+        
+        
         
     }
     

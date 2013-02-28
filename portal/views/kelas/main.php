@@ -235,7 +235,7 @@
                     <tbody>
                     <?php
                             foreach ($task as $val) {
-                                echo "<tr><td>".anchor('javascript://ajax',$val->title,'id="question_link" alt="'.$val->id.'" ')."</td></tr>";                                
+                                echo "<tr><td>".anchor('javascript://ajax',$val->title,'id="task_link" alt="'.$val->id.'" ')."</td></tr>";                                
                             }
                  ?>
                     </tbody>
