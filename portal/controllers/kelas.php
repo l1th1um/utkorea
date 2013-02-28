@@ -550,8 +550,8 @@ class kelas extends CI_Controller {
 			} else {
 			     $update = false;
                  
-                 if ($announce_id <> NULL) {
-                    $update = $announce_id;
+                 if ($task_id <> NULL) {
+                    $update = $task_id;
                  } 
 				if ($this->class_model->save_task($_POST,$assignment_id,$update)) {
 					$this->session->set_flashdata('message',$this->lang->line('task')." ".$this->lang->line('saved'));					

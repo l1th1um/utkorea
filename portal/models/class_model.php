@@ -313,7 +313,7 @@ class class_model extends CI_Model {
 		}       
     }
     
-    public function save_task($data,$id) {
+    public function save_task($data,$id,$update=false) {
         $insert = populate_form($data, 'question');
         $this->db->set('deadline',convertToMysqlDate($data['deadline_date']));
         
