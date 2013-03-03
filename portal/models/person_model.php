@@ -561,5 +561,76 @@ class person_model extends CI_Model {
         return $this->db->count_all_results('mahasiswa');
 
     }
+    
+    function check_username($username)
+	{
+		
+		$this->db->where("username", $username); 
+		$result = $this->db->get('staff');
+		if($result->num_rows())return true;
+		return false;
+	}
+    
+    function check_recover_active($username) {
+		$where = array('username' => $username,'active' => 1);
+        $this->db->where("expire <= ","now()",false);
+        $this->db->where($where);
+		$query = $this->db->get("forgot_temp");		
+		
+		if ($query->num_rows()>0)
+			return FALSE;
+		else
+			return TRUE;
+  }
+  
+  function activationKey($username,$key) {   		   
+        $data = array('activationkey'=>$key,
+                      'username' => $username,					  
+					  'active' => 1   
+		 );
+		 
+		 $this->db->set('expire', 'UNIX_TIMESTAMP(date_add(now(),INTERVAL 7 DAY))',false);
+		 $this->db->set($data);
+
+         $this->db->insert('forgot_temp');  	   
+   }
+   
+   function recover_information($key) {
+		$where = array('activationkey' => $key);
+        $this->db->where($where);
+		$query = $this->db->get('forgot_temp',$where);		
+		
+		if ($query->num_rows()>0) {
+			$row = $query->row_array();
+   			return $row;			
+		}else {
+			return FALSE;	
+		}	
+  }
+  
+  function setRandomPass($id,$idfieldname,$table,$pass) {
+		
+        $update = array ('password'=>hashPassword($pass));
+		$where = array ($idfieldname=>$id);
+		$query = $this->db->update($table,$update,$where);
+		
+		if ($this->db->affected_rows() > 0) {
+			return TRUE;	
+		} else {
+			return FALSE;
+		}
+	}
+	
+	function changeStatusRecovery($key) {
+		$update = array ('active'=>'0');
+		$where = array ('activationkey'=>$key);
+		$query = $this->db->update('forgot_temp',$update,$where);
+		
+		if ($this->db->affected_rows() > 0) {
+			return TRUE;	
+		} else {
+			return FALSE;
+		}	
+	}			
 	
 }

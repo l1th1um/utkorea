@@ -6,6 +6,19 @@ class Main extends CI_Controller {
     {
         parent::__construct();
         //$this->output->enable_profiler(TRUE);
+        $config = Array(
+	      'protocol' => 'smtp',
+	      'smtp_host' => 'ssl://smtp.googlemail.com',
+	      'smtp_port' => 465,
+	      'smtp_user' => 'utkorsel@gmail.com',
+	      'smtp_pass' => 'UTkorea^&2012'
+	       
+	    );
+	     
+	    $this->load->library('email', $config);
+		$this->email->set_newline("\r\n");
+        
+        $this->load->model('person_model');
     }
     
     public function index()
@@ -94,4 +107,100 @@ class Main extends CI_Controller {
         }
         
     }
+    
+    public function forgot_password()
+    {
+        $username = $this->input->post('username');
+        
+        $state = false;
+        
+        if (is_numeric($username)) {
+	      	  if ($this->person_model->check_nim($username)) 
+ 	              $state = true;	      	  
+	      } else {
+	      	  if ($this->person_model->check_username($username))
+	      	      $state = true;
+	      }
+       
+       
+       if ($state == false)
+       {
+            echo "0";
+       }
+       else
+       {
+            $email = user_detail('email',$username);
+            $key = md5($email.microtime().$username);
+            $url = base_url()."recover_password/".$key;
+            
+            if ($this->person_model->check_recover_active($username))
+            {                
+                $this->person_model->activationKey($username,$key);
+                $this->email_recovery_password($email,$url);
+                echo "2";
+            } 
+            else
+            {
+                echo "1";    
+            }
+            
+            
+       }
+       
+    }
+    
+    function email_recovery_password($email,$url) {
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		$this->email->to("$email");	
+		
+		$this->email->subject($this->lang->line('activation_key_email_subject'));
+		$message = $this->lang->line('activation_key_email_content');
+		$message = sprintf($message,$url);
+		$this->email->message($message);
+		
+		$this->email->send();
+	}
+    
+    function recover_password($activation_key) {
+		 $row = $this->person_model->recover_information($activation_key);
+		
+		if ( $row == FALSE) {
+			$data['content'] = $this->lang->line('activation_key_not_exist');			
+		} else {
+			$this->load->helper('date');
+			if ($row['active'] == '0') {
+				$data['content'] = $this->lang->line('activation_key_already_used')."</h2>";
+			} else if ($row['expire'] >=  now() ) {
+				$newpass = randomPassword();
+                $email = user_detail('email',$row['username']);
+                 
+				if ( is_numeric($row['username']) ) {
+				    $this->person_model->setRandomPass($row['username'],'nim','mahasiswa',$newpass);				
+				} else {	
+					$this->person_model->setRandomPass($row['username'],'username','staff',$newpass);                    
+				}
+                
+				$this->email_new_pass($email,$newpass);
+				$this->person_model->changeStatusRecovery($activation_key);
+					
+				$data['content'] = $this->lang->line('activation_key_success')."</h2>";				
+			} else {	
+				$data['content'] = $this->lang->line('activation_key_expire')."</h2>";				
+			}	
+		}
+		$this->load->view('recover_password',$data);
+		
+	}
+    
+    function email_new_pass($email,$newpass) {
+		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+		$this->email->to("$email");	
+		
+		$this->email->subject($this->lang->line('new_password_subject'));
+		$message = $this->lang->line('new_password_content');
+		$message = sprintf($message,$newpass);
+		$this->email->message($message);
+		
+		$this->email->send();
+	}
 }

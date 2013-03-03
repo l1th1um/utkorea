@@ -149,4 +149,54 @@ Divisi IT Universitas Terbuka Korea Selatan\n
 ";
 
 $lang['deadline'] = 'Tenggat Waktu';
+
+$lang['lost_password_email_confirm_success']	= 'URL Aktivasi Telah Dikirimkan Ke Email Anda';
+$lang['lost_password_email_confirm_error']	= 'Email Tidak Ditemukan Di Database';
+$lang['lost_password_email_confirm_exist']	= 'Anda telah 
+You Already Recover Your Password, See In Your Inbox (Also Check On Your Spam)';
+$lang['activation_key_email_subject'] = "Password recovery Portal UT Korea";
+$lang['activation_key_email_content'] = "
+Anda menerima email ini karena ada upaya perubahan password pengguna di portal UT Korea menggunakan akun anda. 
+
+------------------------------------------------
+PENTING!
+------------------------------------------------
+
+Bila anda merasa tidak menginginkan perubahan password, abaikan email ini. 
+
+------------------------------------------------
+Instruksi Pengubahan Password Portal UT Korea
+------------------------------------------------
+
+Untuk merubah password anda, klik link dibawah ini :
+
+%s
+
+Link ini akan berlaku dalam 7 hari.
+
+Salam,
+
+Universitas Terbuka - Korea Selatan
+";
+
+$lang['new_password_subject'] = "Password Baru anda di Portal UT Korea.";
+
+$lang['new_password_content'] = "
+
+------------------------------------------------
+PASSWORD BARU
+------------------------------------------------
+
+Password baru anda adalah: %s
+
+
+
+Salam,
+
+Universitas Terbuka - Korea Selatan
+";
+$lang['activation_key_not_exist']		= 'Kode Aktivasi Tidak Ditemukan';
+$lang['activation_key_expire']			= 'Kode Aktivasi Sudah Kadaluarsa';
+$lang['activation_key_success']			= 'Password baru telah dikirimkan ke Email anda';
+$lang['activation_key_already_used']	= 'Link telah digunakan, cek kembali inbox anda';
 ?>

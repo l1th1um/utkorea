@@ -18,7 +18,7 @@
     </noscript>
 	<script src="<?php echo admin_tpl_path()?>js/libs/modernizr-1.7.min.js"></script>
     <style>
-    #notif_error,#notif_information {position: absolute;width: 332px;z-index: -1;margin-top:-87px;opacity:0}     
+    #notif_error,#notif_information,#notif_frgt_error {position: absolute;width: 332px;z-index: -1;margin-top:-87px;opacity:0}     
     </style>
     
 </head>
@@ -47,9 +47,28 @@
 						</dd>
 					</dl>
 				</fieldset>
+                <span class="left">
+                    <?php
+                        echo anchor("javascript://ajax","Lupa Password?","id='forgotPwd'");
+                    ?>                    
+                </span>
 				<button type="submit" class="right" id="loginBtn">Log in</button>
-			</form>
-		
+                </form>
+                
+                <form action="" id="forgetPwdfrm">
+                <fieldset id="forgotFrm" style="display:none;margin:0;padding:5px">
+                    <legend>Masukkan Username Anda</legend>
+                    <div style="padding-top:5px">
+                        <span>
+                            <input type="text" class="medium" name="usernameFrgt" id="usernameFrgt" />
+                        </span>
+    		            <span>
+                            <button type="submit" class="right" id="loginBtnFrgt">Submit</button>
+                        </span>
+                    </div>
+                      
+				</fieldset>
+			    </form> 
 		</article>
 		<!-- /Login box -->
 	
@@ -59,6 +78,9 @@
 		</div>
         <div class="notification information" id="notif_information">			
 			<p><strong>Mohon Tunggu.....</strong></p>
+		</div>
+        <div class="notification error" id="notif_frgt_error">			
+			<p><strong>Username Harus Diisi</strong></p>
 		</div>
 		<!-- /Notification -->
 		
@@ -70,7 +92,16 @@
 	<script src="<?php echo admin_tpl_path()?>js/jquery/jquery.tipsy.js"></script>
 	<script type="text/javascript">
         $(function () {
+           $('#forgotPwd').toggle(function(){
+                    $('#forgotFrm').show("slow");
+                },function(){
+                    $('#forgotFrm').hide("slow");
+                }
+           );
+            
            $('#frmLogin').submit(function(){
+                $('div[class^="notif_"]').hide();
+                
                 var uval = $('#username').val();
                 var passval = $('#password').val();
                 
@@ -114,6 +145,51 @@
 												opacity : "0"
 												},500);
 		   });
+           
+           $('#forgetPwdfrm').submit(function(){
+                $('div[class^="notif_"]').hide();  
+                var uval = $('#usernameFrgt').val();
+                
+                if (uval == '') {
+                    $('#notif_frgt_error').animate({
+                        marginTop : "10px",
+                        zIndex : "1000",
+                        opacity : "1"
+                    },1500);
+                } else {
+                    $.post("<?php base_url()?>main/forgot_password", {username:uval},
+                     function(data) {
+                       if (data == "0") 
+                       {
+							$('#notif_error').html("<p><strong>Username Tidak Ditemukan</strong></p>");
+                            $('#notif_error').animate({
+                                marginTop : "10px",
+                                zIndex : "1000",
+                                opacity : "1"
+                            },1500);    
+                       } 
+                       else if (data == "1")
+                       {
+							$('#notif_error').html("<p><strong>Anda Telah Melakukan Permintaan Rubah Password, Cek Email Anda.</strong></p>");
+                            $('#notif_error').animate({
+                                marginTop : "10px",
+                                zIndex : "1000",
+                                opacity : "1"
+                            },1500);
+					   }                       
+                       else 
+                       {
+							$('#notif_information').html("<p><strong>Permintaan Sedang Diproses. Silakan Cek Email Anda.</strong></p>");
+                            $('#notif_information').animate({
+                                marginTop : "10px",
+                                zIndex : "1000",
+                                opacity : "1"
+                            },1500);
+					   }
+                    });
+                }
+                return false;
+           });
 		   
         });
     </script>    
