@@ -190,10 +190,12 @@ class tutor extends CI_Controller {
 		 if($this->form_validation->run()){
 		 	$data = array();
 		 	$data = $this->input->post();
+			unset($data['simprev']);
 			$data['staff_id'] = $this->session->userdata('id');
 			$this->finance_model->save_transport($data);
 			
 			$data['success'] = 1;
+			$data['error'] = '';
 		 }else{
 			$data['error'] = validation_errors();
 		}
@@ -232,6 +234,7 @@ class tutor extends CI_Controller {
 		
 		if($this->form_validation->run()){
 				$col = $this->input->post();
+				
 				$this->class_model->add_gabung_kelas($col);
 								
 		}

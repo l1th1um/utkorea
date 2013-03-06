@@ -1,7 +1,7 @@
 <?php if($success){
 	echo success_form("Laporan Reimburse anda telah disimpan. Silahkan tunggu proses dari bendahara");
 }?>
-<?php if(isset($error)){
+<?php if($error != ''){
 	echo error_form($error);
 }?>
 <div id="accordion">
