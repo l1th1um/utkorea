@@ -414,16 +414,27 @@ class kelas extends CI_Controller {
 		}
         
         $data['detail'] = false;
-        $data['icon'] = false;
+        $data['attach'] = false;
         
         if ($announce_id <> NULL) {
             $data['detail'] = $this->class_model->announce_class_detail($assignment_id,$announce_id);
             $attach = $this->class_model->get_attachment($announce_id,1);
-                        
+            
             if ($attach <> false) {
-                $ext = pathinfo($attach->filename);        
-                $data['icon'] = $ext['extension'];
-                $data['attach'] = $attach;    
+                $i = 0;
+                $attachment = array();
+                                 
+                foreach ($attach as $val) {                
+                    $ext = pathinfo($val->filename);
+                    $attachment[$i]['original_file'] = $val->original_file;
+                    $attachment[$i]['filename'] = $val->filename;
+                    $attachment[$i]['uuid'] = $val->uuid;
+                    $attachment[$i]['icon'] = $ext['extension'];
+                    $i++;
+                }
+                
+                $data['attach'] = $attachment;
+                    
             }
         }
                
@@ -450,15 +461,25 @@ class kelas extends CI_Controller {
         $id = $this->input->post('id');
         $row = $this->class_model->announce_class_detail($assignment_id, $id);
         
+        $data['attach'] = false;
+        
         $attach = $this->class_model->get_attachment($row->id,1);
         $data['row'] = $row;
         
-        $data['icon'] = false;
-        
         if ($attach <> false) {
-            $ext = pathinfo($attach->filename);        
-            $data['icon'] = $ext['extension'];
-            $data['attach'] = $attach;    
+            $i = 0;
+            $attachment = array();
+                             
+            foreach ($attach as $val) {                
+                $ext = pathinfo($val->filename);
+                $attachment[$i]['original_file'] = $val->original_file;
+                $attachment[$i]['filename'] = $val->filename;
+                $attachment[$i]['uuid'] = $val->uuid;
+                $attachment[$i]['icon'] = $ext['extension'];
+                $i++;
+            }
+            
+            $data['attach'] = $attachment;
         }
         
 		echo $this->load->view('kelas/announce_class',$data,TRUE);
@@ -561,18 +582,27 @@ class kelas extends CI_Controller {
 				}
 			}
 		}
-        
+        $data['attach'] = false;
         $data['detail'] = false;
-        $data['icon'] = false;
         
          if ($task_id <> NULL) {
             $data['detail'] = $this->class_model->task_detail($assignment_id,$task_id);
             $attach = $this->class_model->get_attachment($task_id,2);
             
             if ($attach <> false) {
-                $ext = pathinfo($attach->filename);        
-                $data['icon'] = $ext['extension'];
-                $data['attach'] = $attach;    
+                $i = 0;
+                $attachment = array();
+                                 
+                foreach ($attach as $val) {                
+                    $ext = pathinfo($val->filename);
+                    $attachment[$i]['original_file'] = $val->original_file;
+                    $attachment[$i]['filename'] = $val->filename;
+                    $attachment[$i]['uuid'] = $val->uuid;
+                    $attachment[$i]['icon'] = $ext['extension'];
+                    $i++;
+                }
+                
+                $data['attach'] = $attachment;
             }
         }
         
@@ -754,26 +784,62 @@ class kelas extends CI_Controller {
         $row = $this->class_model->task_detail($assignment_id, $id);        
         $attach = $this->class_model->get_attachment($row->id,2);        
         $data['row'] = $row;        
-        $data['icon'] = false;        
+        $data['attach'] = false;   
+             
         if ($attach <> false) {
-            $ext = pathinfo($attach->filename);        
-            $data['icon'] = $ext['extension'];
-            $data['attach'] = $attach;    
+            $i = 0;
+            $attachment = array();
+                             
+            foreach ($attach as $val) {                
+                $ext = pathinfo($val->filename);
+                $attachment[$i]['original_file'] = $val->original_file;
+                $attachment[$i]['filename'] = $val->filename;
+                $attachment[$i]['uuid'] = $val->uuid;
+                $attachment[$i]['icon'] = $ext['extension'];
+                $i++;
+            }
+            
+            $data['attach'] = $attachment;
         }
         
 		//Student Response
         $where_task = array('task_id' => $id,
                             'nim' => $this->session->userdata('username'));
         $row_student = $this->class_model->task_response($where_task);
-        $attach_student = $this->class_model->get_attachment($row_student->id,4);
-        $data['row_student'] = $row_student;        
-        $data['icon_student'] = false;        
+        
+        $data['icon_student'] = false;
+        $data['row_student'] = $row_student;
+        $attach_student = FALSE;
+        
+        if ($row_student <> FALSE)
+        {
+            $attach_student = $this->class_model->get_attachment($row_student->id,4);
+            $data['row_student'] = $row_student;    
+        }       
+        
+        $data['attach_student'] = false;
+        /*
         if ($attach_student <> false) {
             $ext_student = pathinfo($attach_student->filename);        
             $data['icon_student'] = $ext_student['extension'];
             $data['attach_student'] = $attach_student;    
         }
-        
+        */
+        if ($attach_student <> false) {
+            $i = 0;
+            $attachment_student = array();
+                             
+            foreach ($attach_student as $val2) {                
+                $ext = pathinfo($val2->filename);
+                $attachment_student[$i]['original_file'] = $val2->original_file;
+                $attachment_student[$i]['filename'] = $val2->filename;
+                $attachment_student[$i]['uuid'] = $val2->uuid;
+                $attachment_student[$i]['icon'] = $ext['extension'];
+                $i++;
+            }
+            
+            $data['attach_student'] = $attachment_student;
+        }
         
         
         echo $this->load->view('kelas/detail_task_student',$data,TRUE);
@@ -806,9 +872,50 @@ class kelas extends CI_Controller {
         {
             echo "-1";
         }
+    }
+    
+    public function submitted_task($task_id)
+    {
+        $data['task']  = $this->class_model->task_detail($this->session->userdata('course'),$task_id);
         
+        $submitted_task = $this->class_model->list_submitted_task($task_id);
         
+        $list = $submitted_task;
         
+        if ($submitted_task <> false) {
+            $list = array();
+            $i = 0; 
+            foreach ($submitted_task as $val ) {
+                $list[$i]['id'] = $val->id;
+                $list[$i]['nim'] = $val->nim;
+                $list[$i]['content'] = $val->content;
+                $list[$i]['created'] = $val->created;
+                
+                $attachment = $this->class_model->get_attachment($val->id,'4');
+                
+                if ($attachment <> false) 
+                {
+                    $j = 0;                    
+                    foreach ($attachment as $val2) {
+                        $ext = pathinfo($val2->filename);        
+                
+                        $list[$i]['attachment'][$j]['original_file'] = $val2->original_file;
+                        $list[$i]['attachment'][$j]['filename'] = $val2->filename;
+                        $list[$i]['attachment'][$j]['uuid'] = $val2->uuid;
+                        $list[$i]['attachment'][$j]['icon'] = $ext['extension'];
+                        $j++;
+                    }    
+                }
+                
+                
+                $i++;
+            } 
+        }
+         
+        
+        $data['list']  = $list;        
+        $content['page'] = $this->load->view('kelas/submitted_task',$data,TRUE);
+        $this->load->view('dashboard',$content);        
     }
     
 }

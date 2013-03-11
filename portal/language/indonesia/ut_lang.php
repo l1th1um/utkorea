@@ -199,4 +199,6 @@ $lang['activation_key_not_exist']		= 'Kode Aktivasi Tidak Ditemukan';
 $lang['activation_key_expire']			= 'Kode Aktivasi Sudah Kadaluarsa';
 $lang['activation_key_success']			= 'Password baru telah dikirimkan ke Email anda';
 $lang['activation_key_already_used']	= 'Link telah digunakan, cek kembali inbox anda';
+
+$lang['no_task_submitted']	= 'Belum Ada yang Mengumpulkan Tugas';
 ?>

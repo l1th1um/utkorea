@@ -69,6 +69,7 @@
 			  
 	      if (is_numeric($login['username'])) {
 	      	  $this->CI->db->where('nim', $login['username']);
+              $this->CI->db->where('status', '1');
 	      	  $query = $this->CI->db->get('mahasiswa');
 	      } else {
 	      	  $this->CI->db->where('username', $login['username']);	

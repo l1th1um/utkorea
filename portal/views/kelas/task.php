@@ -31,11 +31,12 @@
 	<tbody>
 	<?php
 		foreach ($list as $row) {
+		  $submitted = $row->submitted_student."/".$total_student;
 	?>
 	<tr>
 		<td width="150px"><?php echo convertHumanDate($row->created,false)?></td>
 		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
-        <td><?php echo $row->submitted_student."/".$total_student ?></td>
+        <td><?php echo anchor('kelas/submitted_task/'.$row->id,$submitted); ?></td>
         <?php
             $edit_icon = array(
                         'src' => admin_tpl_path().'img/icons/icon_edit.png',
