@@ -547,8 +547,7 @@ class class_model extends CI_Model {
         
         if ($query->num_rows() > 0)
         {
-            $row = $query->result();
-            return $row;
+            return $query->result();            
         }
         else
         {

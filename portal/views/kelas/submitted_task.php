@@ -9,7 +9,8 @@
     {
 ?>
 <h2 style=";font-size: 14px;padding:10px 0">
-	<?php echo $this->lang->line('task')." : ".$task->title?>      			
+	<p><?php echo $this->lang->line('task')." : ".$task->title?></p>      			
+    <p><?php echo $this->lang->line('deadline')." : ".convertHumanDate($task->deadline,false)?></p>
 </h2>
 <table>
 	<thead>
@@ -33,7 +34,7 @@
                 echo "<td>".user_detail('name',$val['nim'])."</td>";
                 echo "<td>".$val['content']."</td>";
                 echo "<td>";
-                if ($val['attachment'] <> false)
+                if (isset($val['attachment']))
                 {
                     echo "<ul>";
                     
