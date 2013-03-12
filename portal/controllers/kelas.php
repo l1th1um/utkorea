@@ -882,10 +882,11 @@ class kelas extends CI_Controller {
         
         $list = $submitted_task;
         
+        
         if ($submitted_task <> false) {
             $list = array();
             $i = 0; 
-            foreach ($submitted_task as $val ) {
+            foreach ($submitted_task as $val ) {                
                 $list[$i]['id'] = $val->id;
                 $list[$i]['nim'] = $val->nim;
                 $list[$i]['content'] = $val->content;
@@ -912,7 +913,6 @@ class kelas extends CI_Controller {
             } 
         }
          
-        
         $data['list']  = $list;        
         $content['page'] = $this->load->view('kelas/submitted_task',$data,TRUE);
         $this->load->view('dashboard',$content);        
