@@ -44,7 +44,7 @@
 		</td>
 	</tr>
 </table>
-
+<?php if (in_array(9,$this->session->userdata('role'))):?>
 <table width="100%" style="margin-top: 40px;">
     <tr>
         <td><label><?php echo $this->lang->line('message')?></label></td>
@@ -96,7 +96,7 @@
         </td>
     </tr>
 </table>
-
+<?php endif; ?>
 
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
 <script type="text/javascript" >
