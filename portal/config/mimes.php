@@ -29,8 +29,8 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'smi'	=>	'application/smil',
 				'smil'	=>	'application/smil',
 				'mif'	=>	'application/vnd.mif',
-				'xls'	=>	array('application/excel', 'application/vnd.ms-excel', 'application/msexcel'),
-				'ppt'	=>	array('application/powerpoint', 'application/vnd.ms-powerpoint'),
+				'xls'	=>	array('application/excel', 'application/vnd.ms-excel', 'application/msexcel', 'application/msword'),
+				'ppt'	=>	array('application/powerpoint', 'application/vnd.ms-powerpoint', 'application/msword'),
                 'pptx'	=>	array('application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/zip','application/x-zip'),                
 				'wbxml'	=>	'application/wbxml',
 				'wmlc'	=>	'application/wmlc',
@@ -53,6 +53,7 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'xhtml'	=>	'application/xhtml+xml',
 				'xht'	=>	'application/xhtml+xml',
 				'zip'	=>  array('application/x-zip', 'application/zip', 'application/x-zip-compressed'),
+                'rar'	=>  array('application/x-zip', 'application/zip', 'application/x-zip-compressed','application/x-rar'),
 				'mid'	=>	'audio/midi',
 				'midi'	=>	'audio/midi',
 				'mpga'	=>	'audio/mpeg',
@@ -101,7 +102,5 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'eml'	=>	'message/rfc822',
 				'json' => array('application/json', 'text/json')
 			);
-
-
 /* End of file mimes.php */
 /* Location: ./application/config/mimes.php */

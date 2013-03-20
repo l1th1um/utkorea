@@ -624,14 +624,31 @@ class kelas extends CI_Controller {
 		$config['encrypt_name'] = TRUE;
 
 		$this->load->library('upload', $config);
-
+        
+        $activity = 'Upload '.$folder;
+        $remarks = "Username : ".$this->session->userdata('username').",";
+          
 		if ( ! $this->upload->do_upload($field_name))
 		{
-			echo $this->upload->display_errors('<p>', '</p>');
+            $result = 'failed';
+            $error_upload = $this->upload->display_errors('<p>', '</p>');
+            $data = $this->upload->data();            
+            
+            $remarks .= "Error : ".$error_upload.",";
+            $remarks .= "Size:".$data['file_size'].",";
+            $remarks .= "Filename :".$data['file_name'].",";
+            $remarks .= "Mime :".$data['file_type'];
+            
+            echo $error_upload;
 		}
 		else
 		{
-			$data = $this->upload->data();
+			$result = 'result';
+            $data = $this->upload->data();
+            
+            $remarks .= "Size:".$data['file_size'].",";
+            $remarks .= "Filename :".$data['file_name'].",";
+            $remarks .= "Mime :".$data['file_type'];
             
             if ($folder == 'pengumuman')
             {
@@ -666,6 +683,13 @@ class kelas extends CI_Controller {
                 echo json_encode(array($info));                                
             }
 		}
+        
+        $logs_data = array('activity' => $activity,
+		  					 'result' => $result,
+							 'remarks' => $remarks,
+							 'user_agent' => check_user_agent());
+							 
+        insert_logs($logs_data);
 	}
     
     public function del_announcement()
