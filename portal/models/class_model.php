@@ -27,7 +27,7 @@ class class_model extends CI_Model {
 	   $query = $this->db->get_where('attachment', $where);
 		
 		if ($query->num_rows() > 0) {
-			return $query->row();			
+		    return $query->result();			
 		} else {
 			return FALSE;
 		}
@@ -541,5 +541,17 @@ class class_model extends CI_Model {
 		}
 	}
     
-
+    public function list_submitted_task($task_id)
+    {
+        $query = $this->db->get_where('task_student',array('task_id' => $task_id));
+        
+        if ($query->num_rows() > 0)
+        {
+            return $query->result();            
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

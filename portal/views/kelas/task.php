@@ -31,11 +31,12 @@
 	<tbody>
 	<?php
 		foreach ($list as $row) {
+		  $submitted = $row->submitted_student."/".$total_student;
 	?>
 	<tr>
 		<td width="150px"><?php echo convertHumanDate($row->created,false)?></td>
-		<td><?php echo anchor('javascript://ajax',$row->title,'id="ann_link" alt="'.$row->id.'" ');?></td>
-        <td><?php echo $row->submitted_student."/".$total_student ?></td>
+		<td><?php echo anchor('javascript://ajax',$row->title,'id="task_link" alt="'.$row->id.'" ');?></td>
+        <td><?php echo anchor('kelas/submitted_task/'.$row->id,$submitted); ?></td>
         <?php
             $edit_icon = array(
                         'src' => admin_tpl_path().'img/icons/icon_edit.png',
@@ -62,16 +63,16 @@
 
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.simplemodal.js"></script>
 <script type='text/javascript'>
-		$(function () {
+	$(function () {
 		var contact = {
 			message: null,
 			init: function () {
-				$('a#ann_link_ignore').click(function (e) {
+				$('a#task_link').click(function (e) {
 				    e.preventDefault();
                     var uid = "<?php echo $id?>"; 
 					var ann_id = $(this).attr("alt");
 					// load the contact form using ajax
-					$.post("<?php echo base_url()?>kelas/show_announce_class",{assignment_id:uid, id : ann_id}, function(data){
+					$.post("<?php echo base_url()?>kelas/show_task",{assignment_id:uid, id : ann_id}, function(data){
 						// create a modal dialog with the data
 						$(data).modal({						
 							onShow: contact.show

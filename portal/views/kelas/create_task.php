@@ -82,25 +82,31 @@
     				Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar)
                     <p style="padding-top: 5px;" id="file_tugas_cont"></p>
                     <?php
-                        if ($icon <> false) {
-                            $mime_icon = array(
-                                        'src' => base_url().'assets/core/images/fileicons/'.$icon.'.png',
+                        if ($attach <> false) {
+                            echo "<ul style='list-style-type:none;margin-left:0'>";
+                            foreach ($attach as $val)
+                            {
+                                $mime_icon = array(
+                                        'src' => base_url().'assets/core/images/fileicons/'.$val['icon'].'.png',
                                         'style' => 'border:none;background:none'  
-                            );
-                            
-                            $del_icon = array(
-                                      'src' => admin_tpl_path().'img/icons/icon_error_small.png',
-                                      'style' => 'border:none;background:none;cursor:pointer',
-                                      'class' => 'del_attachment',
-                                      'id' => $attach->uuid
-                            );
-                            
-                            echo "<span class='attach_cont' />";
-                            echo img($mime_icon);
-                            echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;");
-                            echo img($del_icon);
-                            echo "</span>";
-                        }
+                                );
+                                
+                                $del_icon = array(
+                                          'src' => admin_tpl_path().'img/icons/icon_error_small.png',
+                                          'style' => 'border:none;background:none;cursor:pointer',
+                                          'class' => 'del_attachment',
+                                          'id' => $val['uuid']
+                                );
+                                echo "<li>";
+                                echo "<span class='attach_cont' />";
+                                echo img($mime_icon);
+                                echo anchor(base_url()."attach/".$val['uuid'],$val['original_file'],"style=text-decoration:none;color:#000000;");
+                                echo img($del_icon);
+                                echo "</span>";
+                                echo "</li>";    
+                            }
+                            echo "</ul>";
+                        } 
                     ?>
                 </td>
             </tr>

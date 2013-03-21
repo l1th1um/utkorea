@@ -203,7 +203,7 @@ class CI_Upload {
 		$this->file_ext	 = $this->get_extension($this->file_name);
 		$this->client_name = $this->file_name;
 
-		// Is the file type allowed to be uploaded?
+        // Is the file type allowed to be uploaded?
 		if ( ! $this->is_allowed_filetype())
 		{
 			$this->set_error('upload_invalid_filetype');
@@ -595,7 +595,7 @@ class CI_Upload {
 		}
 
 		$ext = strtolower(ltrim($this->file_ext, '.'));
-
+        
 		if ( ! in_array($ext, $this->allowed_types))
 		{
 			return FALSE;
@@ -618,19 +618,22 @@ class CI_Upload {
 		}
 
 		$mime = $this->mimes_types($ext);
-
-		if (is_array($mime))
+        //echo $this->file_type;
+        //print_r($mime);
+         
+        if (is_array($mime))
 		{
-			if (in_array($this->file_type, $mime, TRUE))
+			if (in_array($this->file_type, $mime))
 			{
 				return TRUE;
-			}
+                //break;
+			}            
 		}
 		elseif ($mime == $this->file_type)
 		{
 				return TRUE;
 		}
-
+         
 		return FALSE;
 	}
 

@@ -11,10 +11,18 @@
 		<td><label>Attachment</label></td>
 		<td>
             <?php
-            if ($icon <> false) 
+            if ($attach <> false) 
             {
-                echo img(base_url()."assets/core/images/fileicons/".$icon.".png");
-                echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;"); 
+                echo "<ul style='list-style-type:none;margin-left:0'>";
+                foreach($attach as $val)
+                {
+                    echo "<li>";
+                    echo img(base_url()."assets/core/images/fileicons/".$val['icon'].".png");
+                    echo anchor(base_url()."attach/".$val['uuid'],$val['original_file'],"style=text-decoration:none;color:#000000;");
+                    echo "</li>";    
+                }
+                echo "</ul>";
+                 
             }
             else
             {
@@ -36,12 +44,13 @@
 		</td>
 	</tr>
 </table>
-
+<?php if (in_array(9,$this->session->userdata('role'))):?>
 <table width="100%" style="margin-top: 40px;">
     <tr>
         <td><label><?php echo $this->lang->line('message')?></label></td>
         <td>
-            <textarea name="response" id="responseTxt" style="width: 500px;height:70px"><?php echo $row_student->content;?></textarea>
+            <textarea name="response" id="responseTxt" 
+            style="width: 500px;height:70px"><?php if ($row_student <> FALSE)echo $row_student->content;?></textarea>
         </td>
     </tr>
     <tr>
@@ -53,25 +62,31 @@
     		Ukuran Maks. 10MB (gif, png, jpg, jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar)
             <p style="padding-top: 5px;" id="file_tugas_cont"></p>
             <?php
-                if ($icon_student <> false) {
-                    $mime_icon = array(
-                                'src' => base_url().'assets/core/images/fileicons/'.$icon.'.png',
-                                'style' => 'border:none;background:none'  
-                    );
-                    
-                    $del_icon = array(
-                              'src' => admin_tpl_path().'img/icons/icon_error_small.png',
-                              'style' => 'border:none;background:none;cursor:pointer',
-                              'class' => 'del_attachment',
-                              'id' => $attach_student->uuid
-                    );
-                    
-                    echo "<span class='attach_cont' />";
-                    echo img($mime_icon);
-                    echo anchor(base_url()."attach/".$attach_student->uuid,$attach_student->original_file,"style=text-decoration:none;color:#000000;");
-                    echo img($del_icon);
-                    echo "</span>";
-                }
+                if ($attach_student <> false) {
+                            echo "<ul style='list-style-type:none;margin-left:0'>";
+                            foreach ($attach_student as $val)
+                            {
+                                $mime_icon = array(
+                                        'src' => base_url().'assets/core/images/fileicons/'.$val['icon'].'.png',
+                                        'style' => 'border:none;background:none'  
+                                );
+                                
+                                $del_icon = array(
+                                          'src' => admin_tpl_path().'img/icons/icon_error_small.png',
+                                          'style' => 'border:none;background:none;cursor:pointer',
+                                          'class' => 'del_attachment',
+                                          'id' => $val['uuid']
+                                );
+                                echo "<li>";
+                                echo "<span class='attach_cont' />";
+                                echo img($mime_icon);
+                                echo anchor(base_url()."attach/".$val['uuid'],$val['original_file'],"style=text-decoration:none;color:#000000;");
+                                echo img($del_icon);
+                                echo "</span>";
+                                echo "</li>";    
+                            }
+                            echo "</ul>";
+                        } 
             ?>
         </td>
     </tr>
@@ -81,7 +96,7 @@
         </td>
     </tr>
 </table>
-
+<?php endif; ?>
 
 <script type='text/javascript' src="<?php echo template_path('core')?>js/jquery.fileupload.js"></script>
 <script type="text/javascript" >

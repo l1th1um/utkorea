@@ -11,10 +11,18 @@
 		<td><label>Attachment</label></td>
 		<td>
             <?php
-            if ($icon <> false) 
+            if ($attach <> false) 
             {
-                echo img(base_url()."assets/core/images/fileicons/".$icon.".png");
-                echo anchor(base_url()."attach/".$attach->uuid,$attach->original_file,"style=text-decoration:none;color:#000000;"); 
+                echo "<ul style='list-style-type:none;margin-left:0'>";
+                foreach($attach as $val)
+                {
+                    echo "<li>";
+                    echo img(base_url()."assets/core/images/fileicons/".$val['icon'].".png");
+                    echo anchor(base_url()."attach/".$val['uuid'],$val['original_file'],"style=text-decoration:none;color:#000000;");
+                    echo "</li>";    
+                }
+                echo "</ul>";
+                 
             }
             else
             {
