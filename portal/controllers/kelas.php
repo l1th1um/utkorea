@@ -12,6 +12,7 @@ class kelas extends CI_Controller {
         $this->load->model('announcement_model','announce');
 		$this->load->library('scribd',array('api_key'=>$this->config->item('scribd_key'),'secret'=>$this->config->item('scribd_secret')));
         $this->load->helper('html');
+		$this->auth->check_auth();	
     }	
 	
     public function index($id=''){
@@ -51,6 +52,7 @@ class kelas extends CI_Controller {
     
     public function course($uid)
     {
+    	$this->auth->check_auth();	
         if(! empty($uid)){
             $this->session->set_userdata('course',$uid);
             
