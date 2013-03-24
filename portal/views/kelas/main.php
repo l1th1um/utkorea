@@ -259,7 +259,7 @@
    
     <?php } ?>
     </div>
-    <div style="width: 48%;float:left;margin-left:10px">
+    <div style="width: 48%;float:left;margin-left:10px;display:none">
         <article class="quarter-block nested clearrm classli" style="margin:4px;width:100%;">
         	<header>
         		<h2>Materi Kuliah</h2>
@@ -333,7 +333,7 @@
 			//getdocscribd(doc_id,access_key);
 			window.open("<?php echo site_url("kelas/scribd_docview"); ?>/" + doc_id + "/" + access_key + "/<?php echo $class_settings->id; ?>",'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=508,height=538')
 		});
-		loadList(curid);
+		//loadList(curid);
 		
 		<?php if(!is_numeric($this->session->userdata('username'))){ ?>
 		$('.fileupload').remove();

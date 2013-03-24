@@ -60,7 +60,8 @@ class kelas extends CI_Controller {
             
 			$class_settings = $this->tutor_model->get_class_by_id($id);
             
-			if($class_settings){				
+			$data['file'] = array();
+			/*if($class_settings){				
 
 				$this->scribd->my_user_id = 'asg_'.$id;		
 				try{
@@ -71,7 +72,7 @@ class kelas extends CI_Controller {
 				}
 							
 				$data['file'] = $datas;					
-			}
+			}*/
             				
 			$data['class_settings'] = $class_settings;
 			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);

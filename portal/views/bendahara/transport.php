@@ -13,7 +13,7 @@
 						  echo site_url( "bendahara/get_transport_list" );
 						  ?>',
 					datatype: "json",
-					colNames:['ID','Staff ID','Nama','Tanggal TTM','Total (Rp)','Deskripsi','Pilihan Pembayaran','Status'],	
+					colNames:['ID','Staff ID','Nama','Tanggal TTM','Total (Rp)','Deskripsi','Masukan TTM','Pilihan Pembayaran','Status'],	
 					colModel:[
 						{name:'id',index:'id',hidden:true},
 						{name:'staff_id',index:'staff_id',hidden:true},
@@ -21,6 +21,7 @@
 						{name:'tanggalttm',index:'tanggalttm',align:'center',width:90},						
 						{name:'total',index:'total',width:35,align:'center'},						
 						{name:'deskripsi',width:90,align:'center',index:'deskripsi'},
+						{name:'masukan',width:90,align:'center',index:'masukan'},
 						{name:'waktudibayar',index:'waktudibayar',align:'center',stype:'select',searchoptions:{value:{"m":'per Minggu',"s":'Akhir Semester'}},edittype:'select',editoptions:{value:{"m":'per Minggu',"s":'Akhir Semester'}},formatter:'select'},						
 						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Belum diverifikasi','1':'Sudah diverifikasi','2':'Sudah dibayar'}},formatter:check_verified},                        						
 					],

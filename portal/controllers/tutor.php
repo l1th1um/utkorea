@@ -182,6 +182,7 @@ class tutor extends CI_Controller {
 		 $this->form_validation->set_rules('tanggalttm', 'Tanggal TTM', 'required');
 		 $this->form_validation->set_rules('total', 'Total Pengeluaran', 'required|numeric');
 		 $this->form_validation->set_rules('deskripsi', 'Deskripsi Perjalanan', 'required');
+		 $this->form_validation->set_rules('masukan', 'Masukan TTM', 'xss_clean');
 		 $this->form_validation->set_rules('waktudibayar', 'Waktu Dibayar', 'required');
 		 
 		 $this->load->model('finance_model');

@@ -27,6 +27,13 @@
 					<td><input type="text" name="total" /></td>                
 				</tr>
 				<tr>
+					<td><label>Masukan TTM</label></td>
+					<td><textarea rows="5" cols="80" name="masukan"></textarea>
+						<br />
+						<span style="font-size:8pt;">Laporan kejadian saat mengajar</span>
+					</td>                
+				</tr>
+				<tr>
 					<td><label>Deskripsi Perjalanan</label></td>
 					<td><textarea rows="5" cols="80" name="deskripsi"></textarea>
 						<br />
@@ -89,10 +96,7 @@ $(document).ready(function(){
 					  success: function(data){
 					  		if(data.message!=''){
 					  			alert(data.message);					  			
-					  		}
-							if(data.tanggalttm!=null){
-								$("#frmTransport input[name=tanggalttm]").val(data.tanggalttm.substr(0,10));
-							}
+					  		}							
 							if(data.deskripsi!=null){
 								$("#frmTransport textarea[name=deskripsi]").val(data.deskripsi);
 							}
