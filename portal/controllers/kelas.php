@@ -12,6 +12,7 @@ class kelas extends CI_Controller {
         $this->load->model('announcement_model','announce');
 		$this->load->library('scribd',array('api_key'=>$this->config->item('scribd_key'),'secret'=>$this->config->item('scribd_secret')));
         $this->load->helper('html');
+		$this->auth->check_auth();	
     }	
 	
     public function index($id=''){
@@ -51,6 +52,7 @@ class kelas extends CI_Controller {
     
     public function course($uid)
     {
+    	$this->auth->check_auth();	
         if(! empty($uid)){
             $this->session->set_userdata('course',$uid);
             
@@ -58,7 +60,8 @@ class kelas extends CI_Controller {
             
 			$class_settings = $this->tutor_model->get_class_by_id($id);
             
-			if($class_settings){				
+			$data['file'] = array();
+			/*if($class_settings){				
 
 				$this->scribd->my_user_id = 'asg_'.$id;		
 				try{
@@ -69,7 +72,7 @@ class kelas extends CI_Controller {
 				}
 							
 				$data['file'] = $datas;					
-			}
+			}*/
             				
 			$data['class_settings'] = $class_settings;
 			//$data['pengumuman'] = $this->tutor_model->get_valid_pengumuman($id);
