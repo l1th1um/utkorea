@@ -141,6 +141,8 @@
     				    $('#' + cont).text(file.name);
     					$("input[name=attach_uid]").val(file.id);
     				});    
+                    
+                    alert("File Sudah Berhasil Diupload");
                 }
 				
 			}

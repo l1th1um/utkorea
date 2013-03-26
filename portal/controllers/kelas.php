@@ -630,24 +630,24 @@ class kelas extends CI_Controller {
           
 		if ( ! $this->upload->do_upload($field_name))
 		{
-            $result = 'failed';
+            $result = 'Failed';
             $error_upload = $this->upload->display_errors('<p>', '</p>');
             $data = $this->upload->data();            
             
             $remarks .= "Error : ".$error_upload.",";
             $remarks .= "Size:".$data['file_size'].",";
-            $remarks .= "Filename :".$data['file_name'].",";
+            $remarks .= "Filename :".$data['orig_name'].",";
             $remarks .= "Mime :".$data['file_type'];
             
             echo $error_upload;
 		}
 		else
 		{
-			$result = 'result';
+			$result = 'Success';
             $data = $this->upload->data();
             
             $remarks .= "Size:".$data['file_size'].",";
-            $remarks .= "Filename :".$data['file_name'].",";
+            $remarks .= "Filename :".$data['orig_name'].",";
             $remarks .= "Mime :".$data['file_type'];
             
             if ($folder == 'pengumuman')
