@@ -554,4 +554,14 @@ class class_model extends CI_Model {
             return false;
         }
     }
+	
+	public function list_class_student($id_assignment){
+		$this->db->where('id_assignment',$id_assignment);
+		$this->db->from('class c');
+		$this->db->join('mahasiswa m','m.nim = c.id_student');
+		$query = $this->db->get();
+		if($query->num_rows()>0){
+			return $query;
+		}
+	}
 }

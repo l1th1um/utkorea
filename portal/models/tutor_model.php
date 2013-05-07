@@ -7,6 +7,28 @@ class tutor_model extends CI_Model {
         parent::__construct();
     }
 	
+	function get_current_class_composition_list($time_period = ''){
+		if($time_period == ''){
+			$time_period = get_settings('time_period');
+		}
+		
+		$this->db->select('*,a.region as sregion,a.id as sid');
+		$this->db->from('assignment a');
+		$this->db->join('courses c','a.course_id = c.course_id');
+		$this->db->join('staff s','a.staff_id = s.staff_id');
+		$this->db->where('a.time_period',$time_period);
+		
+		$this->db->order_by('sregion','ASC');
+		$this->db->order_by('title','ASC');
+		$this->db->order_by('name','ASC');
+		
+		$query = $this->db->get();
+		if($query->num_rows()>0){
+			return $query;
+		}
+		
+	}
+	
 	function course_list($major,$region)
 	{
 		/*
@@ -143,6 +165,8 @@ class tutor_model extends CI_Model {
 	function get_class_by_id($id){
 		$this->db->from('assignment a');
 		$this->db->join('courses b','a.course_id = b.course_id');
+		$this->db->join('major m','m.major_id = b.major');
+		$this->db->join('staff s','s.staff_id = a.staff_id');
 		$this->db->where('a.id',$id);
 		$res = $this->db->get();
 		if($res->num_rows()>0){
