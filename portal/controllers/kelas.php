@@ -49,6 +49,22 @@ class kelas extends CI_Controller {
 		
         $this->load->view('dashboard',$content);
 	}
+
+	public function listnilaiview(){
+		
+	   $this->auth->check_auth();	
+	   
+	    $data['gb'] = array();
+		$gb = $this->class_model->get_list_gabung_kelas(true);
+		if($gb){
+			$data['gb'] = $gb->result_array();			
+		}
+		
+		$res = $this->tutor_model->get_list_classes_for_student($this->session->userdata('username'));
+		$data['list'] = $res;	
+        $content['page'] = $this->load->view('kelas/listnilaiview',$data,TRUE);	
+		$this->load->view('dashboard',$content);	
+	}
     
     public function course($uid)
     {
@@ -945,4 +961,72 @@ class kelas extends CI_Controller {
         $this->load->view('dashboard',$content);        
     }
     
+	public function survey($id_assignment)
+	{
+		$this->auth->check_auth();	
+		$data['surveyques'] = array(
+			array('Bagian Pendahuluan','A'),
+			array('Keterampilan menarik perhatian mahasiswa (ice breaking, kuis, games)',true),
+			array('Keterampilan memotivasi mahasiswa',true),	
+			array('Keterampilan menjelaskan ruang lingkup materi yang akan dibahas',true),
+			array('Keterampilan menyampaikan relevansidanmanfaatmateri yang dibahas',true),
+			array('Keterampilan menjelaskan kompetensi mahasiswa dalam mengikuti tutorial ',true),
+			array('Bagian Penyajian ','B'),
+			array('Sistematika penyampaian materi tutorial',true),
+			array('Keterampilan menjelaskan materi tutorial',true),
+			array('Keterampilan membimbing mahasiswa berlatih',true),
+			array('Keterampilan mengajukan pertanyaan',true),
+			array('Keterampilan memberikan umpan balik terhadap pertanyaan mahasiswa',true),
+			array('Keterampilan menyebarkan pertanyaan kepada mahasiswa',true),
+			array('Keterampilan mengaktifkan mahasiswa dalam tutorial',true),
+			array('Keterampilan menggunakan media dan  alat pembelajaran',true),
+			array('Keterampilan menggunakan beragam metode/model tutorial',true),
+			array('Bagian Penutup','C'),
+			array('Keterampilan menyimpulkan materi tutorial',true),
+			array('Keterampilan mengevaluasi hasil belajar mahasiswa dalam tutorial',true),
+			array('Keterampilan memberikan umpan balik terhadap hasil belajar mahasiswa dalam tutorial',true),
+			array('Keterampilam memberikan informasi tentang kegiatan tindak lanjut',true),
+			array('Keterampilan mengelola waktu tutorial ',true),
+			array('Keseluruhan',true),
+		);
+		
+		$a = 1;
+		foreach($data['surveyques'] as $row){
+			if($row[1]===true){
+				$this->form_validation->set_rules('ch'.$a,'Option'.$a,'required');
+			}
+			$a++;
+		}
+		$this->form_validation->set_rules('comment','Comment','required');
+		
+		$this->load->model('tutor_model');
+		$class = $this->tutor_model->get_class_by_id($id_assignment);
+		$data['tutor'] = $class->name;
+		$data['title'] = $class->title;
+		$data['semester'] = $class->semester;
+		
+		if ($this->form_validation->run() ) {					
+		
+			$this->class_model->save_survey(implode(',',$this->input->post()),$id_assignment,$this->session->userdata('username'));
+			$data['message'] = success_form('Terima Kasih. Survey anda telah disimpan. Klik <a href="'.site_url('kelas/nilai/'.$id_assignment).'">disini</a> untuk melihat nilai');
+		}	
+	
+		$content['page'] = $this->load->view('kelas/survey',$data,TRUE);		
+		
+        $this->load->view('dashboard',$content);       
+	}
+
+	function nilai($id_assignment){
+		if($this->class_model->check_survey($this->session->userdata('username'),$id_assignment)){
+			
+			$my = $this->class_model->get_my_class($this->session->userdata('username'),$id_assignment);
+			$data['myclass'] = $my;
+			
+			$content['page'] = $this->load->view('kelas/nilai',$data,TRUE);		
+			$this->load->view('dashboard',$content);  
+		}else{
+			redirect('kelas/survey/'.$id_assignment);
+		}
+	}
+	
 }

@@ -564,4 +564,31 @@ class class_model extends CI_Model {
 			return $query;
 		}
 	}
+	
+	public function save_survey($data,$id_class,$nim){
+		$data = explode(",",$data);
+		$comment = $data[count($data)-1];
+		unset($data[count($data)-1]);
+		
+		$this->db->insert('survey',array(
+			'survey' => implode(",",$data),
+			'comment' => $comment,
+			'id_assignment' => $id_class,
+			'id_student' => $nim
+		));
+		
+	}
+	
+	public function check_survey($nim,$id_assignment){
+		$this->db->where('id_student',$nim);
+		$this->db->where('id_assignment',$id_assignment);
+		$q = $this->db->get('survey');
+		if($q->num_rows()>0){
+			return true;
+		}else{
+			return false;
+		}		
+	}
+	
+	
 }

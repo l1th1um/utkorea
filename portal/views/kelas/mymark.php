@@ -21,9 +21,4 @@
 <?php } ?>
 </table>
 </div>
-<div style="float:left;width:450px;margin-left:10px;">
-	<header>
-		<h3>Nilai</h3>
-	</header>
-	<center>Belum ada data</center>
-</div>
+

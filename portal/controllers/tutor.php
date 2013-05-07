@@ -408,7 +408,7 @@ class tutor extends CI_Controller {
 			//NILAI AKHIR
 			$this->excel->getActiveSheet()->setCellValue('I'.$c, '=0.7*G'.$c.'+0.3*H'.$c);
 			$this->excel->getActiveSheet()->getStyle('I'.$c)->applyFromArray($style_table);
-			$this->excel->getActiveSheet()->getStyle('H'.$c)->getNumberFormat()->setFormatCode('0.00'); 
+			$this->excel->getActiveSheet()->getStyle('I'.$c)->getNumberFormat()->setFormatCode('0.00'); 
 			
 			$i++;
 			$c++;
