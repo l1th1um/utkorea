@@ -279,6 +279,15 @@ class tutor extends CI_Controller {
 		$this->excel->setActiveSheetIndex(0);
 		
 		$current_period = get_settings('time_period');
+		
+		$style_title = array(					
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+					),
+					'font' => array(
+						'bold' => true,
+					)
+				);
 				
 		$style_table_header = array(					
 					'alignment' => array(
@@ -314,6 +323,8 @@ class tutor extends CI_Controller {
 		$objDrawing->setHeight(40);
 		$objDrawing->setCoordinates('B1');
 		$objDrawing->setWorksheet($this->excel->getActiveSheet());
+		
+		$this->excel->getActiveSheet()->setTitle('Nilai');
 		
 		$this->excel->getActiveSheet()->setCellValue('D1', 'REKAPITULASI NILAI TUTORIAL NON PENDAS '.substr($current_period, 0,4).'.'.substr($current_period, 4,1));		
 		$this->excel->getActiveSheet()->mergeCells('D1:H1');
@@ -424,6 +435,155 @@ class tutor extends CI_Controller {
 		$this->excel->getActiveSheet()->setCellValue('A'.($c+9), 'Nip: 19610728 198602 1 002');
 		
 		$this->excel->getActiveSheet()->setCellValue('G'.($c+8), $class->name);
+		
+		
+		//====================Absensi===========================================================
+		$this->excel->createSheet();
+		$this->excel->setActiveSheetIndex(1);
+		$this->excel->getActiveSheet()->setTitle('Absensi');
+		
+		// Add an image to the worksheet
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setName('UT LOGO');		
+		$objDrawing->setPath('assets/core/images/logo_ut.jpg');
+		$objDrawing->setWidth(40);
+		$objDrawing->setHeight(40);
+		$objDrawing->setCoordinates('C1');
+		$objDrawing->setWorksheet($this->excel->getActiveSheet());
+		
+		$this->excel->getActiveSheet()->setCellValue('D2', 'DAFTAR HADIR MATA KULIAH');		
+		$this->excel->getActiveSheet()->mergeCells('D2:L2');
+		$this->excel->getActiveSheet()->getStyle('D2:L2')->applyFromArray($style_title);	
+		
+		$this->excel->getActiveSheet()->setCellValue('C4', 'Negara:');$this->excel->getActiveSheet()->setCellValue('D4', 'Korea Selatan');
+		$this->excel->getActiveSheet()->setCellValue('H4', 'Semester:');$this->excel->getActiveSheet()->setCellValue('I4', $class->semester);
+		
+		$this->excel->getActiveSheet()->setCellValue('C5', 'Jurusan:');$this->excel->getActiveSheet()->setCellValue('D5', $class->major);
+		$this->excel->getActiveSheet()->setCellValue('H5', 'Nama Tutor:');$this->excel->getActiveSheet()->setCellValue('I5', $class->name);
+		
+		$this->excel->getActiveSheet()->setCellValue('C6', 'Kode/Nama Mtk:');$this->excel->getActiveSheet()->setCellValue('D6', $class->code);
+		$this->excel->getActiveSheet()->setCellValue('H6', 'Kelas:');$this->excel->getActiveSheet()->setCellValue('I6', $class->title);
+		
+		$this->excel->getActiveSheet()->setCellValue('B8', 'No.');
+		$this->excel->getActiveSheet()->mergeCells('B8:B9');
+		$this->excel->getActiveSheet()->getStyle('B8:B9')->applyFromArray($style_table_header);	
+		
+		$this->excel->getActiveSheet()->setCellValue('C8', 'NIM');
+		$this->excel->getActiveSheet()->mergeCells('C8:C9');
+		$this->excel->getActiveSheet()->getStyle('C8:C9')->applyFromArray($style_table_header);	
+		
+		$this->excel->getActiveSheet()->setCellValue('D8', 'Nama Mahasiswa');
+		$this->excel->getActiveSheet()->mergeCells('D8:D9');
+		$this->excel->getActiveSheet()->getStyle('D8:D9')->applyFromArray($style_table_header);
+		
+		$this->excel->getActiveSheet()->setCellValue('E8', 'Pertemuan Ke-');
+		$this->excel->getActiveSheet()->mergeCells('E8:L8');
+		$this->excel->getActiveSheet()->getStyle('E8:L8')->applyFromArray($style_table_header);
+		
+		$this->excel->getActiveSheet()->setCellValue('E9', 'I');
+		$this->excel->getActiveSheet()->getStyle('E9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('F9', 'II');
+		$this->excel->getActiveSheet()->getStyle('F9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('G9', 'III');
+		$this->excel->getActiveSheet()->getStyle('G9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('H9', 'IV');
+		$this->excel->getActiveSheet()->getStyle('H9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('I9', 'V');
+		$this->excel->getActiveSheet()->getStyle('I9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('J9', 'VI');
+		$this->excel->getActiveSheet()->getStyle('J9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('K9', 'VII');
+		$this->excel->getActiveSheet()->getStyle('K9')->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->setCellValue('L9', 'VIII');
+		$this->excel->getActiveSheet()->getStyle('L9')->applyFromArray($style_table_header);
+		
+		
+		
+		//content absen
+		$i = 1;
+		$startrow = 9;
+		foreach($students->result() as $row){
+			$this->excel->getActiveSheet()->setCellValue('B'.($startrow+$i), $i);
+			$this->excel->getActiveSheet()->getStyle('B'.($startrow+$i))->applyFromArray($style_table_header);
+			
+			$this->excel->getActiveSheet()->setCellValue('C'.($startrow+$i), $row->nim);
+			$this->excel->getActiveSheet()->getStyle('C'.($startrow+$i))->applyFromArray($style_table_header);	
+			
+			$this->excel->getActiveSheet()->setCellValue('D'.($startrow+$i), $row->name);
+			$this->excel->getActiveSheet()->getStyle('D'.($startrow+$i))->applyFromArray($style_table_header);		
+			
+			$temparr = explode(',',$row->absensi);
+			if(!empty($temparr)){
+				foreach($temparr as $abs){
+					switch($abs){
+						case 1:
+							$this->excel->getActiveSheet()->setCellValue('E'.($startrow+$i), '√');
+							break;
+						
+						case 2:
+							$this->excel->getActiveSheet()->setCellValue('F'.($startrow+$i), '√');
+							break;
+							
+						case 3:
+							$this->excel->getActiveSheet()->setCellValue('G'.($startrow+$i), '√');
+							break;
+							
+						case 4:
+							$this->excel->getActiveSheet()->setCellValue('H'.($startrow+$i), '√');
+							break;
+						
+						case 5:
+							$this->excel->getActiveSheet()->setCellValue('I'.($startrow+$i), '√');
+							break;
+						
+						case 6:
+							$this->excel->getActiveSheet()->setCellValue('J'.($startrow+$i), '√');
+							break;
+						
+						case 7:
+							$this->excel->getActiveSheet()->setCellValue('K'.($startrow+$i), '√');
+							break;
+						
+						case 8:
+							$this->excel->getActiveSheet()->setCellValue('L'.($startrow+$i), '√');
+							break;					
+					}			
+						
+				}
+			}
+			
+			$this->excel->getActiveSheet()->getStyle('E'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('F'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('G'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('H'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('I'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('J'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('K'.($startrow+$i))->applyFromArray($style_table_header);
+			$this->excel->getActiveSheet()->getStyle('L'.($startrow+$i))->applyFromArray($style_table_header);
+			
+			$i++;
+		}
+		//==end content
+		
+		$this->excel->getActiveSheet()->setCellValue('D'.($startrow+$i+2), 'Nama Tutor');$this->excel->getActiveSheet()->setCellValue('D'.($startrow+$i+3), $class->name);
+		$this->excel->getActiveSheet()->setCellValue('E'.($startrow+$i+2), 'Paraf Tutor');
+		$this->excel->getActiveSheet()->mergeCells('E'.($startrow+$i+2).':L'.($startrow+$i+2));
+		
+		$this->excel->getActiveSheet()->getStyle('D'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('E'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('F'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('G'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('H'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('I'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('J'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('K'.($startrow+$i+3))->applyFromArray($style_table_header);
+		$this->excel->getActiveSheet()->getStyle('L'.($startrow+$i+3))->applyFromArray($style_table_header);
+		
+		$this->excel->getActiveSheet()->setCellValue('D'.($startrow+$i+6), 'Mengetahui');
+		$this->excel->getActiveSheet()->setCellValue('D'.($startrow+$i+7), 'Ka. UPBJJ-UT. Jakarta ');
+		
+		$this->excel->getActiveSheet()->setCellValue('I'.($startrow+$i+6), 'Tutor');
+		$this->excel->getActiveSheet()->setCellValue('I'.($startrow+$i+7), $class->name);
 		
 				 
 		$filename='REKAP_'.$class->title.'_'.$current_period.'_'.$class->name.'.xls'; //save our workbook as this file name
