@@ -132,7 +132,14 @@ class CI_Upload {
 		// supplied file name for all uploads until initialized again
 		$this->_file_name_override = $this->file_name;
 	}
-
+    
+    public function my_escapeshellarg($input)
+    {
+      $input = str_replace('\'', '\\\'', $input);
+    
+      return '\''.$input.'\'';
+    }
+    
 	// --------------------------------------------------------------------
 
 	/**
@@ -1011,7 +1018,7 @@ class CI_Upload {
 
 		return $filename;
 	}
-
+    
 	// --------------------------------------------------------------------
 
 	/**
@@ -1066,7 +1073,7 @@ class CI_Upload {
 		 */
 		if (DIRECTORY_SEPARATOR !== '\\')
 		{
-			$cmd = 'file --brief --mime ' . escapeshellarg($file['tmp_name']) . ' 2>&1';
+			$cmd = 'file --brief --mime ' . $this->my_escapeshellarg($file['tmp_name']) . ' 2>&1';
 
 			if (function_exists('exec'))
 			{

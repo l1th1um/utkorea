@@ -6,16 +6,8 @@ class Main extends CI_Controller {
     {
         parent::__construct();
         //$this->output->enable_profiler(TRUE);
-        $config = Array(
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,
-	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea^&2012'
-	       
-	    );
-	     
-	    $this->load->library('email', $config);
+        
+        $this->load->library('email');
 		$this->email->set_newline("\r\n");
         
         $this->load->model('person_model');

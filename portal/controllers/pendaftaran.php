@@ -7,6 +7,12 @@ class pendaftaran extends CI_Controller {
 		//$this->output->enable_profiler(TRUE);	
 		$this->load->model('person_model','person');
 		$this->load->model('finance_model','finance');
+
+        //$config['charset'] = 'iso-8859-1';
+        //$config['mailtype'] = 'html';
+       	
+        $this->load->library('email');
+		$this->email->set_newline("\r\n");
 	}
 	
 	public function index()	
@@ -143,22 +149,28 @@ class pendaftaran extends CI_Controller {
 		$data['list'] = edu_list();
 		$this->load->view('pendaftaran/edu_list',$data);
 	}
+    
+    public function testing_email()    {
+     	
+        $sendmail = native_mail('4r53n1c@gmail.com',$this->config->item('mail_from_name'),'it@utkorea.org','Testing Saja','Messagenya',$this->config->item('absolute_path')."skrinsut.png");
+        //$sendmail = SendMail('4r53n1c@gmail.com','it@utkorea.org','UT Korsel','Testing Saja','Messagenya',true,'/home/utkoaorg/public_html/portal/skrinsut.png');
+        
+        if ($sendmail) echo "BErhasil"; else echo "Gagal";
+    }
 	
 	public function mail_new_registrant($name,$email,$reg_id) {
-		$config = Array(
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,
-	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea^&2012'
-	       
-	    );
-	     
-	    $this->load->library('email', $config);    
-	    $this->email->set_newline("\r\n"); 
-		
-				
-		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
+	    $from_name = $this->config->item('mail_from_name');
+        $from_email = $this->config->item('mail_from');
+	    //$from = "$from_name <$from_email>";
+        $subject = "Registrasi Mahasiswa Baru Universitas Terbuka";
+        $message = $this->lang->line('new_student_email_content');
+		$message = sprintf($message,$name);
+        $filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
+        
+        
+        native_mail($email,$from_name,$from_email,$subject,$message,$filename);
+		/*
+        $this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
 		$this->email->to($email);
 		$this->email->bcc('utkorsel@gmail.com');
 		
@@ -169,8 +181,13 @@ class pendaftaran extends CI_Controller {
 		$filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
 		$this->email->attach($filename);
 		$this->email->send();
-		
+        echo $filename;
+        echo file_exists($filename);
+		echo $this->email->print_debugger();
+        */
+        
 		//to kemahasiswaan (rengganis)
+        $this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
 		$this->email->to('rengganis.rachmat@gmail.com','abo_smile@yahoo.com');
 		$this->email->bcc('utkorsel@gmail.com');
 		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
@@ -183,40 +200,7 @@ class pendaftaran extends CI_Controller {
 		Portal Akademik UT Korea Selatan";
 		$this->email->message($message);		
 		$this->email->send();
-		//echo $this->email->print_debugger();		
 	}
-
-	/*
-	public function test_email() {
-		//$this->mail_new_registrant("Andri", "4r53n1c@gmail.com",'3261');
-		error_reporting(E_ALL);		
-		 $config = Array(
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,
-	      'smtp_user' => '4r53n1c@gmail.com',
-	      'smtp_pass' => ''
-	       
-	    );
-	     
-	    $this->load->library('email', $config);    
-	    $this->email->set_newline("\r\n"); 
-	     
-	    $this->email->from('4r53n1c@gmail.com', 'Andri Fachrur Rozie');
-	    $this->email->to('andri@korea.ac.kr');
-	    $this->email->subject('This is an email test');
-	    $this->email->message('it is working Darling ');
-	     
-	    if($this->email->send())
-	    {
-	      echo 'Your email was sent, dammit';
-	    }
-	    else
-	    {
-	      show_error($this->email->print_debugger());
-	    }
-		
-	} */
 	
 	function show_pdf($uuid,$isusingregcode = false) {
 		
@@ -247,7 +231,6 @@ class pendaftaran extends CI_Controller {
 		$data['id'] = $id;
 		$data['row'] = $this->person->get_new_student_details($id);
 	     
-		 
 		if ($data['row'] != FALSE) {
 			$html = $this->load->view('pendaftaran/form_pdf', $data, true);
 			
@@ -332,17 +315,7 @@ class pendaftaran extends CI_Controller {
 	}
 	
 	public function mail_all_students() {
-		$config = Array(
-		  'mail_type' => 'html',
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,	      
-	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea^&2012'
-	       
-	    );
-	     
-	    $this->load->library('email', $config);    
+		$this->load->library('email');    
 	    $this->email->set_newline("\r\n");
 		
 		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
@@ -372,17 +345,7 @@ class pendaftaran extends CI_Controller {
 	}
 
 	public function mail_all_tutor() {
-		$config = Array(
-		  'mail_type' => 'html',
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,	      
-	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea^&2012'
-	       
-	    );
-	     
-	    $this->load->library('email', $config);    
+	    $this->load->library('email');    
 	    $this->email->set_newline("\r\n");
 		
 		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));

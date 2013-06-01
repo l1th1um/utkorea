@@ -230,8 +230,8 @@ jQuery(function(){
                     <div class="newsflash-title"><h4>Newsflash</h4></div>
                     <div class="news-spacer">&nbsp;</div>
                     <div class="newsflash-text">
-                    	<div>Pendaftaran Mahasiswa Baru, Dibuka  Pada Tanggal 1 Desember 2012  Sampai  Dengan  5 Januari 2013. Jangan sampai ketinggalan</div>
-                    	<div>Pendaftaran Mahasiswa Baru, Dibuka  Pada Tanggal 1 Desember 2012  Sampai  Dengan  5 Januari 2013. Jangan sampai ketinggalan</div>
+                    	<div>Pendaftaran Mahasiswa Baru Universitas Terbuka Kore Selatan Dibuka  Pada Tanggal 1 Juni 2013  Sampai  Dengan  3 Juli 2013</div>
+                    	<div>Pendaftaran Mahasiswa Baru Universitas Terbuka Kore Selatan Dibuka  Pada Tanggal 1 Juni 2013  Sampai  Dengan  3 Juli 2013</div>
                         
                     </div>                
                 </div>

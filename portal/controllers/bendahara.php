@@ -9,16 +9,7 @@ class bendahara extends CI_Controller {
         $this->load->model('person_model','person');
 		$this->load->model('finance_model','finance');
 		
-		$config = Array(
-	      'protocol' => 'smtp',
-	      'smtp_host' => 'ssl://smtp.googlemail.com',
-	      'smtp_port' => 465,
-	      'smtp_user' => 'utkorsel@gmail.com',
-	      'smtp_pass' => 'UTkorea^&2012'
-	       
-	    );
-	     
-	    $this->load->library('email', $config);
+	    $this->load->library('email');
 		$this->email->set_newline("\r\n");		
 				
 		$this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));  

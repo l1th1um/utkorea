@@ -104,7 +104,7 @@ table#regFrm tr {
 
 <!-- Halaman 1 -->
 <p style="padding-bottom:20px">Kepada Yth. <?php echo $row->name; ?></p>
-<p>Terima kasih telah mendaftar sebagai calon mahasiswa UT Korea Semester Ganjil Tahun 2013</p>
+<p>Terima kasih telah mendaftar sebagai calon mahasiswa UT Korea Semester Genap Tahun 2013</p>
 <p>Berkas yang perlu dikirimkan adalah sebagai berikut</p>
 <ol>
 	<li>Formulir pendaftaran yang telah ditandatangani</li>

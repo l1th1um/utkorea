@@ -940,3 +940,53 @@ function getRemoteFile($url,$context = null)
    }
    return $response;
 }
+
+function native_mail($to,$from_name,$from_email,$subject,$message,$fileatt=NULL)
+{
+    
+    $attach = "";
+    
+    $rand = md5(time());
+    $mime_boundary = "==Multipart_Boundary_x{$rand}x";
+    
+    if (! is_null($fileatt) ) {
+        $fileatttype = get_mime_by_extension($fileatt);
+        $fileattname = basename($fileatt);
+        
+        $file = fopen($fileatt, 'rb');
+        if ($file) {
+            $data = fread($file, filesize($fileatt));
+            fclose($file);    
+            $data = chunk_split(base64_encode($data)); 
+            
+            $attach = "--{$mime_boundary}\n" .
+                        "Content-Type: {$fileatttype};\n" .
+                        " name=\"{$fileattname}\"\n" .
+                        "Content-Disposition: attachment;\n" .
+                        " filename=\"{$fileattname}\"\n" .
+                        "Content-Transfer-Encoding: base64\n\n" .
+                        $data .= "\n\n" .
+                        "--{$mime_boundary}--\n";
+        }
+    }
+    
+    $headers = "From: $from_name <$from_email>";
+    
+    $headers .= "\nMIME-Version: 1.0\n" .
+    "Content-Type: multipart/mixed;\n" .
+    " boundary=\"{$mime_boundary}\""; 
+     
+    $message .= "This is a multi-part message in MIME format.\n\n" .
+    "--{$mime_boundary}\n" .
+    "Content-Type:text/html; charset=\"iso-8859-1\"\n" .
+    "Content-Transfer-Encoding: 7bit\n\n" .
+    $message .= "\n\n";
+    
+    $message .= $attach;
+        
+    if(mail($to, $subject, $message, $headers)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
