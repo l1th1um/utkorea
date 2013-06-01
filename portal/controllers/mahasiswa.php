@@ -5,7 +5,7 @@ class mahasiswa extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();								
-    	//$this->output->enable_profiler(TRUE);
+    	$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
 		$this->load->model('finance_model','finance');
     }	
@@ -20,7 +20,7 @@ class mahasiswa extends CI_Controller {
 		$this->auth->check_auth();		
 		$data = array();
 		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));
-		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'));	
+		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'reregistration',setting_val('time_period'));	
 		
 		
 		if(!$this->input->post('formhdn')){
@@ -69,8 +69,10 @@ class mahasiswa extends CI_Controller {
 
 				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
 				$datapembayaran['nim'] = $this->session->userdata('username');
+				$datapembayaran['period'] = setting_val('time_period');
 
 				unset($datapembayaran['formhdn']);
+				unset($datapembayaran['amount']);
 				
 				$conf_number = $this->finance->insert_konfirmasi_pembayaran($datapembayaran);
 				

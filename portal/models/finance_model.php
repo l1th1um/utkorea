@@ -27,7 +27,7 @@ class finance_model extends CI_Model {
 	function get_list_JQGRID($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id, IF( nim <100000, CONCAT(  "UTKOR", nim ) , nim ) as nim,
+		$this->db->select('id, period, IF( nim <100000, CONCAT(  "UTKOR", nim ) , nim ) as nim,
 						   account_no,DATE_FORMAT(payment_date,"%e %M %Y") as payment_date,bank_name,sender_name,
 						   verified_by,verified_time, is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent',FALSE);
 		$this->db->from('reregistration');		
@@ -80,10 +80,10 @@ class finance_model extends CI_Model {
 		return $query;
 	}
 
-	function check_payment_status($nim,$table='reregistration') 
+	function check_payment_status($nim,$table='reregistration',$period = 20131) 
 	{
 		$this->db->select('verified_by');
-		$query = $this->db->get_where($table,array('nim' => $nim));
+		$query = $this->db->get_where($table,array('nim' => $nim, 'period' => $period ));
 		
 		if ( $query->num_rows() > 0 ) 
 		{

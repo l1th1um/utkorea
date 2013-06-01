@@ -155,7 +155,10 @@
 					<td  width="150px"><label><?php echo $this->lang->line('sender_name');?></label></td>
 					<td><?php echo form_input('sender_name'); ?></td>                
 				</tr>
-				
+				<tr>		
+					<td  width="150px"><label>Biaya</label></td>
+					<td><?php echo form_input(array('name'=>'amount','value'=>'100,000','readonly'=>'readonly')); ?></td>                
+				</tr>
 				<tr>
 					<td colspan="3"><button type="submit">
 					<?php echo $this->lang->line('submit');?>
