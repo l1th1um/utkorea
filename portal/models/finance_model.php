@@ -80,7 +80,7 @@ class finance_model extends CI_Model {
 		return $query;
 	}
 
-	function check_payment_status($nim,$table='reregistration',$period = 20131) 
+	function check_payment_status($nim,$table='reregistration',$period) 
 	{
 		$this->db->select('verified_by');
 		$query = $this->db->get_where($table,array('nim' => $nim, 'period' => $period ));

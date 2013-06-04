@@ -18,9 +18,12 @@ class mahasiswa extends CI_Controller {
 	
 	function daftar_ulang() {
 		$this->auth->check_auth();		
+		
+		$timeperiod = 20132; //setting_val('time_period')
+		
 		$data = array();
 		$data['empty_val'] = $this->person->check_null_field($this->session->userdata('username'));
-		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'reregistration',setting_val('time_period'));	
+		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'reregistration',$timeperiod);	
 		
 		
 		if(!$this->input->post('formhdn')){
@@ -69,7 +72,7 @@ class mahasiswa extends CI_Controller {
 
 				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
 				$datapembayaran['nim'] = $this->session->userdata('username');
-				$datapembayaran['period'] = setting_val('time_period');
+				$datapembayaran['period'] = $timeperiod;
 
 				unset($datapembayaran['formhdn']);
 				unset($datapembayaran['amount']);

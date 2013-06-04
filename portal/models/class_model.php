@@ -590,5 +590,15 @@ class class_model extends CI_Model {
 		}		
 	}
 	
+	public function get_survey_result($id_assignment){
+		$this->db->where('id_assignment',$id_assignment);
+		$q = $this->db->get('survey');
+		if($q->num_rows()>0){
+			return $q;
+		}else{
+			return false;
+		}	
+	}
+	
 	
 }
