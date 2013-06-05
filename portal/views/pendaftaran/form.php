@@ -118,6 +118,7 @@
 			</label>
 			<div class="element">
 				<?php echo form_input('email',$this->input->post('email'))?>
+                * Jangan menggunakan email Yahoo!
 			</div>
 		</li>
 		<li>

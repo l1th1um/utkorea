@@ -118,8 +118,7 @@ table#regFrm tr {
 
 <div style='padding-left:10px;border:1px solid #000000;line-height: 1em'>
 	<p>Universitas Terbuka UPBJJ Jakarta (a.n. Yasir UT Korea)</p>
-	<p>Jl. Pemuda, Rawamangun, Komp. Universitas Negeri Jakarta, Jakarta Timur 13220</p>
-	<p>Telp. 021-4701577, 4751172, 4893638 Fax. 021-4701577, 4751172</p>
+	<p>Jalan Jenderal Ahmad Yani No. 43, RT5/RW4, Rawamangun, Jakarta Timur 13120</p>	
 </div>
 
 <p><b>2. Jika Berkas berada di Korea</b></p>
@@ -147,7 +146,8 @@ table#regFrm tr {
 <ol>
 	<li>Pastikan anda telah memiliki back-up berkas yang akan dikirimkan, bisa berupa scan, foto atau fotokopi 
 		sebelum semua dokumen dikirimkan melalui pos ke alamat diatas untuk mengantisipasi jika berkas tidak diterima oleh UT Korea</p>
-	<li>Berkas harus sudah dikirimkan paling lambat pada tanggal 5 Januari 2013 (cap pos) ke alamat diatas.</li>
+	<li>Berkas harus sudah dikirimkan paling lambat pada tanggal 3 Juli 2013 (cap pos) ke alamat diatas.</li>
+    <li>UNTUK PENGIRIMAN KE UT-UPBJJ JAKARTA DILAKSANAKAN SETELAH 17 JUNI 2013.</li>
 </li>
 </ol>
 

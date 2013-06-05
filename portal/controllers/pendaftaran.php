@@ -149,57 +149,28 @@ class pendaftaran extends CI_Controller {
 		$data['list'] = edu_list();
 		$this->load->view('pendaftaran/edu_list',$data);
 	}
-    
-    public function testing_email()    {
-     	
-        $sendmail = native_mail('4r53n1c@gmail.com',$this->config->item('mail_from_name'),'it@utkorea.org','Testing Saja','Messagenya',$this->config->item('absolute_path')."skrinsut.png");
-        //$sendmail = SendMail('4r53n1c@gmail.com','it@utkorea.org','UT Korsel','Testing Saja','Messagenya',true,'/home/utkoaorg/public_html/portal/skrinsut.png');
-        
-        if ($sendmail) echo "BErhasil"; else echo "Gagal";
-    }
-	
+
 	public function mail_new_registrant($name,$email,$reg_id) {
 	    $from_name = $this->config->item('mail_from_name');
         $from_email = $this->config->item('mail_from');
-	    //$from = "$from_name <$from_email>";
-        $subject = "Registrasi Mahasiswa Baru Universitas Terbuka";
+	    $subject = "Registrasi Mahasiswa Baru Universitas Terbuka";
         $message = $this->lang->line('new_student_email_content');
 		$message = sprintf($message,$name);
         $filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
         
-        
         native_mail($email,$from_name,$from_email,$subject,$message,$filename);
-		/*
-        $this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
-		$this->email->to($email);
-		$this->email->bcc('utkorsel@gmail.com');
-		
-		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
-		$message = $this->lang->line('new_student_email_content');
-		$message = sprintf($message,$name);
-		$this->email->message($message);
-		$filename = $this->config->item('absolute_path')."assets/core/pdf/registrasi_".$reg_id.".pdf";
-		$this->email->attach($filename);
-		$this->email->send();
-        echo $filename;
-        echo file_exists($filename);
-		echo $this->email->print_debugger();
-        */
-        
-		//to kemahasiswaan (rengganis)
-        $this->email->from($this->config->item('mail_from'), $this->config->item('mail_from_name'));
-		$this->email->to('rengganis.rachmat@gmail.com','abo_smile@yahoo.com');
-		$this->email->bcc('utkorsel@gmail.com');
-		$this->email->subject('Registrasi Mahasiswa Baru Universitas Terbuka');
-		$message = "Kepada Tim Kemahasiswaan, \n\n
-		Pendaftaran Mahasiswa Baru Nomor Registrasi : ".$reg_id."\n\n
+		        
+		//to kemahasiswaan (rengganis)        
+		$message2 = "Kepada Tim Kemahasiswaan, <br /><br />
+		Pendaftaran Mahasiswa Baru Nomor Registrasi : ".$reg_id."<br /><br />
 				
 		Silahkan cek dokumen pendaftaran yang terlampir bersama email ini.
 		
 		Terima Kasih,
-		Portal Akademik UT Korea Selatan";
-		$this->email->message($message);		
-		$this->email->send();
+		Portal Akademik UT Korea Selatan";		
+        
+        native_mail('kemahasiswaan@utkorea.org',$from_name,$from_email,
+                    $subject,$message2,$filename);
 	}
 	
 	function show_pdf($uuid,$isusingregcode = false) {

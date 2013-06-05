@@ -17,8 +17,8 @@
 					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status','Form F1'],	
 					colModel:[
 						{name:'nim',index:'nim',width:70,align:'center'},
-						{name:'name',align:'center',index:'name',formatter:add_view_link},
-						{name:'email',align:'center',index:'email'},
+						{name:'name',align:'left',index:'name',formatter:add_view_link},
+						{name:'email',align:'left',index:'email'},
 						{name:'reg_time',align:'center',index:'reg_time',width:90},						
 						{name:'verified',index:'verified',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
 						{name:'none',formatter:attach_link_f1,align:'center'}						

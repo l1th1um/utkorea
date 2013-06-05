@@ -115,10 +115,12 @@ class person_model extends CI_Model {
 			$this->db->from("staff");
 			$this->db->where("group_id IS NOT ","NULL",false);		
 		}elseif($type=='baru'){
-			$this->db->select("mahasiswa.name,mahasiswa.nim,mahasiswa.phone,mahasiswa.major,mahasiswa.region,mahasiswa.status,mahasiswa.gender,mahasiswa.entry_period,mahasiswa.email,mahasiswa.birth_date,mahasiswa.address_id,mahasiswa.address_kr,mahasiswa.religion,mahasiswa.marital_status,mahasiswa.remarks,mahasiswa_baru.reg_time,mahasiswa_baru.verified");			
-			$this->db->from("mahasiswa");
-			$this->db->join('mahasiswa_baru','mahasiswa.nim = mahasiswa_baru.reg_code','left');
-			$this->db->where("length(nim)<5");
+			//$this->db->select("mahasiswa.name,mahasiswa.nim,mahasiswa.phone,mahasiswa.major,mahasiswa.region,mahasiswa.status,mahasiswa.gender,mahasiswa.entry_period,mahasiswa.email,mahasiswa.birth_date,mahasiswa.address_id,mahasiswa.address_kr,mahasiswa.religion,mahasiswa.marital_status,mahasiswa.remarks,mahasiswa_baru.reg_time,mahasiswa_baru.verified");
+            $this->db->select("name,CONCAT('UTKOR',reg_code) as nim,phone,major,region,status,gender,period,email,birth_date,address_id,address_kr,religion,marital_status,DATE_FORMAT(reg_time, '%d-%m-%Y') as reg_time,verified",FALSE);
+            $this->db->from("mahasiswa_baru");			
+			//$this->db->from("mahasiswa");
+			//$this->db->join('mahasiswa_baru','mahasiswa.nim = mahasiswa_baru.reg_code','left');
+			//$this->db->where("length(nim)<5");
 		}elseif($type=='tutor'){
 			if($is_export){
 				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");
@@ -214,6 +216,8 @@ class person_model extends CI_Model {
 		
 		$insert['birth_date'] = $data['year_birth']."-".$data['month_birth']."-".$data['day_birth'];
 		$insert['phone'] = "82".$data['phone'];
+        $insert['period'] = "20132";
+        
 		$this->db->set('reg_time', 'now()', FALSE);
 		$this->db->set('uid', 'uuid()', FALSE);
 						
