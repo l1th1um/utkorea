@@ -5,7 +5,7 @@ class mahasiswa extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();								
-    	$this->output->enable_profiler(TRUE);
+    	//$this->output->enable_profiler(TRUE);
         $this->load->model('person_model','person');
 		$this->load->model('finance_model','finance');
     }	
@@ -179,9 +179,12 @@ class mahasiswa extends CI_Controller {
 		if($type=='lama'){
 			$data->records = count ($this->person->get_list_JQGRID('mahasiswa',$req_param,"all")->result_array());		
 			$records = $this->person->get_list_JQGRID('mahasiswa',$req_param,"current")->result_array();
-		}else{
+		}elseif($type=='baru'){
 			$data->records = count ($this->person->get_list_JQGRID('baru',$req_param,"all")->result_array());		
 			$records = $this->person->get_list_JQGRID('baru',$req_param,"current")->result_array();
+		}elseif($type=='baru_default'){
+			$data->records = count ($this->person->get_list_JQGRID('baru_default',$req_param,"all")->result_array());		
+			$records = $this->person->get_list_JQGRID('baru_default',$req_param,"current")->result_array();
 		}
 		
 		

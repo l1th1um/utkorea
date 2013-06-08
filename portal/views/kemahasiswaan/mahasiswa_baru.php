@@ -11,7 +11,7 @@
 	$(document).ready(function(){			
 		$("#grid_name").jqGrid({
 					url:'<?php
-						  echo site_url( "mahasiswa/getlistJQGRID/baru" );
+						  echo site_url( "mahasiswa/getlistJQGRID/baru_default" );
 						  ?>',
 					datatype: "json",
 					colNames:['Kode Registrasi','Nama', 'Email','Waktu Pendaftaran','Status','Form F1'],	

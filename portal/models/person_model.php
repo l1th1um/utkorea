@@ -121,6 +121,9 @@ class person_model extends CI_Model {
 			//$this->db->from("mahasiswa");
 			//$this->db->join('mahasiswa_baru','mahasiswa.nim = mahasiswa_baru.reg_code','left');
 			//$this->db->where("length(nim)<5");
+		}elseif($type=='baru_default'){
+			$this->db->select("name,reg_code as nim,phone,major,region,status,gender,period,email,birth_date,address_id,address_kr,religion,marital_status,DATE_FORMAT(reg_time, '%d-%m-%Y') as reg_time,verified",FALSE);
+            $this->db->from("mahasiswa_baru");			
 		}elseif($type=='tutor'){
 			if($is_export){
 				$this->db->select("staff_id,name,phone,email,affiliation,region,major.major as major,birth");
@@ -420,7 +423,7 @@ class person_model extends CI_Model {
 	function edit_mahasiswa_baru($reg_code,$val)
 	{
 		$this->db->where('reg_code',$reg_code);
-		return $this->db->update('mahasiswa_baru_trimmed',$val);
+		return $this->db->update('mahasiswa_baru',$val);
 	}
 	
 	function get_staff_by_username($username)
