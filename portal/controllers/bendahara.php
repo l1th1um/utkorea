@@ -57,8 +57,20 @@ class bendahara extends CI_Controller {
 		$data->records = count ($this->finance->get_list_JQGRID($req_param,"all")->result_array());		
 		$records = $this->finance->get_list_JQGRID($req_param,"current")->result_array();
 		
+		$records2 = array();
+		foreach($records as $row){			
+			if($row['entry_period'] != ''){
+				$row['entry_period'] = calculate_semester($row['entry_period']);
+			}else{
+				$row['entry_period'] = 'MABA';
+			}
+			$records2[] = $row;
+		}
+		
+		
+		
 		$data->total = ceil($data->records /$rows );
-		$data->rows = $records;
+		$data->rows = $records2;
 
 		echo json_encode ($data );
 		exit( 0 );

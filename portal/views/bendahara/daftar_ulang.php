@@ -14,11 +14,11 @@
 						  echo site_url( "bendahara/getlistJQGRID" );
 						  ?>',
 					datatype: "json",
-					colNames:['Period','NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Status','Receipt','Ket'],	
+					colNames:['Period','NIM','Semester','Nama Bank','Tanggal Transfer','Atas Nama','Status','Receipt','Ket'],	
 					colModel:[						
 						{name:'period',width:80,align:'center',index:'period'},
 						{name:'nim',width:80,align:'left',index:'nim',formatter:add_view_link},						
-						{name:'account_no',index:'account_no'},
+						{name:'entry_period',index:'entry_period',width:60,align:'center'},
 						{name:'bank_name',index:'bank_name'},
 						{name:'payment_date',width:140,align:'center',index:'payment_date'},
 						{name:'sender_name',index:'sender_name'},

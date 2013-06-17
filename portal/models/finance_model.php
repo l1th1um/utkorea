@@ -27,10 +27,11 @@ class finance_model extends CI_Model {
 	function get_list_JQGRID($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id, period, IF( nim <100000, CONCAT(  "UTKOR", nim ) , nim ) as nim,
-						   account_no,DATE_FORMAT(payment_date,"%e %M %Y") as payment_date,bank_name,sender_name,
-						   verified_by,verified_time, is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent',FALSE);
-		$this->db->from('reregistration');		
+		$this->db->select('a.id, a.period, IF( a.nim <100000, CONCAT(  "UTKOR", a.nim ) , a.nim ) as nim,
+						   a.account_no,DATE_FORMAT(a.payment_date,"%e %M %Y") as payment_date,a.bank_name,a.sender_name,
+						   a.verified_by,a.verified_time, a.is_verified,IF(a.is_verified = 1,a.receipt_sent,"2"  ) as receipt_sent,b.entry_period',FALSE);
+		$this->db->from('reregistration a');	
+		$this->db->join('mahasiswa b','a.nim = b.nim','left');	
 		
 		if (!empty($params))		{			
 			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))

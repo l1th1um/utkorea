@@ -214,7 +214,7 @@ class pendaftaran extends CI_Controller {
 	
 	function check_registration_status() {
 		$reg_code = substr($this->input->post('reg_code'),5,4);
-		$payment_status = $this->finance->check_payment_status($reg_code);
+		$payment_status = $this->finance->check_payment_status($reg_code,'reregistration',get_settings('time_period'));
 		$reg_status = $this->person->check_registration_status($reg_code);
 		
 		if ($payment_status == 1) {
@@ -248,6 +248,7 @@ class pendaftaran extends CI_Controller {
 				$insert_data = populate_form($this->input->post(), 'reregistration');
 				$insert_data['nim'] = substr($this->input->post('nim'),5,4);
 				$insert_data['payment_date'] = convertToMysqlDate($this->input->post('payment_date'));
+				$insert_data['payment_date'] = get_settings('time_period');
 				
 				if ($this->finance->insert_konfirmasi_pembayaran($insert_data) == FALSE) {
 					$data['message'] = $this->lang->line('db_error');
@@ -277,7 +278,7 @@ class pendaftaran extends CI_Controller {
 	
 	function check_payment_status() {
 		$reg_code = substr($this->input->post('nim'),5,4);
-		echo  $this->finance->check_payment_status($reg_code);
+		echo  $this->finance->check_payment_status($reg_code,'reregistration',get_settings('time_period'));
 	}
 	
 	public function prosedur() {		
