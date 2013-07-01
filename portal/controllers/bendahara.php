@@ -143,6 +143,27 @@ class bendahara extends CI_Controller {
 		}
 	}
 	
+	public function download_receipt($type,$data){
+		
+			//Daftar Ulang
+			$data = explode('n',$data);
+			if(strpos($data[1],'UTKOR')!=0){
+				$nim = substr($data[1], strlen($data[1]-5), 4);
+			}else{
+				$nim = $data[1];
+			}
+			$period = substr($data[0],4,1).'/'.substr($data[0], 0, 4);
+			$this->load->model('utility_model','um');
+			$res = $this->um->find_Receipt($nim,$period,$type);
+			if($res->num_rows()>0){
+				$row = $res->row();
+				echo $row->id;
+			}else{
+				return 0;
+			}
+		
+	}
+	
 	public function receipt($receipt_id,$data) 	{
 	    $this->load->helper(array('dompdf', 'file'));
 				
@@ -315,8 +336,8 @@ class bendahara extends CI_Controller {
 		);
 
 		$data->page = $page;
-		$data->records = count ($this->finance->get_rekap_mahasiswa_lama($req_param,"all",$type)->result_array());		
-		$records = $this->finance->get_rekap_mahasiswa_lama($req_param,"current",$type)->result_array();
+		$data->records = count ($this->finance->get_rekap_mahasiswa_lama($req_param,"all",$type,get_settings('time_period'))->result_array());		
+		$records = $this->finance->get_rekap_mahasiswa_lama($req_param,"current",$type,get_settings('time_period'))->result_array();
 
 		$data->total = ceil($data->records /$rows );
 		$data->rows = $records;
@@ -395,4 +416,75 @@ class bendahara extends CI_Controller {
 			}
 		
 	}	
+	
+	function rekap_maba(){
+		$this->auth->check_auth();
+		$data = array();					
+		$content['page'] = $this->load->view('bendahara/rekap_maba',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
+	public function get_rekap_maba()
+	{
+		$page = $this->input->post("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->post("rows", TRUE );
+		if(!$rows)$rows=20;
+		
+		$sort_by = $this->input->post( "sidx", TRUE );
+		if(!$sort_by)$sort_by='reg_code';
+		
+		$sort_direction = $this->input->post( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='DESC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->post( "_search", TRUE ),
+			"search_field" => $this->input->post( "searchField", TRUE ),
+			"search_operator" => $this->input->post( "searchOper", TRUE ),
+			"search_str" => $this->input->post( "searchString", TRUE )
+		);
+
+		$data->page = $page;
+		$data->records = count ($this->finance->rekap_maba_bendahara_kemahasiswaan($req_param,"all")->result_array());		
+		$records = $this->finance->rekap_maba_bendahara_kemahasiswaan($req_param,"current")->result_array();
+		
+		$data->total = ceil($data->records /$rows );
+		$data->rows = $records;
+
+		echo json_encode ($data );
+		exit( 0 );
+	}
+	
+	public function exportCurrentCRUD_rekap_maba(){
+		$page = $this->input->get("page", TRUE );
+		if(!$page)$page=1;
+		
+		$rows = $this->input->get("rows", TRUE );
+		if(!$rows)$rows=10;
+		
+		$sort_by = $this->input->get( "sidx", TRUE );
+		if(!$sort_by)$sort_by='reg_code';
+		
+		$sort_direction = $this->input->get( "sord", TRUE );
+		if(!$sort_direction)$sort_direction='ASC';
+		
+		$req_param = array (
+            "sort_by" => $sort_by,
+			"sort_direction" => $sort_direction,
+			"page" => $page,
+			"rows" => $rows,
+			"search" => $this->input->get( "_search", TRUE ),
+			"search_field" => $this->input->get( "searchField", TRUE ),
+			"search_operator" => $this->input->get( "searchOper", TRUE ),
+			"search_str" => $this->input->get( "searchString", TRUE )
+		);
+		
+		$this->jqgrid_export->exportCurrent_rekap_maba($req_param);
+	}
+
 }

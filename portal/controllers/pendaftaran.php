@@ -248,7 +248,7 @@ class pendaftaran extends CI_Controller {
 				$insert_data = populate_form($this->input->post(), 'reregistration');
 				$insert_data['nim'] = substr($this->input->post('nim'),5,4);
 				$insert_data['payment_date'] = convertToMysqlDate($this->input->post('payment_date'));
-				$insert_data['payment_date'] = get_settings('time_period');
+				$insert_data['period'] = get_settings('time_period');
 				
 				if ($this->finance->insert_konfirmasi_pembayaran($insert_data) == FALSE) {
 					$data['message'] = $this->lang->line('db_error');

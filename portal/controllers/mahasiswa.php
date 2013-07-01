@@ -55,7 +55,7 @@ class mahasiswa extends CI_Controller {
 			$delimiter_suffix = "</div>";
 			$this->form_validation->set_error_delimiters($delimiter_prefix,$delimiter_suffix);
 		}else{
-			$this->_validate_payment();
+			$this->_validate_payment_daftarulang();
 		}
 		
 		if ($this->form_validation->run()){
@@ -246,19 +246,41 @@ class mahasiswa extends CI_Controller {
 		$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
 		$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
 		$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
-		$this->form_validation->set_rules('amount',$this->lang->line('amount'),'trim|required');
+		$this->form_validation->set_rules('amount',$this->lang->line('amount'),'trim|required|numeric');
+		$this->form_validation->set_rules('amountother',$this->lang->line('amount'),'trim|numeric|callback__checkamountother');
+	}
+
+	function _validate_payment_daftarulang() {
+		$this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'),'trim|required');
+		$this->form_validation->set_rules('bank_name',$this->lang->line('bank_name'),'trim|required');
+		$this->form_validation->set_rules('account_no',$this->lang->line('account_no'),'trim|required|number');
+		$this->form_validation->set_rules('sender_name',$this->lang->line('sender_name'),'trim|required');
+		$this->form_validation->set_rules('amount',$this->lang->line('amount'),'trim|required');		
+	}
+	
+	function _checkamountother($val){
+		if($this->input->post('amount')==01){
+			if($val!=''){
+				return true;
+			}else{
+				$this->form_validation->set_message('_checkamountother', 'Harap isi jumlah uang lainnya');
+				return false;
+			}
+		}else{
+			return true;
+		}
 	}
 	
 	function biaya_studi() {
 		$this->auth->check_auth();		
 		$data = array();
 		
-		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'payment');
+		$data['is_paid'] = $this->finance->check_payment_status($this->session->userdata('username'),'payment',get_settings('time_period'));
 		
 		if (setting_val('time_period') == user_detail('entry_period', $this->session->userdata('username'))) {
-			$data['amount'] = array(100000,200000,400000);						
+			$data['amount'] = array(100000,435000,485000);						
 		} else {
-			$data['amount'] = array(100000,150000,200000,350000);
+			$data['amount'] = array(100000,130000,200000,330000,430000);
 		}
 			
 		
@@ -266,6 +288,11 @@ class mahasiswa extends CI_Controller {
 			$this->_validate_payment();
 			if ($this->form_validation->run()){
 				$datapembayaran = $this->input->post();
+				
+				if($datapembayaran['amount']==01){
+					$datapembayaran['amount'] = $datapembayaran['amountother'];
+				}
+				unset($datapembayaran['amountother']);
 
 				$datapembayaran['payment_date'] = convertToMysqlDate($datapembayaran['payment_date'],'/');
 				$datapembayaran['nim'] = $this->session->userdata('username');

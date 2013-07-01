@@ -14,7 +14,7 @@
 						  echo site_url( "bendahara/getlistJQGRID" );
 						  ?>',
 					datatype: "json",
-					colNames:['Period','NIM','Semester','Nama Bank','Tanggal Transfer','Atas Nama','Status','Receipt','Ket'],	
+					colNames:['Period','NIM','Semester','Nama Bank','Tanggal Transfer','Atas Nama','Status','Receipt','Download','Ket'],	
 					colModel:[						
 						{name:'period',width:80,align:'center',index:'period'},
 						{name:'nim',width:80,align:'left',index:'nim',formatter:add_view_link},						
@@ -24,6 +24,7 @@
 						{name:'sender_name',index:'sender_name'},
 						{name:'is_verified',index:'is_verified',width:140,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
 						{name:'receipt_sent',index:'receipt_sent',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Send','1':'Sent','2':'Not Verified'}},formatter:check_sent},
+						{name:'nim',index:'nim',width:100,align:'center',formatter:add_download},
 						{name:'id',index:'id',width:40,align:'center'}
 					],
 					mtype : "POST",							
@@ -47,6 +48,14 @@
 			}
 		}	
 		
+		function add_download(cellValue, options, rowObject){
+			if(rowObject.receipt_sent==1){
+				return '<button class="green small download" style="width:80px;"><input type="hidden" value="' + rowObject.period + 'n' + cellValue + '" />Download</button>';
+			}else{
+				return '';
+			}
+		}
+		
 		function check_sent(cellValue, options, rowObject){
 			if(cellValue == 2) {
 				return '';
@@ -66,6 +75,15 @@
 			
 			return '<a href="#" class="viewStudent" id="'+nim+'">' + cellValue + '</a>';
 		}
+		
+		$(".download").live('click',function(){
+			val = $(this).children("input:hidden").val();
+			$.post("<?php echo base_url('bendahara/download_receipt/du'); ?>/" + val, function(data){
+				if(data!=0){
+					window.open("<?php echo base_url("assets/core/pdf/receipt/kuitansi_"); ?>" + data + ".pdf",'_blank');
+				}
+			});
+		});
 		
 		$(".viewStudent").live('click',function(){
 			$("#dialogcontainer").attr("title","Data Mahasiswa");

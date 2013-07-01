@@ -1,9 +1,15 @@
 <link rel="stylesheet" href="<?php echo admin_tpl_path()?>css/simplemodal.css" />
+<div style="color:red">
+<?php echo validation_errors(); ?>
+</div>
 <?php if (isset($message)) echo $message;  else $message= '';?>
 <?php
 	if (!empty($empty_val)) {
 		echo error_form("Sebelum Daftar Ulang Mohon Melengkapi Data Berikut"). "\n";
 ?>
+
+
+
 	<?php echo form_open_multipart(current_url(), array('id'=>'frmEditData')); ?>
 	<fieldset>
 		<table>

@@ -111,7 +111,7 @@ class finance_model extends CI_Model {
 	function get_payment_list($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id,nim,account_no,payment_date,bank_name,sender_name,amount,verified_by,
+		$this->db->select('id,nim,period,account_no,payment_date,bank_name,sender_name,amount,verified_by,
                             verified_time,is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent ', FALSE);
 		$this->db->from('payment');		
 		
@@ -217,10 +217,11 @@ class finance_model extends CI_Model {
 		}
 	}
 	
-	function get_rekap_mahasiswa_lama($params = "" , $page = "all",$type="all")
+	function get_rekap_mahasiswa_lama($params = "" , $page = "all",$type="all",$period = 20132)
 	{
 		$this->db->select('a.nim,b.is_verified as semesterpayment,c.is_verified as registrationpayment');
 		$this->db->from('mahasiswa a');
+		$this->db->where('a.period',$period);
 		$this->db->join('payment b', 'a.nim = b.nim','left');
 		$this->db->join('reregistration c', 'a.nim = c.nim','left');
 		if($type==1){
@@ -367,6 +368,68 @@ class finance_model extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	function rekap_maba_bendahara_kemahasiswaan($params = "" , $page = "all",$is_export=false)
+	{
+		if(!$is_export){
+			$this->db->select('a.reg_code,a.name,a.verified,b.is_verified as duver,c.is_verified as bsver,c.amount ');
+		}else{
+			$this->db->select('a.reg_code,a.name,a.phone,a.email,a.major,a.verified as kmhsver,b.is_verified as duver,c.is_verified as bsver,c.amount ');
+		}
+		
+		$this->db->from('mahasiswa_baru a');
+		$this->db->join('reregistration b','a.reg_code = b.nim','left');
+		$this->db->join('payment c','a.reg_code = c.nim','left');
+		$this->db->group_by('reg_code');
+		
+		if (!empty($params))		{			
+			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
+			{
+				$ops = array (
+							"eq" => "=",
+							"ne" => "<>",
+							"lt" => "<",
+							"le" => "<=",
+							"gt" => ">",
+							"ge" => ">="
+				);										
+				
+				if(!empty($params['search_field'])){
+					if($params['search_operator']=='cn'||$params['search_operator']=='nc'){
+						if($params['search_operator']=='cn'){
+							$this->db->like($params['search_field'],$params['search_str']);
+						}else{
+							$this->db->not_like($params['search_field'],$params['search_str']);
+						}
+					}else{
+						$this->db->where ($params['search_field'].' '.$params['search_operator'], $params['search_str']);
+					}
+					
+				}
+				
+				$this->db->order_by($params['sort_by'], $params ["sort_direction"] );
+
+
+				if ($page != "all")
+				{
+					$this->db->limit ($params ["rows"], $params ["rows"] *  ($params ["page"] - 1) );
+				}
+
+				$query = $this->db->get();
+				
+
+			}
+		}
+		else
+		{			
+				$this->db->limit (25);
+				$query = $this->db->get();
+
+		}
+
+		return $query;
+		
 	}
 	
 }

@@ -5,7 +5,10 @@
 <?php if ($is_paid == 1) {
 	echo success_form("Anda sudah melakukan pembayaran biaya studi dan menunggu konfirmasi bendahara UT Korea Selatan, silahkan masukan pembayaran tambahan jika diperlukan"); 
 } ?>
-<i>Biaya yang harus dibayarkan adalah biaya kuliah (₩450.000) di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang</i>
+<div style="color:red">
+<?php echo validation_errors(); ?>
+</div>
+<i>Biaya yang harus dibayarkan adalah biaya kuliah <?php if(count($amount)==3){ ?>(₩485.000)<?php }else{ ?>(₩430.000)<?php } ?> di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang</i>
 <fieldset>
 	<table>
 		<tr>
@@ -14,6 +17,7 @@
 				<?php foreach($amount as $row){
 					echo '<input type="radio" name="amount" value="'.$row.'" checked="checked"" />&nbsp;₩'.$row.'<br />';
 				}?>				
+				<input type="radio" name="amount" value="01" />Jumlah Lainnya : &nbsp;<input type="textbox" value="" name="amountother" />
 			</td>                
 		</tr>
 		<tr>
@@ -50,6 +54,10 @@ $(document).ready(function(){
 		yearRange: '2012:2013',
 		dateFormat: "dd/mm/yy"
 
+		});
+		
+		$( "input[name=amountother]").focus(function(){
+			$("input[value=01]").attr("checked","checked");
 		});
 });
 </script>

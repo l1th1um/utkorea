@@ -13,17 +13,19 @@
 						  echo site_url( "bendahara/get_payment_list" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Konfirmasi','NIM','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status','Receipt'],	
+					colNames:['Kode','NIM','Periode','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status','Receipt',"Download"],	
 					colModel:[
-						{name:'id',index:'id'},
-						{name:'nim',width:80,align:'center',index:'nim',formatter:add_view_link},						
+						{name:'id',index:'id',width:50},
+						{name:'nim',width:80,align:'center',index:'nim',formatter:add_view_link},	
+						{name:'period',align:'center',index:'period'},				
 						{name:'account_no',index:'account_no'},
 						{name:'bank_name',index:'bank_name'},
 						{name:'payment_date',width:90,align:'center',index:'payment_date'},
 						{name:'sender_name',index:'sender_name'},
-						{name:'amount',index:'amount'},
+						{name:'amount',index:'amount',width:100},
 						{name:'is_verified',index:'is_verified',width:150,align:'center',stype:'select',searchoptions:{value:{'0':'Not Verified','1':'Verified'}},formatter:check_verified},
-                        {name:'receipt_sent',index:'receipt_sent',width:100,align:'center',stype:'select',searchoptions:{value:{'0':'Not Send','1':'Sent','2':'Not Verified'}},formatter:check_sent}						
+                        {name:'receipt_sent',index:'receipt_sent',width:90,align:'center',stype:'select',searchoptions:{value:{'0':'Not Send','1':'Sent','2':'Not Verified'}},formatter:check_sent},
+                        {name:'nim',index:'nim',width:100,align:'center',formatter:add_download},						
 					],
 					mtype : "POST",							
 					sortname: 'id',
@@ -61,6 +63,23 @@
 		function add_view_link(cellValue, options, rowObject){
 			return '<a href="#" class="viewStudent">' + cellValue + '</a>';
 		}
+		
+		function add_download(cellValue, options, rowObject){
+			if(rowObject.receipt_sent==1){
+				return '<button class="green small download" style="width:80px;"><input type="hidden" value="' + rowObject.period + 'n' + cellValue + '" />Download</button>';
+			}else{
+				return '';
+			}
+		}
+		
+		$(".download").live('click',function(){
+			val = $(this).children("input:hidden").val();
+			$.post("<?php echo base_url('bendahara/download_receipt/bs'); ?>/" + val, function(data){
+				if(data!=0){
+					window.open("<?php echo base_url("assets/core/pdf/receipt/kuitansi_"); ?>" + data + ".pdf",'_blank');
+				}
+			});
+		});
 		
 		$(".viewStudent").live('click',function(){
 			$("#dialogcontainer").attr("title","Data Mahasiswa");
