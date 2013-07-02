@@ -171,6 +171,82 @@ class kemahasiswaan extends CI_Controller {
 		echo $response;
 		
 	}
+
+	public function CRUD_baru(){
+		$response = "";
+		if(isset($_POST['oper'])){
+			$col = array();
+			$this->load->library('form_validation');
+			switch($_POST['oper']){
+				case 'edit':
+					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');
+					$this->form_validation->set_rules('name', 'Name', 'required');
+					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
+					$this->form_validation->set_rules('region', 'Region', 'required');
+					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');					
+					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
+					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
+					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('address_kr', 'Address KR', 'required|xss_clean');
+					$this->form_validation->set_rules('gender', 'gender', 'required');
+					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');	
+					$col = $this->input->post();
+					break;
+				case 'add':
+					$this->form_validation->set_rules('nim', 'NIM', 'required|numeric|callback__check_nim');
+					$this->form_validation->set_rules('name', 'Name', 'required');
+					$this->form_validation->set_rules('major', 'Major', 'required|numeric');
+					$this->form_validation->set_rules('region', 'Region', 'required');
+					$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
+					$this->form_validation->set_rules('status', 'Status', 'required');
+					$this->form_validation->set_rules('entry_period', 'Entry Period', 'required|numeric');
+					$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+					$this->form_validation->set_rules('birth_date', 'Birth', 'xss_clean');
+					$this->form_validation->set_rules('religion', 'Religion', 'xss_clean');
+					$this->form_validation->set_rules('address_id', 'Address', 'required|xss_clean');
+					$this->form_validation->set_rules('address_kr', 'Address KR', 'required|xss_clean');
+					$this->form_validation->set_rules('gender', 'gender', 'required');
+					$this->form_validation->set_rules('marital_status', 'Marital Status', 'required');					
+					$col = $this->input->post();
+					break;
+				case 'del':
+					$this->form_validation->set_rules('id', 'NIM', 'required|numeric');	
+					$col = $this->input->post();
+					break;
+				default:
+					exit;
+			}
+			if ($this->form_validation->run())
+			{
+					switch($col['oper']){
+						case 'edit':
+							unset($col['oper']);
+							$id = $col['id'];
+							unset($col['id']);
+							$this->person->edit_mahasiswa_baru($id,$col);
+							break;
+						case 'add':
+							unset($col['oper']);
+							unset($col['id']);							
+							$col['password'] = hashPassword($col['nim']);
+							
+							$this->person->add_mahasiswa($col);
+							break;
+						case 'del':
+							$this->person->delete_mahasiswa($col['id']);
+							break;
+						default:
+							exit;
+					}
+			}else{
+					$response = validation_errors();
+			}
+		}				
+		
+		echo $response;
+		
+	}
 	
 	function _check_nim($nim)
 	{
@@ -186,6 +262,25 @@ class kemahasiswaan extends CI_Controller {
 		$this->auth->check_auth();
 		$data = array();
 		$data['list'] = $this->person->new_student_list();	
+		
+		$bucket = $this->utility_model->get_Table('major');
+		 
+		 $major_arr = array();
+		 foreach($bucket->result_array() as $row){
+			$major_arr[] = $row;
+		 }
+		 $region_arr = array();
+		 $region_arr['K'] = 'Seoul';
+		 $region_arr['A'] = 'Ansan';
+		 $region_arr['G'] = 'Guro';
+		 $region_arr['U'] = 'Ujiongbu';
+		 $region_arr['D'] = 'Daegu';
+		 $region_arr['C'] = 'Cheonan';
+		 $region_arr['J'] = 'Gwangju';
+		 $region_arr['B'] = 'Busan';
+         
+         $data = array('major_arr'=>$major_arr,
+                       'region_arr'=>$region_arr);
 		
 		$content['page'] = $this->load->view('kemahasiswaan/mahasiswa_baru',$data,TRUE);
         $this->load->view('dashboard',$content);
@@ -471,4 +566,39 @@ class kemahasiswaan extends CI_Controller {
 		echo json_encode ($data );
 		exit( 0 );
     }
+    
+	function reupload($type){
+		$data['message'] = '';
+		
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('reg_code', 'Nomor Registrasi', 'required|numeric');
+		$this->form_validation->set_rules('jenis', 'Jenis', 'required');
+		
+		if(isset($_FILES['filename'])){
+			if($this->form_validation->run()){
+				$config['upload_path'] = 'assets/uploads/';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['max_size'] = '10000';
+				$config['max_width'] = '10240';
+				$config['max_height'] = '76800';
+				$config['encrypt_name'] = TRUE;
+		
+				$this->load->library('upload', $config);
+		
+				if ( ! $this->upload->do_upload('filename'))
+				{
+					$data['message'] = $this->upload->display_errors();		
+				}
+				else{
+					$upload_arr = $this->upload->data();
+					$this->person->edit_mahasiswa_baru($this->input->post('reg_code'),array($this->input->post('jenis')=>$upload_arr['file_name']));
+					$data['message'] = 'File Berhasil di upload';
+				}
+			}
+		}
+		
+		$content['page'] = $this->load->view('kemahasiswaan/reupload',$data,TRUE);
+        $this->load->view('dashboard',$content);
+	}
+	
 }
