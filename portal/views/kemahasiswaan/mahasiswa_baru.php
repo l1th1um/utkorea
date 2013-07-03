@@ -21,7 +21,7 @@
 						  echo site_url( "mahasiswa/getlistJQGRID/baru_default" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Registrasi','Nama', 'Email','Major','Region','Phone','Birth Date','Religion','Gender','Status','Address ID','Address KR','Waktu Pendaftaran','Status','Form F1'],	
+					colNames:['Kode Registrasi','Nama', 'Email','Major','Region','Phone','Birth Date','Religion','Gender','Status','Nama Ibu','Tahun Lulus','Address ID','Address KR','Waktu Pendaftaran','Status','Form F1'],	
 					colModel:[
 						{name:'nim',index:'nim',width:70,align:'center'},
 						{name:'name',align:'left',index:'name',editable:true,formatter:add_view_link,unformat:unformat_add_view_link},
@@ -33,6 +33,8 @@
 						{name:'religion',index:'religion',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true; foreach(lang_list('religion_list') as $key=>$row){if(!$first){echo ',';} echo "'".$key."':'".$row."'";$first=false; } ?>}}},
 						{name:'gender',index:'gender',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',editoptions:{value:{'P':'Pria','L':'Wanita'}}},
 						{name:'marital_status',index:'marital_status',hidden:true,editrules:{edithidden:true},editable:true,edittype:'select',formatter:'select',editoptions:{value:{'1':'Menikah','0':'Belum Menikah'}}},
+						{name:'mother_name',index:'mother_name',editable:true,hidden:true,editrules:{edithidden:true,required:true}},
+						{name:'year_graduate',index:'year_graduate',editable:true,hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'address_id',index:'address_id',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'address_kr',index:'address_kr',editable:true,edittype:'textarea',hidden:true,editrules:{edithidden:true,required:true}},
 						{name:'reg_time',align:'center',index:'reg_time',width:90},						
@@ -62,7 +64,7 @@
 		
 		
 		function attach_link_f1(cellValue, options, rowObject){
-			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_pdf/' + rowObject.nim + '/true">Download</a>'
+			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_and_replace_pdf/' + rowObject.nim + '">Download</a>'
 		}
 
 		function check_verified(cellValue, options, rowObject){

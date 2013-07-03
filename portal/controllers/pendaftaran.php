@@ -173,6 +173,11 @@ class pendaftaran extends CI_Controller {
                     $subject,$message2,$filename);
 	}
 	
+	function show_and_replace_pdf($id){
+		$this->generate_registration_pdf($id);
+		$this->show_pdf($id,true);
+	}
+	
 	function show_pdf($uuid,$isusingregcode = false) {
 		
 		if(!$isusingregcode){
@@ -201,11 +206,18 @@ class pendaftaran extends CI_Controller {
 		$data = array();
 		$data['id'] = $id;
 		$data['row'] = $this->person->get_new_student_details($id);
+		
+		
 	     
 		if ($data['row'] != FALSE) {
+			
 			$html = $this->load->view('pendaftaran/form_pdf', $data, true);
 			
-			$data = pdf_create($html, $path.".pdf", false);			
+			$data = pdf_create($html, $path.".pdf", false);		
+			
+			if(read_file($path)){
+				delete_files($path);
+			}	
 			write_file($path.".pdf", $data);			
 		 //	pdf_create($html, $path);
 		}
