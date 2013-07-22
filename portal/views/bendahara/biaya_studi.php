@@ -13,12 +13,12 @@
 						  echo site_url( "bendahara/get_payment_list" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode','NIM','Periode','Nomer Account','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status','Receipt',"Download"],	
+					colNames:['Kode','NIM','Periode','Semester','Nama Bank','Tanggal Transfer','Atas Nama','Jumlah','Status','Receipt',"Download"],	
 					colModel:[
 						{name:'id',index:'id',width:50},
 						{name:'nim',width:80,align:'center',index:'nim',formatter:add_view_link},	
 						{name:'period',align:'center',index:'period'},				
-						{name:'account_no',index:'account_no'},
+						{name:'entry_period',index:'entry_period',width:60,align:'center'},
 						{name:'bank_name',index:'bank_name'},
 						{name:'payment_date',width:90,align:'center',index:'payment_date'},
 						{name:'sender_name',index:'sender_name'},

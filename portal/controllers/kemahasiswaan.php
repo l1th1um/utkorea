@@ -577,7 +577,7 @@ class kemahasiswaan extends CI_Controller {
 		if(isset($_FILES['filename'])){
 			if($this->form_validation->run()){
 				$config['upload_path'] = 'assets/uploads/';
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg|pdf';
 				$config['max_size'] = '10000';
 				$config['max_width'] = '10240';
 				$config['max_height'] = '76800';

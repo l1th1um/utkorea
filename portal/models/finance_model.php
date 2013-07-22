@@ -111,9 +111,10 @@ class finance_model extends CI_Model {
 	function get_payment_list($params = "" , $page = "all",$is_export=false)
 	{	
 	
-		$this->db->select('id,nim,period,account_no,payment_date,bank_name,sender_name,amount,verified_by,
-                            verified_time,is_verified,IF(is_verified = 1,receipt_sent,"2"  ) as receipt_sent ', FALSE);
-		$this->db->from('payment');		
+		$this->db->select('a.id,a.nim,a.period,b.entry_period,a.account_no,a.payment_date,a.bank_name,a.sender_name,a.amount,a.verified_by,
+                            a.verified_time,a.is_verified,IF(a.is_verified = 1,a.receipt_sent,"2"  ) as receipt_sent ', FALSE);
+		$this->db->from('payment a');		
+		$this->db->join('mahasiswa b','a.nim = b.nim','left');
 		
 		if (!empty($params))		{			
 			if ( (($params["rows"]*$params["page"]) >= 0 && $params ["rows"] > 0))
@@ -375,7 +376,7 @@ class finance_model extends CI_Model {
 		if(!$is_export){
 			$this->db->select('a.reg_code,a.name,a.verified,b.is_verified as duver,c.is_verified as bsver,c.amount ');
 		}else{
-			$this->db->select('a.reg_code,a.name,a.phone,a.email,a.major,a.verified as kmhsver,b.is_verified as duver,c.is_verified as bsver,c.amount ');
+			$this->db->select('a.*,b.is_verified as duver,c.is_verified as bsver,c.amount ');
 		}
 		
 		$this->db->from('mahasiswa_baru a');

@@ -21,10 +21,11 @@
 						  echo site_url( "mahasiswa/getlistJQGRID/baru_default" );
 						  ?>',
 					datatype: "json",
-					colNames:['Kode Registrasi','Nama', 'Email','Major','Region','Phone','Birth Date','Religion','Gender','Status','Nama Ibu','Tahun Lulus','Address ID','Address KR','Waktu Pendaftaran','Status','Form F1'],	
+					colNames:['Kode Registrasi','Nama', 'Passport','Email','Major','Region','Phone','Birth Date','Religion','Gender','Status','Nama Ibu','Tahun Lulus','Address ID','Address KR','Waktu Pendaftaran','Status','Form F1'],	
 					colModel:[
-						{name:'nim',index:'nim',width:70,align:'center'},
+						{name:'reg_code',index:'reg_code',width:70,align:'center'},
 						{name:'name',align:'left',index:'name',editable:true,formatter:add_view_link,unformat:unformat_add_view_link},
+						{name:'passport',index:'passport',hidden:true,editable:true,editrules:{edithidden:true}},
 						{name:'email',align:'left',index:'email',editable:true},
 						{name:'major',index:'major', stype:'select',searchoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}},editable:true, edittype:'select',formatter:'select',editoptions:{value:{<?php $first=true;foreach($major_arr as $row){if(!$first){echo ',';}echo $row['major_id'].':"'.$row['major'].'"';$first=false;} ?>}}},	
 						{name:'region',index:'region',hidden:true,editable:true,editrules:{edithidden:true}, edittype:'select',formatter:'select',editoptions:{value:{'1':'Utara','2':'Selatan'}}},
@@ -64,19 +65,19 @@
 		
 		
 		function attach_link_f1(cellValue, options, rowObject){
-			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_and_replace_pdf/' + rowObject.nim + '">Download</a>'
+			return '<a target="_blank" href="<?php echo base_url(); ?>pendaftaran/show_and_replace_pdf/' + rowObject.reg_code + '">Download</a>'
 		}
 
 		function check_verified(cellValue, options, rowObject){
 			if(cellValue==1){
 				return '<button class="blue small" style="width:140px">Verified</button>';
 			}else{
-				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.nim  + '" /></button>';
+				return '<button class="unverified" class="red small" style="width:140px">Not Verified<input type="hidden" value="' + rowObject.reg_code  + '" /></button>';
 			}
 		}	
 		
 		function add_view_link(cellValue, options, rowObject){
-			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" value="' + rowObject.nim  + '" /><input type="hidden" class="hdnname" value="' + cellValue  + '" /></a>';
+			return '<a href="#" class="viewStudent">' + cellValue + '<input type="hidden" value="' + rowObject.reg_code  + '" /><input type="hidden" class="hdnname" value="' + cellValue  + '" /></a>';
 		}
 		
 		function unformat_add_view_link( cellvalue, options, cell){

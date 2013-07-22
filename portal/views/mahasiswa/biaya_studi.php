@@ -8,7 +8,7 @@
 <div style="color:red">
 <?php echo validation_errors(); ?>
 </div>
-<i>Biaya yang harus dibayarkan adalah biaya kuliah <?php if(count($amount)==3){ ?>(₩485.000)<?php }else{ ?>(₩430.000)<?php } ?> di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang</i>
+<i>Biaya yang harus dibayarkan adalah biaya kuliah <?php if(count($amount)==2){ ?>(₩485.000) <?php }else{ ?>(₩430.000)<?php } ?> di kurangi dengan jumlah uang yang sudah pernah anda bayarkan saat daftar ulang </i>
 <fieldset>
 	<table>
 		<tr>

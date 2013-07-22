@@ -48,7 +48,8 @@ class pendaftaran extends CI_Controller {
 			}
 			
 		} else {
-			$content['page'] = $this->load->view('pendaftaran/form','',TRUE);
+			//$content['page'] = $this->load->view('pendaftaran/form','',TRUE);
+			$content['page'] = $this->load->view('pendaftaran/close','',TRUE);
 		}		
 		
 		$this->load->view('pendaftaran/registrasi',$content);

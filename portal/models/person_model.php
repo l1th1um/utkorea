@@ -122,7 +122,7 @@ class person_model extends CI_Model {
 			//$this->db->join('mahasiswa_baru','mahasiswa.nim = mahasiswa_baru.reg_code','left');
 			//$this->db->where("length(nim)<5");
 		}elseif($type=='baru_default'){
-			$this->db->select("name,reg_code as nim,phone,major,region,status,gender,period,email,birth_date,address_id,address_kr,religion,mother_name,year_graduate,marital_status,DATE_FORMAT(reg_time, '%d-%m-%Y') as reg_time,verified",FALSE);
+			$this->db->select("name,reg_code,passport,phone,major,region,status,gender,period,email,birth_date,address_id,address_kr,religion,mother_name,year_graduate,marital_status,DATE_FORMAT(reg_time, '%d-%m-%Y') as reg_time,verified",FALSE);
             $this->db->from("mahasiswa_baru");			
 		}elseif($type=='tutor'){
 			if($is_export){
