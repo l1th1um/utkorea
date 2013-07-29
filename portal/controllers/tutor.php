@@ -604,6 +604,82 @@ class tutor extends CI_Controller {
 		$this->load->view('dashboard',$content);
 	}
 	
+	public function export_hasil_survey_all($period=20131){
+		$this->load->model('class_model','cls');
+		$q1 = $this->tutor_model->get_current_class_composition_list($period);
+		
+		$finalarray = array();
+		
+		foreach($q1->result() as $rowq){
+			
+			$q2 = $this->cls->get_survey_result($rowq->sid);
+			if($q2){
+				$data['surveyques'] = array(
+					array('Bagian Pendahuluan','A'),
+					array('Keterampilan menarik perhatian mahasiswa (ice breaking, kuis, games)',true),
+					array('Keterampilan memotivasi mahasiswa',true),	
+					array('Keterampilan menjelaskan ruang lingkup materi yang akan dibahas',true),
+					array('Keterampilan menyampaikan relevansidanmanfaatmateri yang dibahas',true),
+					array('Keterampilan menjelaskan kompetensi mahasiswa dalam mengikuti tutorial ',true),
+					array('Bagian Penyajian ','B'),
+					array('Sistematika penyampaian materi tutorial',true),
+					array('Keterampilan menjelaskan materi tutorial',true),
+					array('Keterampilan membimbing mahasiswa berlatih',true),
+					array('Keterampilan mengajukan pertanyaan',true),
+					array('Keterampilan memberikan umpan balik terhadap pertanyaan mahasiswa',true),
+					array('Keterampilan menyebarkan pertanyaan kepada mahasiswa',true),
+					array('Keterampilan mengaktifkan mahasiswa dalam tutorial',true),
+					array('Keterampilan menggunakan media dan  alat pembelajaran',true),
+					array('Keterampilan menggunakan beragam metode/model tutorial',true),
+					array('Bagian Penutup','C'),
+					array('Keterampilan menyimpulkan materi tutorial',true),
+					array('Keterampilan mengevaluasi hasil belajar mahasiswa dalam tutorial',true),
+					array('Keterampilan memberikan umpan balik terhadap hasil belajar mahasiswa dalam tutorial',true),
+					array('Keterampilam memberikan informasi tentang kegiatan tindak lanjut',true),
+					array('Keterampilan mengelola waktu tutorial ',true),
+					array('Keseluruhan',true),
+				);
+				
+				$total = array();
+				//initializing
+				foreach($data['surveyques'] as $key=>$p){
+					$total[$key] = 0;
+				}
+				
+				$comment = array();
+				
+	
+				$numresponden = $q2->num_rows();
+				
+				foreach($q2->result_array() as $row){
+					$temp1 = explode(",",$row['survey']);
+					$cmnt = '';				
+					foreach($temp1 as $key=>$tr){						
+						if(is_numeric($tr)){
+							$total[$key] =  $total[$key] + $tr;	
+						}else{
+							$cmnt .= $tr;
+						}					
+					}				
+					
+					$cmnt .= $row['comment'];
+					if(trim($cmnt)!=''){
+						$comment[] = $cmnt;	
+					}				
+				}
+	
+				$overall = array_sum($total)/$numresponden/count($data['surveyques']);			
+				$finalarray[] = array($rowq->name,$rowq->title,substr($overall,0,4));				
+				
+			}
+		}
+
+		if(!empty($finalarray)){
+			array_unshift($finalarray,array('Nama','Mata Kuliah','Nilai Overall'));
+			array_to_csv($finalarray,"Export_Hasil_Survey_Tutor_20131.csv");	
+		}		
+	}
+	
 	public function hasil_survey_detail($id_assignment){
 		$this->load->model('class_model','cls');
 		$q = $this->cls->get_survey_result($id_assignment);

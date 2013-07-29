@@ -1,3 +1,5 @@
+<p>Export Overall Nilai : <a href="<?php echo base_url('tutor/export_hasil_survey_all'); ?>">Klik Disini</a></p>
+<hr />
 <table>
 	<thead>
 		<tr>
